@@ -27,12 +27,12 @@ Java 8+.
 ```java
 class Example {
     public void saveUser(User input) {
-        List<Violation> validationResult = validate(asList(
+        List<Violation> validationResult = validate(
                 notNull("firstName", input.getFirstName()),
                 notNull("lastName", input.getLastName()),
                 notBlank("firstName", input.getFirstName()),
                 notBlank("lastName", input.getLastName())
-        )); 
+        ); 
         
         if (!inputFormatViolations.isEmpty()) {
             throw new ValidationException(validationResult);
@@ -72,19 +72,18 @@ of the form; for that you can add: `Violation.of("general", "validation.error.so
 The following example is just to illustrate more situations and how they can be handled. 
 The cleaner solution can be found below.
 ```java
-public class UserService {
-
+import com.vdt.painlessjavavalidator.ViolationProvider;public class UserService {
     @Autowired
     private UserRepository userRepository;
 
     public User updateUser(User input) {
         // basic example of ValidationEngine usage
-        List<Violation> inputFormatViolations = validate(asList(
+        List<Violation> inputFormatViolations = validate(
                 notNull("input.firstName", input.getFirstName()),
                 notNull("input.lastName", input.getLastName()),
                 notBlank("input.firstName", input.getFirstName()),
                 notBlank("input.lastName", input.getLastName())
-        ));
+        );
 
         // "input." prefix is not required
         // nesting fields: "input.address.street"
@@ -98,10 +97,10 @@ public class UserService {
         // other business logic logic
         // ...
 
-        List<Violation> lengthValidations = validate(asList(
+        List<Violation> lengthValidations = validate(
                 lengthBetween("input.firstName", input.getFirstName(), 2, 50),
                 lengthBetween("input.firstName", input.getFirstName(), 2, 50)
-        ));
+        );
 
         if (!lengthValidations.isEmpty()) {
             // fail fast - there is no reason to go onward
@@ -128,7 +127,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private Supplier<Optional<Violation>> firstNameAndLastNameUniqueness(User user) {
+    private ViolationProvider firstNameAndLastNameUniqueness(User user) {
         return () -> userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName())
                 .map(u -> Violation.of(
                         "general",
@@ -146,11 +145,11 @@ A simplified version of the previous example:
 public class UserService {
 
     public User updateUserCompact(User input) {
-        List<Violation> inputFormatViolations = validate(asList(
+        List<Violation> inputFormatViolations = validate(
                 // lengthBetween also requires a value to be present and so notNull and notBlank are redundant
                 lengthBetween("input.firstName", input.getFirstName(), 2, 50),
                 lengthBetween("input.firstName", input.getFirstName(), 2, 50)
-        ));
+        );
 
         if (!inputFormatViolations.isEmpty()) {
             throw new ValidationException(inputFormatViolations);
@@ -174,7 +173,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private Supplier<Optional<Violation>> firstNameAndLastNameUniqueness(User user) {
+    private ViolationProvider firstNameAndLastNameUniqueness(User user) {
         return () -> userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName())
                 .map(u -> Violation.of(
                         "general",

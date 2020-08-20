@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 import static java.util.Collections.singletonMap;
 
 public class ValidationRule {
-    public static Supplier<Optional<Violation>> notNull(String fieldPath, Object value) {
+    public static ViolationProvider notNull(String fieldPath, Object value) {
         return () -> notNullRule(fieldPath, value);
     }
 
@@ -20,7 +20,7 @@ public class ValidationRule {
         return Optional.empty();
     }
 
-    public static Supplier<Optional<Violation>> notBlank(String fieldPath, CharSequence value) {
+    public static ViolationProvider notBlank(String fieldPath, CharSequence value) {
         return () -> notBlankRule(fieldPath, value);
     }
 
@@ -31,7 +31,7 @@ public class ValidationRule {
         return Optional.empty();
     }
 
-    public static Supplier<Optional<Violation>> lengthBetween(String fieldPath, CharSequence value, int min, int max) {
+    public static ViolationProvider lengthBetween(String fieldPath, CharSequence value, int min, int max) {
         return () -> lengthBetweenRule(fieldPath, value, min, max);
     }
 
@@ -57,7 +57,7 @@ public class ValidationRule {
         return Optional.empty();
     }
 
-    public static Supplier<Optional<Violation>> matchRegex(String fieldPath, String value, String regex) {
+    public static ViolationProvider matchRegex(String fieldPath, String value, String regex) {
         return () -> matchRegexRule(fieldPath, value, regex);
     }
 
@@ -77,7 +77,7 @@ public class ValidationRule {
         return Optional.empty();
     }
 
-    public static Supplier<Optional<Violation>> inRange(String fieldPath, Integer value, int min, int max) {
+    public static ViolationProvider inRange(String fieldPath, Integer value, int min, int max) {
         return () -> inRangeRule(fieldPath, value, min, max);
     }
 
@@ -103,7 +103,7 @@ public class ValidationRule {
         return Optional.empty();
     }
 
-    public static Supplier<Optional<Violation>> min(String fieldPath, Integer value, int min) {
+    public static ViolationProvider min(String fieldPath, Integer value, int min) {
         return () -> minRule(fieldPath, value, min);
     }
 
@@ -123,7 +123,7 @@ public class ValidationRule {
         return Optional.empty();
     }
 
-    public static Supplier<Optional<Violation>> max(String fieldPath, Integer value, int max) {
+    public static ViolationProvider max(String fieldPath, Integer value, int max) {
         return () -> maxRule(fieldPath, value, max);
     }
 
@@ -143,10 +143,10 @@ public class ValidationRule {
         return Optional.empty();
     }
 
-    public static <T> Supplier<Optional<Violation>> isAfter(String fieldPath,
-                                                      Comparable<T> value,
-                                                      T other) {
-        return () -> isAfterRule(fieldPath, value,other);
+    public static <T> ViolationProvider isAfter(String fieldPath,
+                                                Comparable<T> value,
+                                                T other) {
+        return () -> isAfterRule(fieldPath, value, other);
     }
 
     public static <T> Optional<Violation> isAfterRule(String fieldPath,
@@ -164,10 +164,10 @@ public class ValidationRule {
                 ));
     }
 
-    public static <T> Supplier<Optional<Violation>> isAfterOrEqualsTo(String fieldPath,
-                                                                Comparable<T> value,
-                                                                T other) {
-        return () -> isAfterOrEqualsToRule(fieldPath,value, other);
+    public static <T> ViolationProvider isAfterOrEqualsTo(String fieldPath,
+                                                          Comparable<T> value,
+                                                          T other) {
+        return () -> isAfterOrEqualsToRule(fieldPath, value, other);
     }
 
     public static <T> Optional<Violation> isAfterOrEqualsToRule(String fieldPath,
@@ -185,9 +185,9 @@ public class ValidationRule {
                 ));
     }
 
-    public static <T> Supplier<Optional<Violation>> isBefore(String fieldPath,
-                                                       Comparable<T> value,
-                                                       T other) {
+    public static <T> ViolationProvider isBefore(String fieldPath,
+                                                 Comparable<T> value,
+                                                 T other) {
         return () -> isBeforeRule(fieldPath, value, other);
     }
 
@@ -206,9 +206,9 @@ public class ValidationRule {
                 ));
     }
 
-    public static <T> Supplier<Optional<Violation>> isBeforeOrEqualsTo(String fieldPath,
-                                                                 Comparable<T> value,
-                                                                 T other) {
+    public static <T> ViolationProvider isBeforeOrEqualsTo(String fieldPath,
+                                                           Comparable<T> value,
+                                                           T other) {
         return () -> isBeforeOrEqualsToRule(fieldPath, value, other);
     }
 
@@ -227,9 +227,9 @@ public class ValidationRule {
                 ));
     }
 
-    public static <T> Supplier<Optional<Violation>> equalsTo(String fieldPath,
-                                                       Comparable<T> value,
-                                                       T other) {
+    public static <T> ViolationProvider equalsTo(String fieldPath,
+                                                 Comparable<T> value,
+                                                 T other) {
         return () -> equalsToRule(fieldPath, value, other);
     }
 
@@ -248,7 +248,7 @@ public class ValidationRule {
                 ));
     }
 
-    public static Supplier<Optional<Violation>> equalsTo(String fieldPath, String value, String other) {
+    public static ViolationProvider equalsTo(String fieldPath, String value, String other) {
         return () -> equalsToRule(fieldPath, value, other);
     }
 
@@ -265,7 +265,7 @@ public class ValidationRule {
                 ));
     }
 
-    public static Supplier<Optional<Violation>> notEqualsTo(String fieldPath, String value, String other) {
+    public static ViolationProvider notEqualsTo(String fieldPath, String value, String other) {
         return () -> notEqualsToRule(fieldPath, value, other);
     }
 
@@ -281,7 +281,7 @@ public class ValidationRule {
                 ));
     }
 
-    public static Supplier<Optional<Violation>> compareStrings(
+    public static ViolationProvider compareStrings(
             String fieldPath, String value,
             String other,
             BiFunction<String, String, Boolean> compareFunc,
@@ -304,12 +304,12 @@ public class ValidationRule {
         return Optional.empty();
     }
 
-    public static <T> Supplier<Optional<Violation>> compareComparables(
+    public static <T> ViolationProvider compareComparables(
             String fieldPath, Comparable<T> value,
             T other,
             BiFunction<Comparable<T>, T, Boolean> compareFunc,
             Supplier<Violation> violationFunc) {
-        return () -> compareComparablesRule(fieldPath, value,other, compareFunc, violationFunc);
+        return () -> compareComparablesRule(fieldPath, value, other, compareFunc, violationFunc);
     }
 
     public static <T> Optional<Violation> compareComparablesRule(
