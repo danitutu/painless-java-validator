@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static com.vdt.painlessjavavalidator.ValidationRule.matchRegex;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MatchRegexValidationRuleTest {
 
@@ -39,7 +38,7 @@ class MatchRegexValidationRuleTest {
     public void matchRegex3() {
         Optional<Violation> violation = matchRegex("field.path", "TEST1234", "[A-Z0-9]+");
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
 }

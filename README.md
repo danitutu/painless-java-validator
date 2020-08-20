@@ -1,8 +1,8 @@
-## Painless Java Validator
+# Painless Java Validator
 
 A very simple Java validation tool that helps you implement validations. 
 
-#### Why another Java validation tool?
+### Why another Java validation tool?
 
 - easy to use, extend and customize
 - no hidden magic
@@ -18,11 +18,11 @@ A very simple Java validation tool that helps you implement validations.
 - validations can happen in the same transaction
 - easy to achieve i18n on the client side
 
-#### Compatibility
+### Compatibility
 
-Java 11+.
+Java 8+.
 
-#### Usage
+### Usage
 
 ```java
     List<Violation> validationResult = validate(asList(
@@ -46,7 +46,7 @@ the `Violation`s. Next a check will be made to see if there are any errors.
 If errors are present then a `ValidationException` exception will be raised 
 which receives the validation result as input. 
 
-#### Best practices and solutions 
+### Best practices and solutions 
 
 - Keep the validations in grouped where it makes sense and make use of the validation engine. The grouped validation 
 can also be extracted into functions.
@@ -61,7 +61,7 @@ of the form; for that you can add: `Violation.of("general", "validation.error.so
 - Put complex validations in separate functions and give them names that describe their behaviour
 - Some validation can be redundant; frequent redundant validations can be encountered in and between null, empty and blank checks, in this case blank covers the other two   
 
-#### Complex example
+### Complex example
 
 The following example is just to illustrate more situations and how they can be handled. 
 The cleaner solution can be found below.

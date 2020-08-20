@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static com.vdt.painlessjavavalidator.ValidationRule.max;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MaxIntegerValidationRuleTest {
 
@@ -27,7 +26,7 @@ class MaxIntegerValidationRuleTest {
     public void max2() {
         Optional<Violation> violation = max("field.path", 4, 4);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
     @Test
@@ -48,7 +47,7 @@ class MaxIntegerValidationRuleTest {
     public void max4() {
         Optional<Violation> violation = max("field.path", 3, 5);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
 }

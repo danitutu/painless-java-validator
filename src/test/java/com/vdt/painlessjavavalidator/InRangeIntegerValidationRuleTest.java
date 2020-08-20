@@ -26,7 +26,7 @@ class InRangeIntegerValidationRuleTest {
     public void inRange2() {
         Optional<Violation> violation = inRange("field.path", 4, 4, 10);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
     @Test
@@ -34,7 +34,7 @@ class InRangeIntegerValidationRuleTest {
     public void inRange3() {
         Optional<Violation> violation = inRange("field.path", 4, 2, 4);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
     @Test
@@ -42,7 +42,7 @@ class InRangeIntegerValidationRuleTest {
     public void inRange4() {
         Optional<Violation> violation = inRange("field.path", 4, 2, 5);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
     @Test
@@ -100,7 +100,7 @@ class InRangeIntegerValidationRuleTest {
     public void inRange9() {
         Optional<Violation> violation = inRange("field.path", 4, 4, 4);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
 }

@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static com.vdt.painlessjavavalidator.ValidationRule.min;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MinIntegerValidationRuleTest {
 
@@ -27,7 +26,7 @@ class MinIntegerValidationRuleTest {
     public void min2() {
         Optional<Violation> violation = min("field.path", 4, 4);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
     @Test
@@ -48,7 +47,7 @@ class MinIntegerValidationRuleTest {
     public void min4() {
         Optional<Violation> violation = min("field.path", 3, 1);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
 }

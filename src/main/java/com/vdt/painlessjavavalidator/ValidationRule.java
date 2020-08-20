@@ -1,9 +1,13 @@
 package com.vdt.painlessjavavalidator;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
+
+import static java.util.Collections.singletonMap;
 
 public class ValidationRule {
     public static Optional<Violation> notNull(String fieldPath, Object value) {
@@ -29,11 +33,14 @@ public class ValidationRule {
             return isNotBlank;
         }
         if (value.length() < min || value.length() > max) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("min", min);
+            map.put("max", max);
             return Optional.of(Violation.of(
                     fieldPath,
                     "validation.error.string.value.not.between",
                     "Value is not in range.",
-                    Map.of("min", min, "max", max)
+                    map
             ));
         }
         return Optional.empty();
@@ -49,7 +56,7 @@ public class ValidationRule {
                     fieldPath,
                     "validation.error.string.value.regex.no.match",
                     "Value does not match the expected regex.",
-                    Map.of("regexPattern", regex)
+                    singletonMap("regexPattern", regex)
             ));
         }
         return Optional.empty();
@@ -64,11 +71,14 @@ public class ValidationRule {
             return isNotNull;
         }
         if (value < min || value > max) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("min", min);
+            map.put("max", max);
             return Optional.of(Violation.of(
                     fieldPath,
                     "validation.error.integer.value.not.in.range",
                     "Value is not in range.",
-                    Map.of("min", min, "max", max)
+                    map
             ));
         }
         return Optional.empty();
@@ -84,7 +94,7 @@ public class ValidationRule {
                     fieldPath,
                     "validation.error.integer.value.smaller.than.min",
                     "Value is smaller than min.",
-                    Map.of("min", min)
+                    singletonMap("min", min)
             ));
         }
         return Optional.empty();
@@ -100,7 +110,7 @@ public class ValidationRule {
                     fieldPath,
                     "validation.error.integer.value.greater.than.max",
                     "Value is greater than max.",
-                    Map.of("max", max)
+                    singletonMap("max", max)
             ));
         }
         return Optional.empty();
@@ -117,7 +127,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.before.or.equal",
                         "The value is before or equal the other value.",
-                        Map.of("other", other.toString())
+                        singletonMap("other", other.toString())
                 ));
     }
 
@@ -132,7 +142,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.before",
                         "The value is before the other value.",
-                        Map.of("other", other.toString())
+                        singletonMap("other", other.toString())
                 ));
     }
 
@@ -147,7 +157,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.after.or.equal",
                         "The value is after or equal the other value.",
-                        Map.of("other", other.toString())
+                        singletonMap("other", other.toString())
                 ));
     }
 
@@ -162,7 +172,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.after",
                         "The value is after the other value.",
-                        Map.of("other", other.toString())
+                        singletonMap("other", other.toString())
                 ));
     }
 
@@ -177,7 +187,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.not.equal",
                         "The value is not equal to the other value.",
-                        Map.of("other", other.toString())
+                        singletonMap("other", other.toString())
                 ));
     }
 
@@ -190,7 +200,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.string.is.not.equal",
                         "The value is not equal to the other value.",
-                        Map.of("other", other)
+                        singletonMap("other", other)
                 ));
     }
 

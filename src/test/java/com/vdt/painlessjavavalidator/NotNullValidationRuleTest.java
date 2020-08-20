@@ -27,7 +27,7 @@ class NotNullValidationRuleTest {
     public void notNull2() {
         Optional<Violation> violation = notNull("field.path", new Object());
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
 }

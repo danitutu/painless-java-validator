@@ -48,7 +48,7 @@ class LengthBetweenValidationRuleTest {
     public void lengthBetween4() {
         Optional<Violation> violation = lengthBetween("field.path", "test", 4, 10);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
     @Test
@@ -56,7 +56,7 @@ class LengthBetweenValidationRuleTest {
     public void lengthBetween5() {
         Optional<Violation> violation = lengthBetween("field.path", "test", 2, 4);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
     @Test
@@ -64,7 +64,7 @@ class LengthBetweenValidationRuleTest {
     public void lengthBetween6() {
         Optional<Violation> violation = lengthBetween("field.path", "test", 2, 5);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
     @Test
@@ -122,7 +122,7 @@ class LengthBetweenValidationRuleTest {
     public void lengthBetween11() {
         Optional<Violation> violation = lengthBetween("field.path", "test", 4, 4);
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
 }

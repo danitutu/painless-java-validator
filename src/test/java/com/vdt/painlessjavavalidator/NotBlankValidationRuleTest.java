@@ -39,7 +39,7 @@ class NotBlankValidationRuleTest {
     public void notBlank3() {
         Optional<Violation> violation = notBlank("field.path", "a value");
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
 }

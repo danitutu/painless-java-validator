@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static com.vdt.painlessjavavalidator.ValidationRule.equalsTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class EqualsToStringValidationRuleTest {
 
@@ -40,7 +39,7 @@ class EqualsToStringValidationRuleTest {
     public void equalsTo3() {
         Optional<Violation> violation = equalsTo("field.path", "s1", "s1");
 
-        assertTrue(violation.isEmpty());
+        assertFalse(violation.isPresent());
     }
 
 }
