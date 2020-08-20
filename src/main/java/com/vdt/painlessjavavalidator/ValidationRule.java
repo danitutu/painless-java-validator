@@ -1,6 +1,5 @@
 package com.vdt.painlessjavavalidator;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -127,7 +126,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.before.or.equal",
                         "The value is before or equal the other value.",
-                        singletonMap("other", other.toString())
+                        singletonMap("other", other == null ? null : other.toString())
                 ));
     }
 
@@ -142,7 +141,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.before",
                         "The value is before the other value.",
-                        singletonMap("other", other.toString())
+                        singletonMap("other", other == null ? null : other.toString())
                 ));
     }
 
@@ -157,13 +156,13 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.after.or.equal",
                         "The value is after or equal the other value.",
-                        singletonMap("other", other.toString())
+                        singletonMap("other", other == null ? null : other.toString())
                 ));
     }
 
-    public static <T> Optional<Violation> isBeforeOrEqualTo(String fieldPath,
-                                                            Comparable<T> value,
-                                                            T other) {
+    public static <T> Optional<Violation> isBeforeOrEqualsTo(String fieldPath,
+                                                             Comparable<T> value,
+                                                             T other) {
         return compareComparables(
                 fieldPath, value,
                 other,
@@ -172,7 +171,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.after",
                         "The value is after the other value.",
-                        singletonMap("other", other.toString())
+                        singletonMap("other", other == null ? null : other.toString())
                 ));
     }
 
@@ -182,12 +181,12 @@ public class ValidationRule {
         return compareComparables(
                 fieldPath, value,
                 other,
-                (tComparable, t) -> value.compareTo(other) == 0,
+                (tComparable, t) -> value.compareTo(other) != 0,
                 () -> Violation.of(
                         fieldPath,
                         "validation.error.value.is.not.equal",
                         "The value is not equal to the other value.",
-                        singletonMap("other", other.toString())
+                        singletonMap("other", other == null ? null : other.toString())
                 ));
     }
 
@@ -225,7 +224,7 @@ public class ValidationRule {
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
-        if(compareFunc.apply(value, other)) {
+        if (compareFunc.apply(value, other)) {
             return Optional.of(violationFunc.get());
         }
         return Optional.empty();
@@ -236,11 +235,11 @@ public class ValidationRule {
             T other,
             BiFunction<Comparable<T>, T, Boolean> compareFunc,
             Supplier<Violation> violationFunc) {
-        Optional<Violation> isNotNull = notNull(fieldPath, value);
-        if (isNotNull.isPresent()) {
-            return isNotNull;
+        Optional<Violation> valueIsNotNull = notNull(fieldPath, value);
+        if (valueIsNotNull.isPresent()) {
+            return valueIsNotNull;
         }
-        if (compareFunc.apply(value, other)) {
+        if (other == null || compareFunc.apply(value, other)) {
             return Optional.of(violationFunc.get());
         }
         return Optional.empty();
