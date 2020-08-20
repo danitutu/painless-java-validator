@@ -25,16 +25,22 @@ Java 8+.
 ### Usage
 
 ```java
-    List<Violation> validationResult = validate(asList(
-            () -> notNull("firstName", input.getFirstName()),
-            () -> notNull("lastName", input.getLastName()),
-            () -> notBlank("firstName", input.getFirstName()),
-            () -> notBlank("lastName", input.getLastName())
-    )); 
+class Example {
+    public void saveUser(User input) {
+        List<Violation> validationResult = validate(asList(
+                notNull("firstName", input.getFirstName()),
+                notNull("lastName", input.getLastName()),
+                notBlank("firstName", input.getFirstName()),
+                notBlank("lastName", input.getLastName())
+        )); 
+        
+        if (!inputFormatViolations.isEmpty()) {
+            throw new ValidationException(validationResult);
+        }
     
-    if (!inputFormatViolations.isEmpty()) {
-        throw new ValidationException(validationResult);
+        // ...
     }
+}
 ```
 
 The `validate` function is part of the `ValidationEngine` 
@@ -74,10 +80,10 @@ public class UserService {
     public User updateUser(User input) {
         // basic example of ValidationEngine usage
         List<Violation> inputFormatViolations = validate(asList(
-                () -> notNull("input.firstName", input.getFirstName()),
-                () -> notNull("input.lastName", input.getLastName()),
-                () -> notBlank("input.firstName", input.getFirstName()),
-                () -> notBlank("input.lastName", input.getLastName())
+                notNull("input.firstName", input.getFirstName()),
+                notNull("input.lastName", input.getLastName()),
+                notBlank("input.firstName", input.getFirstName()),
+                notBlank("input.lastName", input.getLastName())
         ));
 
         // "input." prefix is not required
@@ -93,8 +99,8 @@ public class UserService {
         // ...
 
         List<Violation> lengthValidations = validate(asList(
-                () -> lengthBetween("input.firstName", input.getFirstName(), 2, 50),
-                () -> lengthBetween("input.firstName", input.getFirstName(), 2, 50)
+                lengthBetween("input.firstName", input.getFirstName(), 2, 50),
+                lengthBetween("input.firstName", input.getFirstName(), 2, 50)
         ));
 
         if (!lengthValidations.isEmpty()) {
@@ -113,7 +119,7 @@ public class UserService {
                 ));
 
         // custom complex validation - hide implementation by using a function
-        validate(() -> validateFirstNameAndLastNameUniqueness(user));
+        validate(firstNameAndLastNameUniqueness(user));
 
         user.setFirstName(input.getFirstName());
         user.setLastName(input.getLastName());
@@ -122,8 +128,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private Optional<Violation> validateFirstNameAndLastNameUniqueness(User user) {
-        return userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName())
+    private Supplier<Optional<Violation>> firstNameAndLastNameUniqueness(User user) {
+        return () -> userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName())
                 .map(u -> Violation.of(
                         "general",
                         "validation.error.user.duplicate.name",
@@ -142,8 +148,8 @@ public class UserService {
     public User updateUserCompact(User input) {
         List<Violation> inputFormatViolations = validate(asList(
                 // lengthBetween also requires a value to be present and so notNull and notBlank are redundant
-                () -> lengthBetween("input.firstName", input.getFirstName(), 2, 50),
-                () -> lengthBetween("input.firstName", input.getFirstName(), 2, 50)
+                lengthBetween("input.firstName", input.getFirstName(), 2, 50),
+                lengthBetween("input.firstName", input.getFirstName(), 2, 50)
         ));
 
         if (!inputFormatViolations.isEmpty()) {
@@ -159,7 +165,7 @@ public class UserService {
                         )
                 ));
 
-        validate(() -> validateFirstNameAndLastNameUniqueness(user));
+        validate(firstNameAndLastNameUniqueness(user));
 
         user.setFirstName(input.getFirstName());
         user.setLastName(input.getLastName());
@@ -168,8 +174,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private Optional<Violation> validateFirstNameAndLastNameUniqueness(User user) {
-        return userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName())
+    private Supplier<Optional<Violation>> firstNameAndLastNameUniqueness(User user) {
+        return () -> userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName())
                 .map(u -> Violation.of(
                         "general",
                         "validation.error.user.duplicate.name",

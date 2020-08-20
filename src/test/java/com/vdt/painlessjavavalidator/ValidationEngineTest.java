@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.vdt.painlessjavavalidator.ValidationEngine.validate;
+import static com.vdt.painlessjavavalidator.ValidationRule.notBlank;
+import static com.vdt.painlessjavavalidator.ValidationRule.notNull;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
 

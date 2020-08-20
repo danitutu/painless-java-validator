@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.notBlank;
+import static com.vdt.painlessjavavalidator.ValidationRule.notBlankRule;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NotBlankValidationRuleTest {
@@ -13,7 +13,7 @@ class NotBlankValidationRuleTest {
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
     public void notBlank1() {
-        Optional<Violation> violation = notBlank("field.path", null);
+        Optional<Violation> violation = notBlankRule("field.path", null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -25,7 +25,7 @@ class NotBlankValidationRuleTest {
     @Test
     @DisplayName("WHEN value is empty string THEN expect violation")
     public void notBlank2() {
-        Optional<Violation> violation = notBlank("field.path", "");
+        Optional<Violation> violation = notBlankRule("field.path", "");
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -37,7 +37,7 @@ class NotBlankValidationRuleTest {
     @Test
     @DisplayName("WHEN value is filled in THEN expect no violation")
     public void notBlank3() {
-        Optional<Violation> violation = notBlank("field.path", "a value");
+        Optional<Violation> violation = notBlankRule("field.path", "a value");
 
         assertFalse(violation.isPresent());
     }

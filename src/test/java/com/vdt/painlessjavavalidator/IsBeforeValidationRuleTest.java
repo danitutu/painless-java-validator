@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.isBefore;
+import static com.vdt.painlessjavavalidator.ValidationRule.isBeforeRule;
 import static org.junit.jupiter.api.Assertions.*;
 
 class IsBeforeValidationRuleTest {
@@ -32,7 +32,7 @@ class IsBeforeValidationRuleTest {
         map.put(ZonedDateTime.now().plusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isBefore("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = isBeforeRule("field.path", (Comparable<Object>) key, value);
 
             try {
                 assertTrue(violation.isPresent());
@@ -62,7 +62,7 @@ class IsBeforeValidationRuleTest {
         map.put(ZonedDateTime.now().minusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isBefore("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = isBeforeRule("field.path", (Comparable<Object>) key, value);
 
             assertFalse(violation.isPresent(), "Validation failed for value pair [" + key + "," + value + "]");
         });
@@ -86,7 +86,7 @@ class IsBeforeValidationRuleTest {
         map.put(nowZonedDateTime, nowZonedDateTime);
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isBefore("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = isBeforeRule("field.path", (Comparable<Object>) key, value);
 
             try {
                 assertTrue(violation.isPresent());
@@ -105,7 +105,7 @@ class IsBeforeValidationRuleTest {
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
     public void isBefore4() {
-        Optional<Violation> violation = isBefore("field.path", null, null);
+        Optional<Violation> violation = isBeforeRule("field.path", null, null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -116,7 +116,7 @@ class IsBeforeValidationRuleTest {
     @Test
     @DisplayName("WHEN other is null THEN expect violation")
     public void isBefore5() {
-        Optional<Violation> violation = isBefore("field.path", Instant.now(), null);
+        Optional<Violation> violation = isBeforeRule("field.path", Instant.now(), null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());

@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.isAfter;
+import static com.vdt.painlessjavavalidator.ValidationRule.isAfterRule;
 import static org.junit.jupiter.api.Assertions.*;
 
 class IsAfterValidationRuleTest {
@@ -32,7 +32,7 @@ class IsAfterValidationRuleTest {
         map.put(ZonedDateTime.now().plusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isAfter("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = isAfterRule("field.path", (Comparable<Object>) key, value);
 
             assertFalse(violation.isPresent(), "Validation failed for value pair [" + key + "," + value + "]");
         });
@@ -52,7 +52,7 @@ class IsAfterValidationRuleTest {
         map.put(ZonedDateTime.now().minusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isAfter("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = isAfterRule("field.path", (Comparable<Object>) key, value);
 
             try {
                 assertTrue(violation.isPresent());
@@ -86,7 +86,7 @@ class IsAfterValidationRuleTest {
         map.put(nowZonedDateTime, nowZonedDateTime);
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isAfter("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = isAfterRule("field.path", (Comparable<Object>) key, value);
 
             try {
                 assertTrue(violation.isPresent());
@@ -105,7 +105,7 @@ class IsAfterValidationRuleTest {
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
     public void isAfter4() {
-        Optional<Violation> violation = isAfter("field.path", null, null);
+        Optional<Violation> violation = isAfterRule("field.path", null, null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -116,7 +116,7 @@ class IsAfterValidationRuleTest {
     @Test
     @DisplayName("WHEN other is null THEN expect violation")
     public void isAfter5() {
-        Optional<Violation> violation = isAfter("field.path", Instant.now(), null);
+        Optional<Violation> violation = isAfterRule("field.path", Instant.now(), null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.equalsTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EqualsToStringValidationRuleTest {
@@ -13,7 +12,7 @@ class EqualsToStringValidationRuleTest {
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
     public void equalsTo1() {
-        Optional<Violation> violation = equalsTo("field.path", null, null);
+        Optional<Violation> violation = ValidationRule.equalsToRule("field.path", null, null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -24,7 +23,7 @@ class EqualsToStringValidationRuleTest {
     @Test
     @DisplayName("WHEN values are not equal THEN expect violation")
     public void equalsTo2() {
-        Optional<Violation> violation = equalsTo("field.path", "s1", "s2");
+        Optional<Violation> violation = ValidationRule.equalsToRule("field.path", "s1", "s2");
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -37,7 +36,7 @@ class EqualsToStringValidationRuleTest {
     @Test
     @DisplayName("WHEN values are equal THEN expect no violation")
     public void equalsTo3() {
-        Optional<Violation> violation = equalsTo("field.path", "s1", "s1");
+        Optional<Violation> violation = ValidationRule.equalsToRule("field.path", "s1", "s1");
 
         assertFalse(violation.isPresent());
     }

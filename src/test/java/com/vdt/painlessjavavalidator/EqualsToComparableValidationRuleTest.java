@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.equalsTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EqualsToComparableValidationRuleTest {
@@ -32,7 +31,7 @@ class EqualsToComparableValidationRuleTest {
         map.put(ZonedDateTime.now().plusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = equalsTo("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = ValidationRule.equalsToRule("field.path", (Comparable<Object>) key, value);
 
             try {
                 assertTrue(violation.isPresent());
@@ -62,7 +61,7 @@ class EqualsToComparableValidationRuleTest {
         map.put(ZonedDateTime.now().minusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = equalsTo("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = ValidationRule.equalsToRule("field.path", (Comparable<Object>) key, value);
 
             try {
                 assertTrue(violation.isPresent());
@@ -96,7 +95,7 @@ class EqualsToComparableValidationRuleTest {
         map.put(nowZonedDateTime, nowZonedDateTime);
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = equalsTo("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = ValidationRule.equalsToRule("field.path", (Comparable<Object>) key, value);
 
             assertFalse(violation.isPresent());
         });
@@ -105,7 +104,7 @@ class EqualsToComparableValidationRuleTest {
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
     public void equalsTo4() {
-        Optional<Violation> violation = equalsTo("field.path", null, null);
+        Optional<Violation> violation = ValidationRule.equalsToRule("field.path", null, null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -116,7 +115,7 @@ class EqualsToComparableValidationRuleTest {
     @Test
     @DisplayName("WHEN other is null THEN expect violation")
     public void equalsTo5() {
-        Optional<Violation> violation = equalsTo("field.path", Instant.now(), null);
+        Optional<Violation> violation = ValidationRule.equalsToRule("field.path", Instant.now(), null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
