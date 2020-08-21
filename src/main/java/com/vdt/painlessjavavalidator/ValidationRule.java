@@ -289,6 +289,16 @@ public class ValidationRule {
         return () -> compareStringsRule(fieldPath, value, other, compareFunc, violationFunc);
     }
 
+    /**
+     * Return violation in case compare function is true
+     *
+     * @param fieldPath
+     * @param value
+     * @param other
+     * @param compareFunc
+     * @param violationFunc
+     * @return
+     */
     public static Optional<Violation> compareStringsRule(
             String fieldPath, String value,
             String other,
@@ -312,6 +322,17 @@ public class ValidationRule {
         return () -> compareComparablesRule(fieldPath, value, other, compareFunc, violationFunc);
     }
 
+    /**
+     * Return violation in case compareFunc is true
+     *
+     * @param fieldPath
+     * @param value
+     * @param other
+     * @param compareFunc
+     * @param violationFunc
+     * @param <T>
+     * @return
+     */
     public static <T> Optional<Violation> compareComparablesRule(
             String fieldPath, Comparable<T> value,
             T other,
