@@ -63,7 +63,7 @@ predefined validation functions will be used as rules:
 `notNull` and `notBlank`. The result of the validation 
 function is a list of `Violation`. 
 
-### Docs
+### Components
 
 #### `ValidationEngine`
 Handles the validation process and has two main ways of working:
@@ -94,34 +94,34 @@ inside the `ValidationEngine`.
 Used to stop the execution and provide details about violations
 to its clients.
 
-### Best practices and solutions 
+### Practices and solutions 
 
-- Keep the validations in grouped where it makes sense and 
-make use of the validation engine. The grouped validation can 
-also be extracted into functions.
-- Fail fast - if there is no reason to proceed with the 
-business logic or other validations after some violations 
-occurred, throw the validation exceptions
-- Always keep the field format validations in the first part 
-of your code and proceed to business validations only after 
-those pass
-- If violation messages need to be categorized then the 
-`message` field can be used for that purpose: 
-the messages can have the following format: 
-`validation.errors.` and `validation.warnings.`
-- If general messages (messages that cannot be attached to 
-any field) will be needed then one new fields can be added 
-regardless of the input; for example, when doing form 
-validation in UI you may need to display a message at the 
-topof the form; for that you can add: 
+- Group validations together and use the validation engine
+- Fail fast - if a violation occurs and from the business 
+point of view it doesn't make sense to continue then throw
+exception
+- Apply basic field content validations (in general the 
+rules from the `ValidationRule` class) at the beginning 
+of the method
+- Put complex validations in separate functions in order 
+to improve readability
+- Categorize messages using the `message` field: 
+`validation.errors.` and `validation.warnings.`. This 
+case should be handled by the developer in a completely 
+different way since warnings should not stop the execution 
+flow. A warning can appear even in case of successful 
+operations. One way to achieve this effect is to use 
+a class where data an warnings can be added.
+- Use a `general` violation message field when the 
+validation is not meant for any of the existing fields 
+or it's related to multiple fields; for example, when 
+doing form validation in UI you may need to display a 
+message at the top of the form; that can be done using
 `Violation.of("general", "validation.error.some.message", 
 "Message details")`  
-- Put complex validations in separate functions and give 
-them names that describe their behaviour
-- Some validation can be redundant; frequent redundant 
-validations can be encountered in and between null, empty 
-and blank checks, in this case blank covers the other two
-- Field naming:
+- Avoid redundant validations (like null, empty and blank 
+since blank covers the first two)
+- Field naming suggestions:
     - maintain the level of nesting by separating each 
     field level by colon: `input.address.street`
     - `input.` prefix not required
