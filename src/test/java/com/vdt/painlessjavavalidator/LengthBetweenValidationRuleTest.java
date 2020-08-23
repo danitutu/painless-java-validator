@@ -22,25 +22,25 @@ class LengthBetweenValidationRuleTest {
     }
 
     @Test
-    @DisplayName("WHEN value is empty string THEN expect violation")
+    @DisplayName("WHEN value is empty string and the limit is equal to inferior limit THEN expect no violations")
     public void lengthBetween2() {
-        Optional<Violation> violation = lengthBetweenRule("field.path", "", 3, 10);
+        Optional<Violation> violation = lengthBetweenRule("field.path", "", 0, 10);
 
-        assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
-        assertEquals("validation.error.value.is.required", violation.get().getMessage());
-        assertEquals("The value is required.", violation.get().getDetails());
+        assertFalse(violation.isPresent());
     }
 
     @Test
-    @DisplayName("WHEN value is empty string and min is 0 THEN expect no violation")
-    public void lengthBetween3() {
-        Optional<Violation> violation = lengthBetweenRule("field.path", "", 0, 10);
+    @DisplayName("WHEN value is empty string and the limit is not inside the interval THEN expect violation violations")
+    public void lengthBetween12() {
+        Optional<Violation> violation = lengthBetweenRule("field.path", "", 1, 10);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
-        assertEquals("validation.error.value.is.required", violation.get().getMessage());
-        assertEquals("The value is required.", violation.get().getDetails());
+        assertEquals("validation.error.string.value.not.between", violation.get().getMessage());
+        assertEquals("Value is not in range.", violation.get().getDetails());
+        assertEquals(2, violation.get().getAttributes().size());
+        assertEquals(1, violation.get().getAttributes().get("min"));
+        assertEquals(10, violation.get().getAttributes().get("max"));
     }
 
     @Test
