@@ -327,18 +327,18 @@ public class ValidationRule {
      * @param <T>       compared object type
      * @return violation or success
      */
-    public static <T> ViolationProvider isAfter(String fieldPath,
-                                                Comparable<T> value,
-                                                T other) {
-        return () -> isAfterRule(fieldPath, value, other);
+    public static <T> ViolationProvider after(String fieldPath,
+                                              Comparable<T> value,
+                                              T other) {
+        return () -> afterRule(fieldPath, value, other);
     }
 
     /**
-     * See {@link ValidationRule#isAfter(java.lang.String, java.lang.Comparable, java.lang.Object)}
+     * See {@link ValidationRule#after(java.lang.String, java.lang.Comparable, java.lang.Object)}
      */
-    public static <T> Optional<Violation> isAfterRule(String fieldPath,
-                                                      Comparable<T> value,
-                                                      T other) {
+    public static <T> Optional<Violation> afterRule(String fieldPath,
+                                                    Comparable<T> value,
+                                                    T other) {
         return compareComparablesRule(
                 fieldPath, value,
                 other,
@@ -363,18 +363,18 @@ public class ValidationRule {
      * @param <T>       compared object type
      * @return violation or success
      */
-    public static <T> ViolationProvider isAfterOrEqualsTo(String fieldPath,
-                                                          Comparable<T> value,
-                                                          T other) {
-        return () -> isAfterOrEqualsToRule(fieldPath, value, other);
+    public static <T> ViolationProvider afterOrEqualsTo(String fieldPath,
+                                                        Comparable<T> value,
+                                                        T other) {
+        return () -> afterOrEqualsToRule(fieldPath, value, other);
     }
 
     /**
-     * See {@link ValidationRule#isAfterOrEqualsTo(java.lang.String, java.lang.Comparable, java.lang.Object)}
+     * See {@link ValidationRule#afterOrEqualsTo(java.lang.String, java.lang.Comparable, java.lang.Object)}
      */
-    public static <T> Optional<Violation> isAfterOrEqualsToRule(String fieldPath,
-                                                                Comparable<T> value,
-                                                                T other) {
+    public static <T> Optional<Violation> afterOrEqualsToRule(String fieldPath,
+                                                              Comparable<T> value,
+                                                              T other) {
         return compareComparablesRule(
                 fieldPath, value,
                 other,
@@ -399,18 +399,18 @@ public class ValidationRule {
      * @param <T>       compared object type
      * @return violation or success
      */
-    public static <T> ViolationProvider isBefore(String fieldPath,
-                                                 Comparable<T> value,
-                                                 T other) {
-        return () -> isBeforeRule(fieldPath, value, other);
+    public static <T> ViolationProvider before(String fieldPath,
+                                               Comparable<T> value,
+                                               T other) {
+        return () -> beforeRule(fieldPath, value, other);
     }
 
     /**
-     * See {@link ValidationRule#isBefore(java.lang.String, java.lang.Comparable, java.lang.Object)}
+     * See {@link ValidationRule#before(java.lang.String, java.lang.Comparable, java.lang.Object)}
      */
-    public static <T> Optional<Violation> isBeforeRule(String fieldPath,
-                                                       Comparable<T> value,
-                                                       T other) {
+    public static <T> Optional<Violation> beforeRule(String fieldPath,
+                                                     Comparable<T> value,
+                                                     T other) {
         return compareComparablesRule(
                 fieldPath, value,
                 other,
@@ -435,18 +435,18 @@ public class ValidationRule {
      * @param <T>       compared object type
      * @return violation or success
      */
-    public static <T> ViolationProvider isBeforeOrEqualsTo(String fieldPath,
-                                                           Comparable<T> value,
-                                                           T other) {
-        return () -> isBeforeOrEqualsToRule(fieldPath, value, other);
+    public static <T> ViolationProvider beforeOrEqualsTo(String fieldPath,
+                                                         Comparable<T> value,
+                                                         T other) {
+        return () -> beforeOrEqualsToRule(fieldPath, value, other);
     }
 
     /**
-     * See {@link ValidationRule#isBeforeOrEqualsTo(java.lang.String, java.lang.Comparable, java.lang.Object)}
+     * See {@link ValidationRule#beforeOrEqualsTo(java.lang.String, java.lang.Comparable, java.lang.Object)}
      */
-    public static <T> Optional<Violation> isBeforeOrEqualsToRule(String fieldPath,
-                                                                 Comparable<T> value,
-                                                                 T other) {
+    public static <T> Optional<Violation> beforeOrEqualsToRule(String fieldPath,
+                                                               Comparable<T> value,
+                                                               T other) {
         return compareComparablesRule(
                 fieldPath, value,
                 other,

@@ -13,14 +13,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.isBeforeOrEqualsToRule;
+import static com.vdt.painlessjavavalidator.ValidationRule.afterRule;
 import static org.junit.jupiter.api.Assertions.*;
 
-class IsBeforeOrEqualsToValidationRuleTest {
+class AfterValidationRuleTest {
 
     @Test
     @DisplayName("WHEN value is after other THEN expect no violation")
-    public void isBeforeOrEqualsTo1() {
+    public void after1() {
         Map<Object, Object> map = new HashMap<>();
         map.put(7, 6);
         map.put(7.5, 7.4);
@@ -32,25 +32,15 @@ class IsBeforeOrEqualsToValidationRuleTest {
         map.put(ZonedDateTime.now().plusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isBeforeOrEqualsToRule("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = afterRule("field.path", (Comparable<Object>) key, value);
 
-            try {
-                assertTrue(violation.isPresent());
-                assertEquals("field.path", violation.get().getFieldPath());
-                assertEquals("validation.error.value.is.after", violation.get().getMessage());
-                assertEquals("The value is after the other value.", violation.get().getDetails());
-                assertEquals(1, violation.get().getAttributes().size());
-                assertEquals(value.toString(), violation.get().getAttributes().get("other"));
-            } catch (Throwable t) {
-                System.out.println("Validation failed for value pair [" + key + "," + value + "]");
-                throw t;
-            }
+            assertFalse(violation.isPresent(), "Validation failed for value pair [" + key + "," + value + "]");
         });
     }
 
     @Test
     @DisplayName("WHEN value is before other THEN expect violation")
-    public void isBeforeOrEqualsTo2() {
+    public void after2() {
         Map<Object, Object> map = new HashMap<>();
         map.put(5, 6);
         map.put(7.3, 7.4);
@@ -62,15 +52,25 @@ class IsBeforeOrEqualsToValidationRuleTest {
         map.put(ZonedDateTime.now().minusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isBeforeOrEqualsToRule("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = afterRule("field.path", (Comparable<Object>) key, value);
 
-            assertFalse(violation.isPresent(), "Validation failed for value pair [" + key + "," + value + "]");
+            try {
+                assertTrue(violation.isPresent());
+                assertEquals("field.path", violation.get().getFieldPath());
+                assertEquals("validation.error.value.is.before.or.equal", violation.get().getMessage());
+                assertEquals("The value is before or equal the other value.", violation.get().getDetails());
+                assertEquals(1, violation.get().getAttributes().size());
+                assertEquals(value.toString(), violation.get().getAttributes().get("other"));
+            } catch (Throwable t) {
+                System.out.println("Validation failed for value pair [" + key + "," + value + "]");
+                throw t;
+            }
         });
     }
 
     @Test
     @DisplayName("WHEN value is equal other THEN expect violation")
-    public void isBeforeOrEqualsTo3() {
+    public void after3() {
         Map<Object, Object> map = new HashMap<>();
         map.put(6, 6);
         map.put(7.4, 7.4);
@@ -86,16 +86,26 @@ class IsBeforeOrEqualsToValidationRuleTest {
         map.put(nowZonedDateTime, nowZonedDateTime);
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isBeforeOrEqualsToRule("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = afterRule("field.path", (Comparable<Object>) key, value);
 
-            assertFalse(violation.isPresent());
+            try {
+                assertTrue(violation.isPresent());
+                assertEquals("field.path", violation.get().getFieldPath());
+                assertEquals("validation.error.value.is.before.or.equal", violation.get().getMessage());
+                assertEquals("The value is before or equal the other value.", violation.get().getDetails());
+                assertEquals(1, violation.get().getAttributes().size());
+                assertEquals(value.toString(), violation.get().getAttributes().get("other"));
+            } catch (Throwable t) {
+                System.out.println("Validation failed for value pair [" + key + "," + value + "]");
+                throw t;
+            }
         });
     }
 
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
-    public void isBeforeOrEqualsTo4() {
-        Optional<Violation> violation = isBeforeOrEqualsToRule("field.path", null, null);
+    public void after4() {
+        Optional<Violation> violation = afterRule("field.path", null, null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -105,13 +115,13 @@ class IsBeforeOrEqualsToValidationRuleTest {
 
     @Test
     @DisplayName("WHEN other is null THEN expect violation")
-    public void isBeforeOrEqualsTo5() {
-        Optional<Violation> violation = isBeforeOrEqualsToRule("field.path", Instant.now(), null);
+    public void after5() {
+        Optional<Violation> violation = afterRule("field.path", Instant.now(), null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
-        assertEquals("validation.error.value.is.after", violation.get().getMessage());
-        assertEquals("The value is after the other value.", violation.get().getDetails());
+        assertEquals("validation.error.value.is.before.or.equal", violation.get().getMessage());
+        assertEquals("The value is before or equal the other value.", violation.get().getDetails());
         assertEquals(1, violation.get().getAttributes().size());
         assertNull(violation.get().getAttributes().get("other"));
     }

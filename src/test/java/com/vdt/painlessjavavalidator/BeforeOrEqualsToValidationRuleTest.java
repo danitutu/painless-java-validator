@@ -13,14 +13,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.isBeforeRule;
+import static com.vdt.painlessjavavalidator.ValidationRule.beforeOrEqualsToRule;
 import static org.junit.jupiter.api.Assertions.*;
 
-class IsBeforeValidationRuleTest {
+class BeforeOrEqualsToValidationRuleTest {
 
     @Test
     @DisplayName("WHEN value is after other THEN expect no violation")
-    public void isBefore1() {
+    public void beforeOrEqualsTo1() {
         Map<Object, Object> map = new HashMap<>();
         map.put(7, 6);
         map.put(7.5, 7.4);
@@ -32,13 +32,13 @@ class IsBeforeValidationRuleTest {
         map.put(ZonedDateTime.now().plusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isBeforeRule("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = beforeOrEqualsToRule("field.path", (Comparable<Object>) key, value);
 
             try {
                 assertTrue(violation.isPresent());
                 assertEquals("field.path", violation.get().getFieldPath());
-                assertEquals("validation.error.value.is.after.or.equal", violation.get().getMessage());
-                assertEquals("The value is after or equal the other value.", violation.get().getDetails());
+                assertEquals("validation.error.value.is.after", violation.get().getMessage());
+                assertEquals("The value is after the other value.", violation.get().getDetails());
                 assertEquals(1, violation.get().getAttributes().size());
                 assertEquals(value.toString(), violation.get().getAttributes().get("other"));
             } catch (Throwable t) {
@@ -50,7 +50,7 @@ class IsBeforeValidationRuleTest {
 
     @Test
     @DisplayName("WHEN value is before other THEN expect violation")
-    public void isBefore2() {
+    public void beforeOrEqualsTo2() {
         Map<Object, Object> map = new HashMap<>();
         map.put(5, 6);
         map.put(7.3, 7.4);
@@ -62,7 +62,7 @@ class IsBeforeValidationRuleTest {
         map.put(ZonedDateTime.now().minusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isBeforeRule("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = beforeOrEqualsToRule("field.path", (Comparable<Object>) key, value);
 
             assertFalse(violation.isPresent(), "Validation failed for value pair [" + key + "," + value + "]");
         });
@@ -70,7 +70,7 @@ class IsBeforeValidationRuleTest {
 
     @Test
     @DisplayName("WHEN value is equal other THEN expect violation")
-    public void isBefore3() {
+    public void beforeOrEqualsTo3() {
         Map<Object, Object> map = new HashMap<>();
         map.put(6, 6);
         map.put(7.4, 7.4);
@@ -86,26 +86,16 @@ class IsBeforeValidationRuleTest {
         map.put(nowZonedDateTime, nowZonedDateTime);
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isBeforeRule("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = beforeOrEqualsToRule("field.path", (Comparable<Object>) key, value);
 
-            try {
-                assertTrue(violation.isPresent());
-                assertEquals("field.path", violation.get().getFieldPath());
-                assertEquals("validation.error.value.is.after.or.equal", violation.get().getMessage());
-                assertEquals("The value is after or equal the other value.", violation.get().getDetails());
-                assertEquals(1, violation.get().getAttributes().size());
-                assertEquals(value.toString(), violation.get().getAttributes().get("other"));
-            } catch (Throwable t) {
-                System.out.println("Validation failed for value pair [" + key + "," + value + "]");
-                throw t;
-            }
+            assertFalse(violation.isPresent());
         });
     }
 
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
-    public void isBefore4() {
-        Optional<Violation> violation = isBeforeRule("field.path", null, null);
+    public void beforeOrEqualsTo4() {
+        Optional<Violation> violation = beforeOrEqualsToRule("field.path", null, null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -115,13 +105,13 @@ class IsBeforeValidationRuleTest {
 
     @Test
     @DisplayName("WHEN other is null THEN expect violation")
-    public void isBefore5() {
-        Optional<Violation> violation = isBeforeRule("field.path", Instant.now(), null);
+    public void beforeOrEqualsTo5() {
+        Optional<Violation> violation = beforeOrEqualsToRule("field.path", Instant.now(), null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
-        assertEquals("validation.error.value.is.after.or.equal", violation.get().getMessage());
-        assertEquals("The value is after or equal the other value.", violation.get().getDetails());
+        assertEquals("validation.error.value.is.after", violation.get().getMessage());
+        assertEquals("The value is after the other value.", violation.get().getDetails());
         assertEquals(1, violation.get().getAttributes().size());
         assertNull(violation.get().getAttributes().get("other"));
     }

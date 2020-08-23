@@ -13,14 +13,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.isAfterOrEqualsToRule;
+import static com.vdt.painlessjavavalidator.ValidationRule.afterOrEqualsToRule;
 import static org.junit.jupiter.api.Assertions.*;
 
-class IsAfterOrEqualsToValidationRuleTest {
+class AfterOrEqualsToValidationRuleTest {
 
     @Test
     @DisplayName("WHEN value is after other THEN expect no violation")
-    public void isAfterOrEqualsTo1() {
+    public void afterOrEqualsTo1() {
         Map<Object, Object> map = new HashMap<>();
         map.put(7, 6);
         map.put(7.5, 7.4);
@@ -32,7 +32,7 @@ class IsAfterOrEqualsToValidationRuleTest {
         map.put(ZonedDateTime.now().plusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isAfterOrEqualsToRule("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = afterOrEqualsToRule("field.path", (Comparable<Object>) key, value);
 
             assertFalse(violation.isPresent(), "Validation failed for value pair [" + key + "," + value + "]");
         });
@@ -40,7 +40,7 @@ class IsAfterOrEqualsToValidationRuleTest {
 
     @Test
     @DisplayName("WHEN value is before other THEN expect violation")
-    public void isAfterOrEqualsTo2() {
+    public void afterOrEqualsTo2() {
         Map<Object, Object> map = new HashMap<>();
         map.put(5, 6);
         map.put(7.3, 7.4);
@@ -52,7 +52,7 @@ class IsAfterOrEqualsToValidationRuleTest {
         map.put(ZonedDateTime.now().minusSeconds(60), ZonedDateTime.now());
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isAfterOrEqualsToRule("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = afterOrEqualsToRule("field.path", (Comparable<Object>) key, value);
 
             try {
                 assertTrue(violation.isPresent());
@@ -70,7 +70,7 @@ class IsAfterOrEqualsToValidationRuleTest {
 
     @Test
     @DisplayName("WHEN value is equal other THEN expect violation")
-    public void isAfterOrEqualsTo3() {
+    public void afterOrEqualsTo3() {
         Map<Object, Object> map = new HashMap<>();
         map.put(6, 6);
         map.put(7.4, 7.4);
@@ -86,7 +86,7 @@ class IsAfterOrEqualsToValidationRuleTest {
         map.put(nowZonedDateTime, nowZonedDateTime);
 
         map.forEach((key, value) -> {
-            Optional<Violation> violation = isAfterOrEqualsToRule("field.path", (Comparable<Object>) key, value);
+            Optional<Violation> violation = afterOrEqualsToRule("field.path", (Comparable<Object>) key, value);
 
             assertFalse(violation.isPresent());
         });
@@ -94,8 +94,8 @@ class IsAfterOrEqualsToValidationRuleTest {
 
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
-    public void isAfterOrEqualsTo4() {
-        Optional<Violation> violation = isAfterOrEqualsToRule("field.path", null, null);
+    public void afterOrEqualsTo4() {
+        Optional<Violation> violation = afterOrEqualsToRule("field.path", null, null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -105,8 +105,8 @@ class IsAfterOrEqualsToValidationRuleTest {
 
     @Test
     @DisplayName("WHEN other is null THEN expect violation")
-    public void isAfterOrEqualsTo5() {
-        Optional<Violation> violation = isAfterOrEqualsToRule("field.path", Instant.now(), null);
+    public void afterOrEqualsTo5() {
+        Optional<Violation> violation = afterOrEqualsToRule("field.path", Instant.now(), null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
