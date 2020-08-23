@@ -3,26 +3,35 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.vdt</groupId>
-	<artifactId>painless-javav-alidator</artifactId>
-	<version>1.0.1</version>
+	<artifactId>painless-javav-validator</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>painless-java-validator</name>
 	<description>Java validation made easy</description>
 	<url>https://github.com/danitutu/painless-java-validator</url>
 
+	<licenses>
+		<license>
+			<name>GNU General Public License v3.0</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.en.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Tutuianu Valentin Daniel</name>
+			<email>valentindanieltutuianu@gmail.com</email>
+			<organization>com.vdt</organization>
+			<organizationUrl>https://github.com/danitutu</organizationUrl>
+		</developer>
+	</developers>
+
 	<properties>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
-
-	<distributionManagement>
-		<repository>
-			<id>github</id>
-			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/danitutu/painless-java-validator</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>

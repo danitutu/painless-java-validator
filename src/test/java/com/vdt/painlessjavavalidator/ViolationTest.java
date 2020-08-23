@@ -88,7 +88,7 @@ class ViolationTest {
     }
 
     @Test
-    @DisplayName("WHEN field names differ THEN equal hashcode")
+    @DisplayName("WHEN field names differ THEN different hashcode")
     void hashCode2() {
         Violation violation1 = Violation.of("a", "b", "c", singletonMap("1", 2));
         Violation violation2 = Violation.of("b", "b", "c", singletonMap("1", 2));
@@ -97,7 +97,7 @@ class ViolationTest {
     }
 
     @Test
-    @DisplayName("WHEN messages differ THEN equal hashcode")
+    @DisplayName("WHEN messages differ THEN different hashcode")
     void hashCode3() {
         Violation violation1 = Violation.of("a", "b", "c", singletonMap("1", 2));
         Violation violation2 = Violation.of("a", "c", "c", singletonMap("1", 2));
@@ -106,7 +106,7 @@ class ViolationTest {
     }
 
     @Test
-    @DisplayName("WHEN details differ THEN equal hashcode")
+    @DisplayName("WHEN details differ THEN different hashcode")
     void hashCode4() {
         Violation violation1 = Violation.of("a", "b", "c", singletonMap("1", 2));
         Violation violation2 = Violation.of("a", "b", "d", singletonMap("1", 2));
@@ -115,7 +115,7 @@ class ViolationTest {
     }
 
     @Test
-    @DisplayName("WHEN params values differ THEN equal hashcode")
+    @DisplayName("WHEN params values differ THEN different hashcode")
     void hashCode5() {
         Violation violation1 = Violation.of("a", "b", "c", singletonMap("1", 2));
         Violation violation2 = Violation.of("a", "b", "c", singletonMap("1", 3));
@@ -124,7 +124,7 @@ class ViolationTest {
     }
 
     @Test
-    @DisplayName("WHEN params keys differ THEN equal hashcode")
+    @DisplayName("WHEN params keys differ THEN different hashcode")
     void hashCode6() {
         Violation violation1 = Violation.of("a", "b", "c", singletonMap("1", 2));
         Violation violation2 = Violation.of("a", "b", "c", singletonMap("2", 2));

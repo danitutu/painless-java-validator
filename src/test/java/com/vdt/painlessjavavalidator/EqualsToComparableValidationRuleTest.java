@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class EqualsToComparableValidationRuleTest {
 
     @Test
-    @DisplayName("WHEN value is after other THEN expect no violation")
+    @DisplayName("WHEN value is after other THEN expect violation")
     public void equalsTo1() {
         Map<Object, Object> map = new HashMap<>();
         map.put(7, 6);
@@ -78,7 +78,7 @@ class EqualsToComparableValidationRuleTest {
     }
 
     @Test
-    @DisplayName("WHEN value is equal other THEN expect violation")
+    @DisplayName("WHEN value equals other THEN expect no violation")
     public void equalsTo3() {
         Map<Object, Object> map = new HashMap<>();
         map.put(6, 6);

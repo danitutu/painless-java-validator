@@ -96,7 +96,7 @@ class InRangeIntegerValidationRuleTest {
     }
 
     @Test
-    @DisplayName("WHEN value=min=max THEN expect violation")
+    @DisplayName("WHEN value=min=max THEN expect no violation")
     public void inRange9() {
         Optional<Violation> violation = inRangeRule("field.path", 4, 4, 4);
 

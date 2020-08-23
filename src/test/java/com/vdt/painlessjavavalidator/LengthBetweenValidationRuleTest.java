@@ -30,7 +30,7 @@ class LengthBetweenValidationRuleTest {
     }
 
     @Test
-    @DisplayName("WHEN value is empty string and the limit is not inside the interval THEN expect violation violations")
+    @DisplayName("WHEN value is empty string and the value length is outside interval THEN expect violation")
     public void lengthBetween12() {
         Optional<Violation> violation = lengthBetweenRule("field.path", "", 1, 10);
 
@@ -118,7 +118,7 @@ class LengthBetweenValidationRuleTest {
     }
 
     @Test
-    @DisplayName("WHEN value length=min=max THEN expect violation")
+    @DisplayName("WHEN value length=min=max THEN expect no violation")
     public void lengthBetween11() {
         Optional<Violation> violation = lengthBetweenRule("field.path", "test", 4, 4);
 

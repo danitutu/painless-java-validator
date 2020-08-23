@@ -29,7 +29,8 @@ class ValidationExceptionTest {
     }
 
     @Test
-    @DisplayName("WHEN instantiating using a single a list of violation objects THEN return the violation objects with their input data")
+    @DisplayName(
+            "WHEN instantiating using a list of violation objects THEN return the violation objects with their input data")
     void getViolations2() {
         try {
             throw new ValidationException(Arrays.asList(
