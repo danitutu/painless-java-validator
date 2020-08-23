@@ -10,6 +10,27 @@ import static java.util.Collections.singletonMap;
 
 public class ValidationRule {
     /**
+     * Checks if the value is null.
+     *
+     * @param fieldPath path to field
+     * @param value     value to be checked
+     * @return violation or success
+     */
+    public static ViolationProvider isNull(String fieldPath, Object value) {
+        return () -> isNullRule(fieldPath, value);
+    }
+
+    /**
+     * See {@link ValidationRule#isNull(java.lang.String, java.lang.Object)}
+     */
+    public static Optional<Violation> isNullRule(String fieldPath, Object value) {
+        if (value != null) {
+            return Optional.of(Violation.of(fieldPath, "validation.error.value.is.not.null", "The value is not null."));
+        }
+        return Optional.empty();
+    }
+
+    /**
      * Checks if the value is not null.
      *
      * @param fieldPath path to field
@@ -26,6 +47,69 @@ public class ValidationRule {
     public static Optional<Violation> notNullRule(String fieldPath, Object value) {
         if (value == null) {
             return Optional.of(Violation.of(fieldPath, "validation.error.value.is.required", "The value is required."));
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Checks if the value is empty.
+     *
+     * @param fieldPath path to field
+     * @param value     value to be checked
+     * @return violation or success
+     */
+    public static ViolationProvider empty(String fieldPath, CharSequence value) {
+        return () -> emptyRule(fieldPath, value);
+    }
+
+    /**
+     * See {@link ValidationRule#empty(java.lang.String, java.lang.CharSequence)}
+     */
+    public static Optional<Violation> emptyRule(String fieldPath, CharSequence value) {
+        if (!empty(value)) {
+            return Optional.of(Violation.of(fieldPath, "validation.error.value.is.required", "The value is required."));
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Checks if the value is not empty.
+     *
+     * @param fieldPath path to field
+     * @param value     value to be checked
+     * @return violation or success
+     */
+    public static ViolationProvider notEmpty(String fieldPath, CharSequence value) {
+        return () -> notEmptyRule(fieldPath, value);
+    }
+
+    /**
+     * See {@link ValidationRule#notEmpty(java.lang.String, java.lang.CharSequence)}
+     */
+    public static Optional<Violation> notEmptyRule(String fieldPath, CharSequence value) {
+        if (empty(value)) {
+            return Optional.of(Violation.of(fieldPath, "validation.error.value.is.not.empty", "The value is not empty."));
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Checks if the value is blank.
+     *
+     * @param fieldPath path to field
+     * @param value     value to be checked
+     * @return violation or success
+     */
+    public static ViolationProvider blank(String fieldPath, CharSequence value) {
+        return () -> blankRule(fieldPath, value);
+    }
+
+    /**
+     * See {@link ValidationRule#blank(java.lang.String, java.lang.CharSequence)}
+     */
+    public static Optional<Violation> blankRule(String fieldPath, CharSequence value) {
+        if (!isBlank(value)) {
+            return Optional.of(Violation.of(fieldPath, "validation.error.value.is.not.blank", "The value is empty."));
         }
         return Optional.empty();
     }
@@ -563,5 +647,9 @@ public class ValidationRule {
             }
         }
         return true;
+    }
+
+    private static boolean empty(final CharSequence cs) {
+        return cs == null || cs.length() == 0;
     }
 }

@@ -42,4 +42,16 @@ class NotBlankValidationRuleTest {
         assertFalse(violation.isPresent());
     }
 
+    @Test
+    @DisplayName("WHEN value has multiple spaces THEN expect violation")
+    public void notBlank4() {
+        Optional<Violation> violation = notBlankRule("field.path", "   ");
+
+        assertTrue(violation.isPresent());
+        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("validation.error.value.is.required", violation.get().getMessage());
+        assertEquals("The value is required.", violation.get().getDetails());
+        assertNull(violation.get().getAttributes());
+    }
+
 }

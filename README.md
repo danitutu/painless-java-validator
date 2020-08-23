@@ -111,7 +111,7 @@ case should be handled by the developer in a completely
 different way since warnings should not stop the execution 
 flow. A warning can appear even in case of successful 
 operations. One way to achieve this effect is to use 
-a class where data an warnings can be added.
+a class where data and warnings can be added.
 - Use a `general` violation message field when the 
 validation is not meant for any of the existing fields 
 or it's related to multiple fields; for example, when 
