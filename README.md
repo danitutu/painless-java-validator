@@ -291,6 +291,7 @@ Beside the source code configuration the following setup will be needed
         - `gpg --keyserver hkp://pool.sks-keyservers.net --send-keys C6EED57A`
         - `gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys C6EED57A`
 - maven configuration `path/to/maven/config/.m2/settings.xml`
+
 ```xml
 <settings>
   <servers>
@@ -317,6 +318,7 @@ Beside the source code configuration the following setup will be needed
 
 Then
 
-`mvn versions:set -DnewVersion=1.2.3`
-SNAPSHOT DEPLOY: `mvn clean deploy`
-RELEASE DEPLOY: `mvn clean deploy -P release`
+- set new version: `mvn versions:set -DnewVersion=1.2.3`
+- deploy:
+    - SNAPSHOT: `mvn clean deploy`
+    - RELEASE: `mvn clean deploy -P release`
