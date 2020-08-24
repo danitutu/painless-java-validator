@@ -1,4 +1,4 @@
-package com.vdt.painlessjavavalidator;
+package com.github.danitutu.painlessjavavalidator;
 
 import java.util.Collections;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.vdt.painlessjavavalidator.ValidationException.stopIfViolations;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
@@ -19,7 +18,7 @@ public class ValidationEngine {
      * @throws ValidationException thrown in case violations are found
      */
     public static void validateAllAndStopIfViolations(ViolationProvider... rules) {
-        stopIfViolations(validateAll(rules));
+        ValidationException.stopIfViolations(validateAll(rules));
     }
 
     /**
@@ -41,7 +40,7 @@ public class ValidationEngine {
      * @throws ValidationException thrown in case violation is found
      */
     public static void validateFindFirstAndStopIfViolation(ViolationProvider... rules) {
-        stopIfViolations(validateFindFirst(rules));
+        ValidationException.stopIfViolations(validateFindFirst(rules));
     }
 
     /**

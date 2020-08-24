@@ -1,4 +1,4 @@
-package com.vdt.painlessjavavalidator;
+package com.github.danitutu.painlessjavavalidator;
 
 import java.util.Optional;
 import java.util.function.Supplier;

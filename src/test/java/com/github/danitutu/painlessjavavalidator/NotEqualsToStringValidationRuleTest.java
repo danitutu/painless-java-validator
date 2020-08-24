@@ -1,11 +1,10 @@
-package com.vdt.painlessjavavalidator;
+package com.github.danitutu.painlessjavavalidator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.notEqualsToRule;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NotEqualsToStringValidationRuleTest {
@@ -13,7 +12,7 @@ class NotEqualsToStringValidationRuleTest {
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
     public void notEqualsTo1() {
-        Optional<Violation> violation = notEqualsToRule("field.path", null, null);
+        Optional<Violation> violation = ValidationRule.notEqualsToRule("field.path", null, null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -24,7 +23,7 @@ class NotEqualsToStringValidationRuleTest {
     @Test
     @DisplayName("WHEN values are not equal THEN expect no violation")
     public void notEqualsTo2() {
-        Optional<Violation> violation = notEqualsToRule("field.path", "s1", "s2");
+        Optional<Violation> violation = ValidationRule.notEqualsToRule("field.path", "s1", "s2");
 
         assertFalse(violation.isPresent());
     }
@@ -32,7 +31,7 @@ class NotEqualsToStringValidationRuleTest {
     @Test
     @DisplayName("WHEN values are equal THEN expect violation")
     public void notEqualsTo3() {
-        Optional<Violation> violation = notEqualsToRule("field.path", "s1", "s1");
+        Optional<Violation> violation = ValidationRule.notEqualsToRule("field.path", "s1", "s1");
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());

@@ -1,4 +1,4 @@
-package com.vdt.painlessjavavalidator;
+package com.github.danitutu.painlessjavavalidator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.vdt.painlessjavavalidator.ValidationException.stopIfViolation;
-import static com.vdt.painlessjavavalidator.ValidationException.stopIfViolations;
 import static java.util.Collections.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,27 +56,29 @@ class ValidationExceptionTest {
     @DisplayName("WHEN violations present THEN expect exception")
     public void stopIfViolations1() {
         List<Violation> violations = singletonList(Violation.of(null, null, null, null));
-        ValidationException exception = assertThrows(ValidationException.class, () -> stopIfViolations(violations));
+        ValidationException exception = assertThrows(ValidationException.class,
+                () -> ValidationException.stopIfViolations(violations));
         assertSame(violations, exception.getViolations());
     }
 
     @Test
     @DisplayName("WHEN violations is empty THEN expect no exception")
     public void stopIfViolations2() {
-        stopIfViolations(emptyList());
+        ValidationException.stopIfViolations(emptyList());
     }
 
     @Test
     @DisplayName("WHEN violations is null THEN expect no exception")
     public void stopIfViolations3() {
-        stopIfViolations(null);
+        ValidationException.stopIfViolations(null);
     }
 
     @Test
     @DisplayName("WHEN violation present THEN expect exception")
     public void stopIfViolation1() {
         Violation violation = Violation.of(null, null, null, null);
-        ValidationException exception = assertThrows(ValidationException.class, () -> stopIfViolation(violation));
+        ValidationException exception = assertThrows(ValidationException.class,
+                () -> ValidationException.stopIfViolation(violation));
         assertSame(violation, exception.getViolations().get(0));
         assertEquals(1, exception.getViolations().size());
     }
@@ -86,6 +86,6 @@ class ValidationExceptionTest {
     @Test
     @DisplayName("WHEN violations is null THEN expect no exception")
     public void stopIfViolation2() {
-        stopIfViolation(null);
+        ValidationException.stopIfViolation(null);
     }
 }

@@ -1,11 +1,10 @@
-package com.vdt.painlessjavavalidator;
+package com.github.danitutu.painlessjavavalidator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.blankRule;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlankValidationRuleTest {
@@ -13,7 +12,7 @@ class BlankValidationRuleTest {
     @Test
     @DisplayName("WHEN value is null THEN expect no violation")
     public void blank1() {
-        Optional<Violation> violation = blankRule("field.path", null);
+        Optional<Violation> violation = ValidationRule.blankRule("field.path", null);
 
         assertFalse(violation.isPresent());
     }
@@ -21,7 +20,7 @@ class BlankValidationRuleTest {
     @Test
     @DisplayName("WHEN value is empty string THEN expect no violation")
     public void blank2() {
-        Optional<Violation> violation = blankRule("field.path", "");
+        Optional<Violation> violation = ValidationRule.blankRule("field.path", "");
 
         assertFalse(violation.isPresent());
     }
@@ -29,7 +28,7 @@ class BlankValidationRuleTest {
     @Test
     @DisplayName("WHEN value is filled in THEN expect violation")
     public void blank3() {
-        Optional<Violation> violation = blankRule("field.path", "a value");
+        Optional<Violation> violation = ValidationRule.blankRule("field.path", "a value");
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -41,7 +40,7 @@ class BlankValidationRuleTest {
     @Test
     @DisplayName("WHEN value has only spaces THEN expect no violation")
     public void blank4() {
-        Optional<Violation> violation = blankRule("field.path", "   ");
+        Optional<Violation> violation = ValidationRule.blankRule("field.path", "   ");
 
         assertFalse(violation.isPresent());
     }

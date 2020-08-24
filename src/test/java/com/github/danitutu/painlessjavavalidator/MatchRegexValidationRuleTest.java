@@ -1,11 +1,10 @@
-package com.vdt.painlessjavavalidator;
+package com.github.danitutu.painlessjavavalidator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.matchRegexRule;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatchRegexValidationRuleTest {
@@ -13,7 +12,7 @@ class MatchRegexValidationRuleTest {
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
     public void matchRegex1() {
-        Optional<Violation> violation = matchRegexRule("field.path", null, "[A-Z0-9]+");
+        Optional<Violation> violation = ValidationRule.matchRegexRule("field.path", null, "[A-Z0-9]+");
 
         assertTrue(violation.isPresent());
         assertEquals("validation.error.value.is.required", violation.get().getMessage());
@@ -23,7 +22,7 @@ class MatchRegexValidationRuleTest {
     @Test
     @DisplayName("WHEN value is not matching the regex exp THEN expect violation")
     public void matchRegex2() {
-        Optional<Violation> violation = matchRegexRule("field.path", "TEST1234", "[A-Z]+");
+        Optional<Violation> violation = ValidationRule.matchRegexRule("field.path", "TEST1234", "[A-Z]+");
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -36,7 +35,7 @@ class MatchRegexValidationRuleTest {
     @Test
     @DisplayName("WHEN value is matching the regex exp THEN expect no violation")
     public void matchRegex3() {
-        Optional<Violation> violation = matchRegexRule("field.path", "TEST1234", "[A-Z0-9]+");
+        Optional<Violation> violation = ValidationRule.matchRegexRule("field.path", "TEST1234", "[A-Z0-9]+");
 
         assertFalse(violation.isPresent());
     }

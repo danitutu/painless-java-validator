@@ -1,11 +1,10 @@
-package com.vdt.painlessjavavalidator;
+package com.github.danitutu.painlessjavavalidator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.notBlankRule;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NotBlankValidationRuleTest {
@@ -13,7 +12,7 @@ class NotBlankValidationRuleTest {
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
     public void notBlank1() {
-        Optional<Violation> violation = notBlankRule("field.path", null);
+        Optional<Violation> violation = ValidationRule.notBlankRule("field.path", null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -25,7 +24,7 @@ class NotBlankValidationRuleTest {
     @Test
     @DisplayName("WHEN value is empty string THEN expect violation")
     public void notBlank2() {
-        Optional<Violation> violation = notBlankRule("field.path", "");
+        Optional<Violation> violation = ValidationRule.notBlankRule("field.path", "");
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -37,7 +36,7 @@ class NotBlankValidationRuleTest {
     @Test
     @DisplayName("WHEN value is filled in THEN expect no violation")
     public void notBlank3() {
-        Optional<Violation> violation = notBlankRule("field.path", "a value");
+        Optional<Violation> violation = ValidationRule.notBlankRule("field.path", "a value");
 
         assertFalse(violation.isPresent());
     }
@@ -45,7 +44,7 @@ class NotBlankValidationRuleTest {
     @Test
     @DisplayName("WHEN value has multiple spaces THEN expect violation")
     public void notBlank4() {
-        Optional<Violation> violation = notBlankRule("field.path", "   ");
+        Optional<Violation> violation = ValidationRule.notBlankRule("field.path", "   ");
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());

@@ -38,8 +38,8 @@ Java 8+.
 ### Usage
 
 ```java
-import static com.vdt.painlessjavavalidator.ValidationEngine.validateAllAndStopIfViolations;
-import static com.vdt.painlessjavavalidator.ValidationRule.*;
+import static com.github.danitutu.painlessjavavalidator.ValidationEngine.validateAllAndStopIfViolations;
+import static com.github.danitutu.painlessjavavalidator.ValidationRule.*;
 
 class Example {
     public void saveUser(User input) {
@@ -133,17 +133,17 @@ since blank covers the first two)
 The following example is used to illustrate more usage scenarios 
 and how they can be handled. A better approach can be found below.
 ```java
-import com.vdt.painlessjavavalidator.ValidationException;
-import com.vdt.painlessjavavalidator.Violation;
-import com.vdt.painlessjavavalidator.ViolationProvider;
+import com.github.danitutu.painlessjavavalidator.ValidationException;
+import com.github.danitutu.painlessjavavalidator.Violation;
+import com.github.danitutu.painlessjavavalidator.ViolationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.vdt.painlessjavavalidator.ValidationEngine.*;
-import static com.vdt.painlessjavavalidator.ValidationException.stopIfViolations;
-import static com.vdt.painlessjavavalidator.ValidationRule.*;
+import static com.github.danitutu.painlessjavavalidator.ValidationEngine.*;
+import static com.github.danitutu.painlessjavavalidator.ValidationException.stopIfViolations;
+import static com.github.danitutu.painlessjavavalidator.ValidationRule.*;
 
 @Service
 public class UserService {
@@ -211,15 +211,15 @@ public class UserService {
 A simplified version of the previous example:
 
 ```java
-import com.vdt.painlessjavavalidator.ValidationException;
-import com.vdt.painlessjavavalidator.Violation;
-import com.vdt.painlessjavavalidator.ViolationProvider;
+import com.github.danitutu.painlessjavavalidator.ValidationException;
+import com.github.danitutu.painlessjavavalidator.Violation;
+import com.github.danitutu.painlessjavavalidator.ViolationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.vdt.painlessjavavalidator.ValidationEngine.validateAllAndStopIfViolations;
-import static com.vdt.painlessjavavalidator.ValidationEngine.validateFindFirstAndStopIfViolation;
-import static com.vdt.painlessjavavalidator.ValidationRule.lengthBetween;
+import static com.github.danitutu.painlessjavavalidator.ValidationEngine.validateAllAndStopIfViolations;
+import static com.github.danitutu.painlessjavavalidator.ValidationEngine.validateFindFirstAndStopIfViolation;
+import static com.github.danitutu.painlessjavavalidator.ValidationRule.lengthBetween;
 
 @Service
 public class CompactUserService {
@@ -263,4 +263,47 @@ public class CompactUserService {
                 ));
     }
 }
+```
+
+### Deploying to sonatype
+
+Beside the source code configuration the following setup will be needed
+
+- gpg or pgp2 on system path
+    - a key is required
+    - in case you don't have a key
+        - `gpg --gen-key`
+        - `gpg --list-keys`
+        - `gpg --keyserver hkp://pool.sks-keyservers.net --send-keys C6EED57A`
+        - `gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys C6EED57A`
+- maven configuration `path/to/maven/config/.m2/settings.xml`
+```xml
+<settings>
+  <servers>
+    <server>
+      <id>ossrh</id>
+      <username>your-jira-id</username>
+      <password>your-jira-pwd</password>
+    </server>
+  </servers>
+  <profiles>
+    <profile>
+      <id>ossrh</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <gpg.executable>gpg</gpg.executable>
+        <gpg.passphrase>the_pass_phrase</gpg.passphrase>
+      </properties>
+    </profile>
+  </profiles>
+</settings>
+```
+
+Then
+
+```
+mvn versions:set -DnewVersion=1.2.3
+mvn clean deploy -P release
 ```

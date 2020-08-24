@@ -1,11 +1,10 @@
-package com.vdt.painlessjavavalidator;
+package com.github.danitutu.painlessjavavalidator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.vdt.painlessjavavalidator.ValidationRule.notEmptyRule;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NotEmptyValidationRuleTest {
@@ -13,7 +12,7 @@ class NotEmptyValidationRuleTest {
     @Test
     @DisplayName("WHEN value is null THEN expect violation")
     public void notEmpty1() {
-        Optional<Violation> violation = notEmptyRule("field.path", null);
+        Optional<Violation> violation = ValidationRule.notEmptyRule("field.path", null);
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -25,7 +24,7 @@ class NotEmptyValidationRuleTest {
     @Test
     @DisplayName("WHEN value is empty string THEN expect no violation")
     public void notEmpty2() {
-        Optional<Violation> violation = notEmptyRule("field.path", "");
+        Optional<Violation> violation = ValidationRule.notEmptyRule("field.path", "");
 
         assertTrue(violation.isPresent());
         assertEquals("field.path", violation.get().getFieldPath());
@@ -37,7 +36,7 @@ class NotEmptyValidationRuleTest {
     @Test
     @DisplayName("WHEN value is filled in THEN expect violation")
     public void notEmpty3() {
-        Optional<Violation> violation = notEmptyRule("field.path", "a value");
+        Optional<Violation> violation = ValidationRule.notEmptyRule("field.path", "a value");
 
         assertFalse(violation.isPresent());
     }
