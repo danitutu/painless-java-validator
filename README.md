@@ -5,6 +5,7 @@ A very simple Java validation tool that helps you implement validations.
 * [Why another Java validation tool?](#why-another-java-validation-tool)  
 * [Compatibility](#compatibility)  
 * [Usage](#usage)  
+* [Integration](#integration)  
     * [Spring Web](#spring-web)
 * [Docs](#docs)
     * [Validation Engine](#validationengine)
