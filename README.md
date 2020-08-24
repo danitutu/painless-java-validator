@@ -37,6 +37,18 @@ Java 8+.
 
 ### Usage
 
+Add the library to your project dependencies:
+
+Maven:
+
+```xml
+<dependency>
+    <groupId>com.github.danitutu</groupId>
+    <artifactId>painless-java-validator</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
 ```java
 import static com.github.danitutu.painlessjavavalidator.ValidationEngine.validateAllAndStopIfViolations;
 import static com.github.danitutu.painlessjavavalidator.ValidationRule.*;
@@ -265,7 +277,9 @@ public class CompactUserService {
 }
 ```
 
-### Deploying to sonatype
+### Contributing
+
+#### Deploying to sonatype
 
 Beside the source code configuration the following setup will be needed
 
@@ -303,7 +317,6 @@ Beside the source code configuration the following setup will be needed
 
 Then
 
-```
-mvn versions:set -DnewVersion=1.2.3
-mvn clean deploy -P release
-```
+`mvn versions:set -DnewVersion=1.2.3`
+SNAPSHOT DEPLOY: `mvn clean deploy`
+RELEASE DEPLOY: `mvn clean deploy -P release`
