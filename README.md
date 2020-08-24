@@ -5,6 +5,7 @@ A very simple Java validation tool that helps you implement validations.
 * [Why another Java validation tool?](#why-another-java-validation-tool)  
 * [Compatibility](#compatibility)  
 * [Usage](#usage)  
+    * [Spring Web](#spring-web)
 * [Docs](#docs)
     * [Validation Engine](#validationengine)
     * [Violation](#violation)
@@ -74,6 +75,50 @@ It will execute all validation rules and it will throw a
 predefined validation functions will be used as rules: 
 `notNull` and `notBlank`. The result of the validation 
 function is a list of `Violation`. 
+
+### Integration
+
+#### Spring Web
+
+Adding the following `@ControllerAdvice` in your application will make sure each 
+time a validation error appear, it will get handled by the framework and which will 
+a BAD REQUEST HTTP status code and a `validationResult` containing the Violations 
+and a `type` containing the `VALIDATION-EXCEPTION` value. The purpose of the type is 
+to be able to identify what problem has been encountered in this BAD REQUEST response.
+
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(value = ValidationException.class)
+    protected ResponseEntity<Object> handleValidationException(
+            ValidationException ex, WebRequest request) {
+        List<Violation> violations = ex.getViolations();
+        Map<String, Object> map = new HashMap<>();
+        map.put("type", "VALIDATION-EXCEPTION");
+        map.put("validationResult", violations);
+        return handleExceptionInternal(
+                ex,
+                map,
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST,
+                request);
+    }
+}
+```
+
+If you need to customize the result of a `ValidationException` then the following snippet
+may come in handy:
+
+```java
+@RestController
+public class ApiController {
+    @ExceptionHandler(value = {ValidationException.class})
+    public List<Violation> handleConstraintViolation(ValidationException ex, WebRequest request) {
+        return ex.getViolations();
+    }
+}
+```
 
 ### Components
 
