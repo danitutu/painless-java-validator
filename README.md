@@ -81,10 +81,11 @@ function is a list of `Violation`.
 #### Spring Web
 
 Adding the following `@ControllerAdvice` in your application will make sure each 
-time a validation error appear, it will get handled by the framework and which will 
-a BAD REQUEST HTTP status code and a `validationResult` containing the Violations 
-and a `type` containing the `VALIDATION-EXCEPTION` value. The purpose of the type is 
-to be able to identify what problem has been encountered in this BAD REQUEST response.
+time a validation error appear, it will get handled by the framework and will return 
+a BAD REQUEST response code. In the body there will be a `validationResult` 
+containing the `Violation`s and a `type` containing the `VALIDATION-EXCEPTION` value. 
+The purpose of the type is to be able to identify what problem has been encountered 
+in this BAD REQUEST response.
 
 ```java
 @ControllerAdvice
