@@ -164,6 +164,7 @@ rules from the `ValidationRule` class) at the beginning
 of the method
 - Put complex validations in separate functions in order 
 to improve readability
+- Add validations in the business (@Service) layer
 - Categorize messages using the `message` field: 
 `validation.errors.` and `validation.warnings.`. This 
 case should be handled by the developer in a completely 
