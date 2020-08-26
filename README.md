@@ -5,6 +5,7 @@ A very simple Java validation tool that helps you implement validations.
 * [Why another Java validation tool?](#why-another-java-validation-tool)  
 * [Compatibility](#compatibility)  
 * [Usage](#usage)  
+* [Integration](#integration)  
     * [Spring Web](#spring-web)
 * [Docs](#docs)
     * [Validation Engine](#validationengine)
@@ -39,9 +40,7 @@ Java 8+.
 ### Usage
 
 Add the library to your project dependencies:
-
-Maven:
-
+- Maven:
 ```xml
 <dependency>
     <groupId>com.github.danitutu</groupId>
@@ -49,6 +48,9 @@ Maven:
     <version>1.0.0</version>
 </dependency>
 ```
+- Gradle: `implementation 'com.github.danitutu:painless-java-validator:1.0.0'`
+
+Validate:
 
 ```java
 import static com.github.danitutu.painlessjavavalidator.ValidationEngine.validateAllAndStopIfViolations;
