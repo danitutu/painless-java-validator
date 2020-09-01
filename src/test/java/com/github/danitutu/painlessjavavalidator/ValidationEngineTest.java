@@ -34,7 +34,7 @@ class ValidationEngineTest {
                         "s2",
                         (s, s2) -> !s.equals(s2),
                         () -> Violation.of("compareStringsCheck", null, null, null)),
-                ValidationRule.compareComparables("compareComparablesCheck",
+                ValidationRule.compareComparable("compareComparablesCheck",
                         1,
                         2,
                         (s, s2) -> !s.equals(s2),
@@ -45,6 +45,8 @@ class ValidationEngineTest {
                 ValidationRule.blank("blankCheck", "s"),
                 ValidationRule.notBlank("notBlankCheck2", ""),
                 ValidationRule.notBlank("notBlankCheck3", null),
+                ValidationRule.isTrue(() -> false, Violation.of("isTrueCheck", null, null)),
+                ValidationRule.isFalse(() -> true, Violation.of("isFalseCheck", null, null)),
         };
 
         List<Violation> violations = ValidationEngine.validateAll(validationRules);
@@ -71,6 +73,8 @@ class ValidationEngineTest {
         assertEquals("blankCheck", violations.get(19).getFieldPath());
         assertEquals("notBlankCheck2", violations.get(20).getFieldPath());
         assertEquals("notBlankCheck3", violations.get(21).getFieldPath());
+        assertEquals("isTrueCheck", violations.get(22).getFieldPath());
+        assertEquals("isFalseCheck", violations.get(23).getFieldPath());
     }
 
     @Test
@@ -96,7 +100,7 @@ class ValidationEngineTest {
                         "s1",
                         (s, s2) -> !s.equals(s2),
                         () -> Violation.of("compareStringsCheck", null, null, null)),
-                ValidationRule.compareComparables("compareComparablesCheck",
+                ValidationRule.compareComparable("compareComparablesCheck",
                         1,
                         1,
                         (s, s2) -> !s.equals(s2),
@@ -106,6 +110,8 @@ class ValidationEngineTest {
                 ValidationRule.blank("blankCheck1", ""),
                 ValidationRule.blank("blankCheck2", "  "),
                 ValidationRule.blank("blankCheck3", null),
+                ValidationRule.isTrue(() -> true, Violation.of("isTrueCheck", null, null)),
+                ValidationRule.isFalse(() -> false, Violation.of("isFalseCheck", null, null)),
         };
 
         List<Violation> violations = ValidationEngine.validateAll(validationRules);
@@ -136,7 +142,7 @@ class ValidationEngineTest {
                         "s1",
                         (s, s2) -> !s.equals(s2),
                         () -> Violation.of("compareStringsCheck", null, null, null)),
-                ValidationRule.compareComparables("compareComparablesCheck",
+                ValidationRule.compareComparable("compareComparablesCheck",
                         1,
                         2,
                         (s, s2) -> !s.equals(s2),

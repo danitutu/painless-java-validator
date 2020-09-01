@@ -3,12 +3,21 @@ package com.github.danitutu.painlessjavavalidator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import static java.util.Collections.singletonMap;
 
 public class ValidationRule {
+
+    private static final String VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE = "validation.error.value.is.required";
+    private static final String VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS = "The value is required.";
+    private static final String PARAM_NAME_OTHER = "other";
+
+    private ValidationRule() {
+    }
+
     /**
      * Checks if the value is null.
      *
@@ -46,9 +55,63 @@ public class ValidationRule {
      */
     public static Optional<Violation> notNullRule(String fieldPath, Object value) {
         if (value == null) {
-            return Optional.of(Violation.of(fieldPath, "validation.error.value.is.required", "The value is required."));
+            return Optional.of(Violation.of(fieldPath,
+                    VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
+                    VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
         }
         return Optional.empty();
+    }
+
+    /**
+     * Checks if the condition is evaluated to true. If not then the violation
+     * will be returned.
+     *
+     * @param condition condition
+     * @param violation violation
+     * @return violation or success
+     * @throws IllegalArgumentException in case condition or violation is null
+     */
+    public static ViolationProvider isTrue(BooleanSupplier condition, Violation violation) {
+        return () -> isTrueRule(condition, violation);
+    }
+
+    /**
+     * See {@link ValidationRule#isTrue(java.util.function.BooleanSupplier, com.github.danitutu.painlessjavavalidator.Violation)}
+     */
+    public static Optional<Violation> isTrueRule(BooleanSupplier condition, Violation violation) {
+        if (condition == null) {
+            throw new IllegalArgumentException("Condition cannot be null");
+        }
+        if (violation == null) {
+            throw new IllegalArgumentException("Violation provider cannot be null");
+        }
+        return condition.getAsBoolean() ? Optional.empty() : Optional.of(violation);
+    }
+
+    /**
+     * Checks if the condition is evaluated to false. If not then the violation
+     * will be returned.
+     *
+     * @param condition condition
+     * @param violation violation
+     * @return violation or success
+     * @throws IllegalArgumentException in case condition or violation is null
+     */
+    public static ViolationProvider isFalse(BooleanSupplier condition, Violation violation) {
+        return () -> isFalseRule(condition, violation);
+    }
+
+    /**
+     * See {@link ValidationRule#isFalse(java.util.function.BooleanSupplier, com.github.danitutu.painlessjavavalidator.Violation)}
+     */
+    public static Optional<Violation> isFalseRule(BooleanSupplier condition, Violation violation) {
+        if (condition == null) {
+            throw new IllegalArgumentException("Condition cannot be null");
+        }
+        if (violation == null) {
+            throw new IllegalArgumentException("Violation provider cannot be null");
+        }
+        return !condition.getAsBoolean() ? Optional.empty() : Optional.of(violation);
     }
 
     /**
@@ -67,7 +130,9 @@ public class ValidationRule {
      */
     public static Optional<Violation> emptyRule(String fieldPath, CharSequence value) {
         if (!empty(value)) {
-            return Optional.of(Violation.of(fieldPath, "validation.error.value.is.required", "The value is required."));
+            return Optional.of(Violation.of(fieldPath,
+                    VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
+                    VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
         }
         return Optional.empty();
     }
@@ -88,7 +153,8 @@ public class ValidationRule {
      */
     public static Optional<Violation> notEmptyRule(String fieldPath, CharSequence value) {
         if (empty(value)) {
-            return Optional.of(Violation.of(fieldPath, "validation.error.value.is.not.empty", "The value is not empty."));
+            return Optional
+                    .of(Violation.of(fieldPath, "validation.error.value.is.not.empty", "The value is not empty."));
         }
         return Optional.empty();
     }
@@ -130,7 +196,9 @@ public class ValidationRule {
      */
     public static Optional<Violation> notBlankRule(String fieldPath, CharSequence value) {
         if (isBlank(value)) {
-            return Optional.of(Violation.of(fieldPath, "validation.error.value.is.required", "The value is required."));
+            return Optional.of(Violation.of(fieldPath,
+                    VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
+                    VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
         }
         return Optional.empty();
     }
@@ -339,7 +407,7 @@ public class ValidationRule {
     public static <T> Optional<Violation> afterRule(String fieldPath,
                                                     Comparable<T> value,
                                                     T other) {
-        return compareComparablesRule(
+        return compareComparableRule(
                 fieldPath, value,
                 other,
                 (tComparable, t) -> value.compareTo(other) <= 0,
@@ -347,7 +415,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.before.or.equal",
                         "The value is before or equal the other value.",
-                        singletonMap("other", other == null ? null : other.toString())
+                        singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
                 ));
     }
 
@@ -375,7 +443,7 @@ public class ValidationRule {
     public static <T> Optional<Violation> afterOrEqualsToRule(String fieldPath,
                                                               Comparable<T> value,
                                                               T other) {
-        return compareComparablesRule(
+        return compareComparableRule(
                 fieldPath, value,
                 other,
                 (tComparable, t) -> value.compareTo(other) < 0,
@@ -383,7 +451,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.before",
                         "The value is before the other value.",
-                        singletonMap("other", other == null ? null : other.toString())
+                        singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
                 ));
     }
 
@@ -411,7 +479,7 @@ public class ValidationRule {
     public static <T> Optional<Violation> beforeRule(String fieldPath,
                                                      Comparable<T> value,
                                                      T other) {
-        return compareComparablesRule(
+        return compareComparableRule(
                 fieldPath, value,
                 other,
                 (tComparable, t) -> value.compareTo(other) >= 0,
@@ -419,7 +487,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.after.or.equal",
                         "The value is after or equal the other value.",
-                        singletonMap("other", other == null ? null : other.toString())
+                        singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
                 ));
     }
 
@@ -447,7 +515,7 @@ public class ValidationRule {
     public static <T> Optional<Violation> beforeOrEqualsToRule(String fieldPath,
                                                                Comparable<T> value,
                                                                T other) {
-        return compareComparablesRule(
+        return compareComparableRule(
                 fieldPath, value,
                 other,
                 (tComparable, t) -> value.compareTo(other) > 0,
@@ -455,7 +523,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.after",
                         "The value is after the other value.",
-                        singletonMap("other", other == null ? null : other.toString())
+                        singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
                 ));
     }
 
@@ -483,7 +551,7 @@ public class ValidationRule {
     public static <T> Optional<Violation> equalsToRule(String fieldPath,
                                                        Comparable<T> value,
                                                        T other) {
-        return compareComparablesRule(
+        return compareComparableRule(
                 fieldPath, value,
                 other,
                 (tComparable, t) -> value.compareTo(other) != 0,
@@ -491,7 +559,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.value.is.not.equal",
                         "The value is not equal to the other value.",
-                        singletonMap("other", other == null ? null : other.toString())
+                        singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
                 ));
     }
 
@@ -522,7 +590,7 @@ public class ValidationRule {
                         fieldPath,
                         "validation.error.string.is.not.equal",
                         "The value is not equal to the other value.",
-                        singletonMap("other", other)
+                        singletonMap(PARAM_NAME_OTHER, other)
                 ));
     }
 
@@ -572,7 +640,7 @@ public class ValidationRule {
             String fieldPath,
             String value,
             String other,
-            BiFunction<String, String, Boolean> compareFunc,
+            BiPredicate<String, String> compareFunc,
             Supplier<Violation> violationFunc) {
         return () -> compareStringsRule(fieldPath, value, other, compareFunc, violationFunc);
     }
@@ -581,57 +649,57 @@ public class ValidationRule {
      * Returns violation in case compare function is true. For the first value
      * a notNull validation will also be applied.
      *
-     * @param fieldPath path to field
-     * @param value first value
-     * @param other second value
-     * @param compareFunc function that compares the two values
+     * @param fieldPath     path to field
+     * @param value         first value
+     * @param other         second value
+     * @param compareFunc   function that compares the two values
      * @param violationFunc the Violation that will be returned
      * @return violation or success
      */
     public static Optional<Violation> compareStringsRule(
             String fieldPath, String value,
             String other,
-            BiFunction<String, String, Boolean> compareFunc,
+            BiPredicate<String, String> compareFunc,
             Supplier<Violation> violationFunc) {
         Optional<Violation> isNotNull = notNullRule(fieldPath, value);
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
-        if (compareFunc.apply(value, other)) {
+        if (compareFunc.test(value, other)) {
             return Optional.of(violationFunc.get());
         }
         return Optional.empty();
     }
 
-    public static <T> ViolationProvider compareComparables(
+    public static <T> ViolationProvider compareComparable(
             String fieldPath, Comparable<T> value,
             T other,
-            BiFunction<Comparable<T>, T, Boolean> compareFunc,
+            BiPredicate<Comparable<T>, T> compareFunc,
             Supplier<Violation> violationFunc) {
-        return () -> compareComparablesRule(fieldPath, value, other, compareFunc, violationFunc);
+        return () -> compareComparableRule(fieldPath, value, other, compareFunc, violationFunc);
     }
 
     /**
      * Returns violation in case compare function is true. For the first value
      * a notNull validation will also be applied.
      *
-     * @param fieldPath path to field
-     * @param value first value
-     * @param other second value
-     * @param compareFunc function that compares the two values
+     * @param fieldPath     path to field
+     * @param value         first value
+     * @param other         second value
+     * @param compareFunc   function that compares the two values
      * @param violationFunc the Violation that will be returned
      * @return violation or success
      */
-    public static <T> Optional<Violation> compareComparablesRule(
+    public static <T> Optional<Violation> compareComparableRule(
             String fieldPath, Comparable<T> value,
             T other,
-            BiFunction<Comparable<T>, T, Boolean> compareFunc,
+            BiPredicate<Comparable<T>, T> compareFunc,
             Supplier<Violation> violationFunc) {
         Optional<Violation> valueIsNotNull = notNullRule(fieldPath, value);
         if (valueIsNotNull.isPresent()) {
             return valueIsNotNull;
         }
-        if (other == null || compareFunc.apply(value, other)) {
+        if (other == null || compareFunc.test(value, other)) {
             return Optional.of(violationFunc.get());
         }
         return Optional.empty();

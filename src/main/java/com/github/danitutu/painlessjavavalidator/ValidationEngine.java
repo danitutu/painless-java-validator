@@ -11,6 +11,9 @@ import static java.util.stream.Collectors.toList;
 
 public class ValidationEngine {
 
+    private ValidationEngine() {
+    }
+
     /**
      * Validates all rules and throw {@link ValidationException} if there are any violations.
      *
