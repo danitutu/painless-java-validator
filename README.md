@@ -316,8 +316,9 @@ public class CompactUserService {
     }
 
     private ViolationProvider firstNameAndLastNameUniqueness(User user) {
-        return () -> userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName())
-                .map(u -> Violation.of(
+        return isFalse(
+                () -> userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName()).isPresent(),
+                Violation.of(
                         "general",
                         "validation.error.user.duplicate.name",
                         "The provided name is already used."
