@@ -15,7 +15,7 @@ class MaxIntegerValidationRuleTest {
         Optional<Violation> violation = ValidationRule.maxRule("field.path", null, 3);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.required", violation.get().getMessage());
         assertEquals("The value is required.", violation.get().getDetails());
     }
@@ -34,7 +34,7 @@ class MaxIntegerValidationRuleTest {
         Optional<Violation> violation = ValidationRule.maxRule("field.path", 6, 5);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.integer.value.greater.than.max", violation.get().getMessage());
         assertEquals("Value is greater than max.", violation.get().getDetails());
         assertEquals(1, violation.get().getAttributes().size());

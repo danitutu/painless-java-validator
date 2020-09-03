@@ -25,7 +25,7 @@ class MatchRegexValidationRuleTest {
         Optional<Violation> violation = ValidationRule.matchRegexRule("field.path", "TEST1234", "[A-Z]+");
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.string.value.regex.no.match", violation.get().getMessage());
         assertEquals("Value does not match the expected regex.", violation.get().getDetails());
         assertEquals(1, violation.get().getAttributes().size());

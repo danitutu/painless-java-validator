@@ -22,7 +22,7 @@ class ViolationTest {
     }
 
     @Test
-    @DisplayName("WHEN fieldPath differ THEN not equal")
+    @DisplayName("WHEN field differ THEN not equal")
     void equals2() {
         Violation violation1 = Violation.of("a", "b", "c", singletonMap("1", 2));
         Violation violation2 = Violation.of("b", "b", "c", singletonMap("1", 2));

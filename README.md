@@ -248,7 +248,7 @@ public class UserService {
                 ));
 
         // custom complex validation (contains lots of code) - hide implementation by using a function
-        validateFindFirstAndStopIfViolation(firstNameAndLastNameUniqueness(input));
+        validateFindFirstAndStopIfViolation(userFullNameIsUnique(input));
 
         user.setFirstName(input.getFirstName());
         user.setLastName(input.getLastName());
@@ -257,7 +257,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private ViolationProvider firstNameAndLastNameUniqueness(User user) {
+    private ViolationProvider userFullNameIsUnique(User user) {
         return () -> userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName())
                 .map(u -> Violation.of(
                         "general",
@@ -280,6 +280,7 @@ import org.springframework.stereotype.Service;
 
 import static com.github.danitutu.painlessjavavalidator.ValidationEngine.validateAllAndStopIfViolations;
 import static com.github.danitutu.painlessjavavalidator.ValidationEngine.validateFindFirstAndStopIfViolation;
+import static com.github.danitutu.painlessjavavalidator.ValidationRule.isFalse;
 import static com.github.danitutu.painlessjavavalidator.ValidationRule.lengthBetween;
 
 @Service
@@ -306,7 +307,7 @@ public class CompactUserService {
                 ));
 
         // we would like to stop the processing if the following error occurs
-        validateFindFirstAndStopIfViolation(firstNameAndLastNameUniqueness(input));
+        validateFindFirstAndStopIfViolation(userFullNameIsUnique(input));
 
         user.setFirstName(input.getFirstName());
         user.setLastName(input.getLastName());
@@ -315,7 +316,7 @@ public class CompactUserService {
         return userRepository.save(user);
     }
 
-    private ViolationProvider firstNameAndLastNameUniqueness(User user) {
+    private ViolationProvider userFullNameIsUnique(User user) {
         return isFalse(
                 () -> userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName()).isPresent(),
                 Violation.of(

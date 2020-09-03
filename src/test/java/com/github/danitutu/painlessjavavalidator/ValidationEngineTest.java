@@ -51,30 +51,30 @@ class ValidationEngineTest {
 
         List<Violation> violations = ValidationEngine.validateAll(validationRules);
 
-        assertEquals("notNullCheck", violations.get(0).getFieldPath());
-        assertEquals("notBlankCheck1", violations.get(1).getFieldPath());
-        assertEquals("lengthBetweenCheck", violations.get(2).getFieldPath());
-        assertEquals("regexCheck", violations.get(3).getFieldPath());
-        assertEquals("rangeCheck", violations.get(4).getFieldPath());
-        assertEquals("minCheck", violations.get(5).getFieldPath());
-        assertEquals("maxCheck", violations.get(6).getFieldPath());
-        assertEquals("isAfterCheck", violations.get(7).getFieldPath());
-        assertEquals("isAfterOrEqualsToCheck", violations.get(8).getFieldPath());
-        assertEquals("isBeforeCheck", violations.get(9).getFieldPath());
-        assertEquals("isBeforeOrEqualsToCheck", violations.get(10).getFieldPath());
-        assertEquals("equalsToStringCheck", violations.get(11).getFieldPath());
-        assertEquals("equalsToComparableCheck", violations.get(12).getFieldPath());
-        assertEquals("notEqualsToStringCheck", violations.get(13).getFieldPath());
-        assertEquals("compareStringsCheck", violations.get(14).getFieldPath());
-        assertEquals("compareComparablesCheck", violations.get(15).getFieldPath());
-        assertEquals("nullCheck", violations.get(16).getFieldPath());
-        assertEquals("emptyCheck", violations.get(17).getFieldPath());
-        assertEquals("notEmptyCheck", violations.get(18).getFieldPath());
-        assertEquals("blankCheck", violations.get(19).getFieldPath());
-        assertEquals("notBlankCheck2", violations.get(20).getFieldPath());
-        assertEquals("notBlankCheck3", violations.get(21).getFieldPath());
-        assertEquals("isTrueCheck", violations.get(22).getFieldPath());
-        assertEquals("isFalseCheck", violations.get(23).getFieldPath());
+        assertEquals("notNullCheck", violations.get(0).getField());
+        assertEquals("notBlankCheck1", violations.get(1).getField());
+        assertEquals("lengthBetweenCheck", violations.get(2).getField());
+        assertEquals("regexCheck", violations.get(3).getField());
+        assertEquals("rangeCheck", violations.get(4).getField());
+        assertEquals("minCheck", violations.get(5).getField());
+        assertEquals("maxCheck", violations.get(6).getField());
+        assertEquals("isAfterCheck", violations.get(7).getField());
+        assertEquals("isAfterOrEqualsToCheck", violations.get(8).getField());
+        assertEquals("isBeforeCheck", violations.get(9).getField());
+        assertEquals("isBeforeOrEqualsToCheck", violations.get(10).getField());
+        assertEquals("equalsToStringCheck", violations.get(11).getField());
+        assertEquals("equalsToComparableCheck", violations.get(12).getField());
+        assertEquals("notEqualsToStringCheck", violations.get(13).getField());
+        assertEquals("compareStringsCheck", violations.get(14).getField());
+        assertEquals("compareComparablesCheck", violations.get(15).getField());
+        assertEquals("nullCheck", violations.get(16).getField());
+        assertEquals("emptyCheck", violations.get(17).getField());
+        assertEquals("notEmptyCheck", violations.get(18).getField());
+        assertEquals("blankCheck", violations.get(19).getField());
+        assertEquals("notBlankCheck2", violations.get(20).getField());
+        assertEquals("notBlankCheck3", violations.get(21).getField());
+        assertEquals("isTrueCheck", violations.get(22).getField());
+        assertEquals("isFalseCheck", violations.get(23).getField());
     }
 
     @Test
@@ -152,8 +152,8 @@ class ValidationEngineTest {
         List<Violation> violations = ValidationEngine.validateAll(validationRules);
 
         assertEquals(2, violations.size());
-        assertEquals("notNullCheck", violations.get(0).getFieldPath());
-        assertEquals("compareComparablesCheck", violations.get(1).getFieldPath());
+        assertEquals("notNullCheck", violations.get(0).getField());
+        assertEquals("compareComparablesCheck", violations.get(1).getField());
     }
 
     @Test
@@ -169,7 +169,8 @@ class ValidationEngineTest {
     void validateAllAndStopIfViolations1() {
         Violation violation = Violation.of(null, null, null, null);
 
-        ValidationException exception = assertThrows(ValidationException.class, () -> validateAllAndStopIfViolations(() -> Optional.of(violation)));
+        ValidationException exception = assertThrows(ValidationException.class,
+                () -> validateAllAndStopIfViolations(() -> Optional.of(violation)));
 
         assertSame(violation, exception.getViolations().get(0));
     }
@@ -178,6 +179,12 @@ class ValidationEngineTest {
     @DisplayName("WHEN no violations THEN expect no exception")
     void validateAllAndStopIfViolations2() {
         validateAllAndStopIfViolations(Optional::empty);
+    }
+
+    @Test
+    @DisplayName("WHEN no violations (null) THEN expect no exception")
+    void validateAllAndStopIfViolations3() {
+        validateAllAndStopIfViolations((ViolationProvider[]) null);
     }
 
     @Test
@@ -191,7 +198,7 @@ class ValidationEngineTest {
         List<Violation> violations = ValidationEngine.validateFindFirst(validationRules);
 
         assertEquals(1, violations.size());
-        assertEquals("notNullCheck", violations.get(0).getFieldPath());
+        assertEquals("notNullCheck", violations.get(0).getField());
     }
 
     @Test
@@ -219,7 +226,15 @@ class ValidationEngineTest {
         List<Violation> violations = ValidationEngine.validateFindFirst(validationRules);
 
         assertEquals(1, violations.size());
-        assertEquals("notBlankCheck", violations.get(0).getFieldPath());
+        assertEquals("notBlankCheck", violations.get(0).getField());
+    }
+
+    @Test
+    @DisplayName("WHEN input is null THEN expect no violation")
+    void validateFindFirst4() {
+        List<Violation> violations = ValidationEngine.validateFindFirst((ViolationProvider[]) null);
+
+        assertEquals(0, violations.size());
     }
 
     @Test
@@ -234,7 +249,7 @@ class ValidationEngineTest {
                 () -> ValidationEngine.validateFindFirstAndStopIfViolation(validationRules));
 
         assertEquals(1, exception.getViolations().size());
-        assertEquals("notNullCheck", exception.getViolations().get(0).getFieldPath());
+        assertEquals("notNullCheck", exception.getViolations().get(0).getField());
     }
 
     @Test
@@ -245,5 +260,11 @@ class ValidationEngineTest {
         };
 
         ValidationEngine.validateFindFirstAndStopIfViolation(validationRules);
+    }
+
+    @Test
+    @DisplayName("WHEN input is null THEN expect no validation ")
+    void validateFindFirstAndStopIfViolation3() {
+        ValidationEngine.validateFindFirstAndStopIfViolation((ViolationProvider[]) null);
     }
 }

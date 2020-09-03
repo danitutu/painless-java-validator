@@ -15,7 +15,7 @@ class NotEqualsToStringValidationRuleTest {
         Optional<Violation> violation = ValidationRule.notEqualsToRule("field.path", null, null);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.required", violation.get().getMessage());
         assertEquals("The value is required.", violation.get().getDetails());
     }
@@ -34,7 +34,7 @@ class NotEqualsToStringValidationRuleTest {
         Optional<Violation> violation = ValidationRule.notEqualsToRule("field.path", "s1", "s1");
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.string.is.equal", violation.get().getMessage());
         assertEquals("The value is equal to the other value.", violation.get().getDetails());
     }

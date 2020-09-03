@@ -31,7 +31,7 @@ class BlankValidationRuleTest {
         Optional<Violation> violation = ValidationRule.blankRule("field.path", "a value");
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.not.blank", violation.get().getMessage());
         assertEquals("The value is empty.", violation.get().getDetails());
         assertNull(violation.get().getAttributes());

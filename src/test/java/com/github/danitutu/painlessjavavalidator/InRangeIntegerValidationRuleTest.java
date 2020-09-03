@@ -15,7 +15,7 @@ class InRangeIntegerValidationRuleTest {
         Optional<Violation> violation = ValidationRule.inRangeRule("field.path", null, 3, 10);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.required", violation.get().getMessage());
         assertEquals("The value is required.", violation.get().getDetails());
     }
@@ -50,7 +50,7 @@ class InRangeIntegerValidationRuleTest {
         Optional<Violation> violation = ValidationRule.inRangeRule("field.path", 3, 5, 7);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.integer.value.not.in.range", violation.get().getMessage());
         assertEquals("Value is not in range.", violation.get().getDetails());
         assertEquals(2, violation.get().getAttributes().size());
@@ -64,7 +64,7 @@ class InRangeIntegerValidationRuleTest {
         Optional<Violation> violation = ValidationRule.inRangeRule("field.path", 5, 1, 3);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.integer.value.not.in.range", violation.get().getMessage());
         assertEquals("Value is not in range.", violation.get().getDetails());
         assertEquals(2, violation.get().getAttributes().size());
@@ -87,7 +87,7 @@ class InRangeIntegerValidationRuleTest {
         Optional<Violation> violation = ValidationRule.inRangeRule("field.path", 2, 3, 3);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.integer.value.not.in.range", violation.get().getMessage());
         assertEquals("Value is not in range.", violation.get().getDetails());
         assertEquals(2, violation.get().getAttributes().size());

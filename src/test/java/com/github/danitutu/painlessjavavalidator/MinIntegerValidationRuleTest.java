@@ -15,7 +15,7 @@ class MinIntegerValidationRuleTest {
         Optional<Violation> violation = ValidationRule.minRule("field.path", null, 3);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.required", violation.get().getMessage());
         assertEquals("The value is required.", violation.get().getDetails());
     }
@@ -34,7 +34,7 @@ class MinIntegerValidationRuleTest {
         Optional<Violation> violation = ValidationRule.minRule("field.path", 2, 5);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.integer.value.smaller.than.min", violation.get().getMessage());
         assertEquals("Value is smaller than min.", violation.get().getDetails());
         assertEquals(1, violation.get().getAttributes().size());

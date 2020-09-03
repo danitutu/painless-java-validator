@@ -18,7 +18,7 @@ class ValidationExceptionTest {
             throw new ValidationException(Violation.of("field.path", "message", "details", singletonMap("other", 1)));
         } catch (ValidationException exception) {
             Violation violation = exception.getViolations().get(0);
-            assertEquals("field.path", violation.getFieldPath());
+            assertEquals("field.path", violation.getField());
             assertEquals("message", violation.getMessage());
             assertEquals("details", violation.getDetails());
             assertEquals(1, violation.getAttributes().size());
@@ -37,14 +37,14 @@ class ValidationExceptionTest {
             ));
         } catch (ValidationException exception) {
             Violation violation1 = exception.getViolations().get(0);
-            assertEquals("field.path1", violation1.getFieldPath());
+            assertEquals("field.path1", violation1.getField());
             assertEquals("message1", violation1.getMessage());
             assertEquals("details1", violation1.getDetails());
             assertEquals(1, violation1.getAttributes().size());
             assertEquals(1, violation1.getAttributes().get("other1"));
 
             Violation violation2 = exception.getViolations().get(1);
-            assertEquals("field.path2", violation2.getFieldPath());
+            assertEquals("field.path2", violation2.getField());
             assertEquals("message2", violation2.getMessage());
             assertEquals("details2", violation2.getDetails());
             assertEquals(1, violation2.getAttributes().size());

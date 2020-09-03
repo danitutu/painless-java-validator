@@ -15,7 +15,7 @@ class NotEmptyValidationRuleTest {
         Optional<Violation> violation = ValidationRule.notEmptyRule("field.path", null);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.not.empty", violation.get().getMessage());
         assertEquals("The value is not empty.", violation.get().getDetails());
         assertNull(violation.get().getAttributes());
@@ -27,7 +27,7 @@ class NotEmptyValidationRuleTest {
         Optional<Violation> violation = ValidationRule.notEmptyRule("field.path", "");
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.not.empty", violation.get().getMessage());
         assertEquals("The value is not empty.", violation.get().getDetails());
         assertNull(violation.get().getAttributes());

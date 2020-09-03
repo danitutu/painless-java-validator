@@ -57,7 +57,7 @@ class AfterOrEqualsToValidationRuleTest {
 
             try {
                 assertTrue(violation.isPresent());
-                assertEquals("field.path", violation.get().getFieldPath());
+                assertEquals("field.path", violation.get().getField());
                 assertEquals("validation.error.value.is.before", violation.get().getMessage());
                 assertEquals("The value is before the other value.", violation.get().getDetails());
                 assertEquals(1, violation.get().getAttributes().size());
@@ -100,7 +100,7 @@ class AfterOrEqualsToValidationRuleTest {
         Optional<Violation> violation = ValidationRule.afterOrEqualsToRule("field.path", null, null);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.required", violation.get().getMessage());
         assertEquals("The value is required.", violation.get().getDetails());
     }
@@ -111,7 +111,7 @@ class AfterOrEqualsToValidationRuleTest {
         Optional<Violation> violation = ValidationRule.afterOrEqualsToRule("field.path", Instant.now(), null);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.before", violation.get().getMessage());
         assertEquals("The value is before the other value.", violation.get().getDetails());
         assertEquals(1, violation.get().getAttributes().size());

@@ -15,7 +15,7 @@ class NotNullValidationRuleTest {
         Optional<Violation> violation = ValidationRule.notNullRule("field.path", null);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.required", violation.get().getMessage());
         assertEquals("The value is required.", violation.get().getDetails());
         assertNull(violation.get().getAttributes());

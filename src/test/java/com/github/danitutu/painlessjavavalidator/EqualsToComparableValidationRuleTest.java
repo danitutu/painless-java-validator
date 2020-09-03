@@ -35,7 +35,7 @@ class EqualsToComparableValidationRuleTest {
 
             try {
                 assertTrue(violation.isPresent());
-                assertEquals("field.path", violation.get().getFieldPath());
+                assertEquals("field.path", violation.get().getField());
                 assertEquals("validation.error.value.is.not.equal", violation.get().getMessage());
                 assertEquals("The value is not equal to the other value.", violation.get().getDetails());
                 assertEquals(1, violation.get().getAttributes().size());
@@ -65,7 +65,7 @@ class EqualsToComparableValidationRuleTest {
 
             try {
                 assertTrue(violation.isPresent());
-                assertEquals("field.path", violation.get().getFieldPath());
+                assertEquals("field.path", violation.get().getField());
                 assertEquals("validation.error.value.is.not.equal", violation.get().getMessage());
                 assertEquals("The value is not equal to the other value.", violation.get().getDetails());
                 assertEquals(1, violation.get().getAttributes().size());
@@ -107,7 +107,7 @@ class EqualsToComparableValidationRuleTest {
         Optional<Violation> violation = ValidationRule.equalsToRule("field.path", null, null);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.required", violation.get().getMessage());
         assertEquals("The value is required.", violation.get().getDetails());
     }
@@ -118,7 +118,7 @@ class EqualsToComparableValidationRuleTest {
         Optional<Violation> violation = ValidationRule.equalsToRule("field.path", Instant.now(), null);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.not.equal", violation.get().getMessage());
         assertEquals("The value is not equal to the other value.", violation.get().getDetails());
         assertEquals(1, violation.get().getAttributes().size());

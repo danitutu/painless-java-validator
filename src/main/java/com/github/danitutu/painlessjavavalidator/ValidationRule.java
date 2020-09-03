@@ -21,20 +21,20 @@ public class ValidationRule {
     /**
      * Checks if the value is null.
      *
-     * @param fieldPath path to field
-     * @param value     value to be checked
+     * @param field path to field
+     * @param value value to be checked
      * @return violation or success
      */
-    public static ViolationProvider isNull(String fieldPath, Object value) {
-        return () -> isNullRule(fieldPath, value);
+    public static ViolationProvider isNull(String field, Object value) {
+        return () -> isNullRule(field, value);
     }
 
     /**
      * See {@link ValidationRule#isNull(java.lang.String, java.lang.Object)}
      */
-    public static Optional<Violation> isNullRule(String fieldPath, Object value) {
+    public static Optional<Violation> isNullRule(String field, Object value) {
         if (value != null) {
-            return Optional.of(Violation.of(fieldPath, "validation.error.value.is.not.null", "The value is not null."));
+            return Optional.of(Violation.of(field, "validation.error.value.is.not.null", "The value is not null."));
         }
         return Optional.empty();
     }
@@ -42,20 +42,20 @@ public class ValidationRule {
     /**
      * Checks if the value is not null.
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @return violation or success
      */
-    public static ViolationProvider notNull(String fieldPath, Object value) {
-        return () -> notNullRule(fieldPath, value);
+    public static ViolationProvider notNull(String field, Object value) {
+        return () -> notNullRule(field, value);
     }
 
     /**
      * See {@link ValidationRule#notNull(java.lang.String, java.lang.Object)}
      */
-    public static Optional<Violation> notNullRule(String fieldPath, Object value) {
+    public static Optional<Violation> notNullRule(String field, Object value) {
         if (value == null) {
-            return Optional.of(Violation.of(fieldPath,
+            return Optional.of(Violation.of(field,
                     VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
                     VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
         }
@@ -117,20 +117,20 @@ public class ValidationRule {
     /**
      * Checks if the value is empty.
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @return violation or success
      */
-    public static ViolationProvider empty(String fieldPath, CharSequence value) {
-        return () -> emptyRule(fieldPath, value);
+    public static ViolationProvider empty(String field, CharSequence value) {
+        return () -> emptyRule(field, value);
     }
 
     /**
      * See {@link ValidationRule#empty(java.lang.String, java.lang.CharSequence)}
      */
-    public static Optional<Violation> emptyRule(String fieldPath, CharSequence value) {
+    public static Optional<Violation> emptyRule(String field, CharSequence value) {
         if (!empty(value)) {
-            return Optional.of(Violation.of(fieldPath,
+            return Optional.of(Violation.of(field,
                     VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
                     VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
         }
@@ -140,21 +140,21 @@ public class ValidationRule {
     /**
      * Checks if the value is not empty.
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @return violation or success
      */
-    public static ViolationProvider notEmpty(String fieldPath, CharSequence value) {
-        return () -> notEmptyRule(fieldPath, value);
+    public static ViolationProvider notEmpty(String field, CharSequence value) {
+        return () -> notEmptyRule(field, value);
     }
 
     /**
      * See {@link ValidationRule#notEmpty(java.lang.String, java.lang.CharSequence)}
      */
-    public static Optional<Violation> notEmptyRule(String fieldPath, CharSequence value) {
+    public static Optional<Violation> notEmptyRule(String field, CharSequence value) {
         if (empty(value)) {
             return Optional
-                    .of(Violation.of(fieldPath, "validation.error.value.is.not.empty", "The value is not empty."));
+                    .of(Violation.of(field, "validation.error.value.is.not.empty", "The value is not empty."));
         }
         return Optional.empty();
     }
@@ -162,20 +162,20 @@ public class ValidationRule {
     /**
      * Checks if the value is blank.
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @return violation or success
      */
-    public static ViolationProvider blank(String fieldPath, CharSequence value) {
-        return () -> blankRule(fieldPath, value);
+    public static ViolationProvider blank(String field, CharSequence value) {
+        return () -> blankRule(field, value);
     }
 
     /**
      * See {@link ValidationRule#blank(java.lang.String, java.lang.CharSequence)}
      */
-    public static Optional<Violation> blankRule(String fieldPath, CharSequence value) {
+    public static Optional<Violation> blankRule(String field, CharSequence value) {
         if (!isBlank(value)) {
-            return Optional.of(Violation.of(fieldPath, "validation.error.value.is.not.blank", "The value is empty."));
+            return Optional.of(Violation.of(field, "validation.error.value.is.not.blank", "The value is empty."));
         }
         return Optional.empty();
     }
@@ -183,20 +183,20 @@ public class ValidationRule {
     /**
      * Checks if the value is not blank.
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @return violation or success
      */
-    public static ViolationProvider notBlank(String fieldPath, CharSequence value) {
-        return () -> notBlankRule(fieldPath, value);
+    public static ViolationProvider notBlank(String field, CharSequence value) {
+        return () -> notBlankRule(field, value);
     }
 
     /**
      * See {@link ValidationRule#notBlank(java.lang.String, java.lang.CharSequence)}
      */
-    public static Optional<Violation> notBlankRule(String fieldPath, CharSequence value) {
+    public static Optional<Violation> notBlankRule(String field, CharSequence value) {
         if (isBlank(value)) {
-            return Optional.of(Violation.of(fieldPath,
+            return Optional.of(Violation.of(field,
                     VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
                     VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
         }
@@ -208,25 +208,25 @@ public class ValidationRule {
      * The limits can be equal. The value will be checked against
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @param min       inferior limit
      * @param max       superior limit
      * @return violation or success
      * @throws IllegalArgumentException if min is greater than max.
      */
-    public static ViolationProvider lengthBetween(String fieldPath, CharSequence value, int min, int max) {
-        return () -> lengthBetweenRule(fieldPath, value, min, max);
+    public static ViolationProvider lengthBetween(String field, CharSequence value, int min, int max) {
+        return () -> lengthBetweenRule(field, value, min, max);
     }
 
     /**
      * See {@link ValidationRule#lengthBetween(java.lang.String, java.lang.CharSequence, int, int)}
      */
-    public static Optional<Violation> lengthBetweenRule(String fieldPath, CharSequence value, int min, int max) {
+    public static Optional<Violation> lengthBetweenRule(String field, CharSequence value, int min, int max) {
         if (min > max) {
             throw new IllegalArgumentException("min is greater than max");
         }
-        Optional<Violation> isNotNull = notNullRule(fieldPath, value);
+        Optional<Violation> isNotNull = notNullRule(field, value);
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
@@ -235,7 +235,7 @@ public class ValidationRule {
             map.put("min", min);
             map.put("max", max);
             return Optional.of(Violation.of(
-                    fieldPath,
+                    field,
                     "validation.error.string.value.not.between",
                     "Value is not in range.",
                     map
@@ -248,26 +248,26 @@ public class ValidationRule {
      * Checks if the value matches the provided regex. The value will be checked
      * against {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @param regex     a valid regex pattern
      * @return violation or success
      */
-    public static ViolationProvider matchRegex(String fieldPath, String value, String regex) {
-        return () -> matchRegexRule(fieldPath, value, regex);
+    public static ViolationProvider matchRegex(String field, String value, String regex) {
+        return () -> matchRegexRule(field, value, regex);
     }
 
     /**
      * See {@link ValidationRule#matchRegex(java.lang.String, java.lang.String, java.lang.String)}
      */
-    public static Optional<Violation> matchRegexRule(String fieldPath, String value, String regex) {
-        Optional<Violation> isNotNull = notNullRule(fieldPath, value);
+    public static Optional<Violation> matchRegexRule(String field, String value, String regex) {
+        Optional<Violation> isNotNull = notNullRule(field, value);
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
         if (!value.matches(regex)) {
             return Optional.of(Violation.of(
-                    fieldPath,
+                    field,
                     "validation.error.string.value.regex.no.match",
                     "Value does not match the expected regex.",
                     singletonMap("regexPattern", regex)
@@ -281,25 +281,25 @@ public class ValidationRule {
      * The limits can be equal. The value will be also checked against
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @param min       inferior limit
      * @param max       superior limit
      * @return violation or success
      * @throws IllegalArgumentException if min is greater than max.
      */
-    public static ViolationProvider inRange(String fieldPath, Integer value, int min, int max) {
-        return () -> inRangeRule(fieldPath, value, min, max);
+    public static ViolationProvider inRange(String field, Integer value, int min, int max) {
+        return () -> inRangeRule(field, value, min, max);
     }
 
     /**
      * See {@link ValidationRule#inRange(java.lang.String, java.lang.Integer, int, int)}
      */
-    public static Optional<Violation> inRangeRule(String fieldPath, Integer value, int min, int max) {
+    public static Optional<Violation> inRangeRule(String field, Integer value, int min, int max) {
         if (min > max) {
             throw new IllegalArgumentException("min is greater than max");
         }
-        Optional<Violation> isNotNull = notNullRule(fieldPath, value);
+        Optional<Violation> isNotNull = notNullRule(field, value);
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
@@ -308,7 +308,7 @@ public class ValidationRule {
             map.put("min", min);
             map.put("max", max);
             return Optional.of(Violation.of(
-                    fieldPath,
+                    field,
                     "validation.error.integer.value.not.in.range",
                     "Value is not in range.",
                     map
@@ -322,26 +322,26 @@ public class ValidationRule {
      * The value will be also checked against
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @param min       inferior limit
      * @return violation or success
      */
-    public static ViolationProvider min(String fieldPath, Integer value, int min) {
-        return () -> minRule(fieldPath, value, min);
+    public static ViolationProvider min(String field, Integer value, int min) {
+        return () -> minRule(field, value, min);
     }
 
     /**
      * See {@link ValidationRule#min(java.lang.String, java.lang.Integer, int)}
      */
-    public static Optional<Violation> minRule(String fieldPath, Integer value, int min) {
-        Optional<Violation> isNotNull = notNullRule(fieldPath, value);
+    public static Optional<Violation> minRule(String field, Integer value, int min) {
+        Optional<Violation> isNotNull = notNullRule(field, value);
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
         if (value < min) {
             return Optional.of(Violation.of(
-                    fieldPath,
+                    field,
                     "validation.error.integer.value.smaller.than.min",
                     "Value is smaller than min.",
                     singletonMap("min", min)
@@ -355,26 +355,26 @@ public class ValidationRule {
      * The value will be also checked against
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @param max       superior limit
      * @return violation or success
      */
-    public static ViolationProvider max(String fieldPath, Integer value, int max) {
-        return () -> maxRule(fieldPath, value, max);
+    public static ViolationProvider max(String field, Integer value, int max) {
+        return () -> maxRule(field, value, max);
     }
 
     /**
      * See {@link ValidationRule#max(java.lang.String, java.lang.Integer, int)}
      */
-    public static Optional<Violation> maxRule(String fieldPath, Integer value, int max) {
-        Optional<Violation> isNotNull = notNullRule(fieldPath, value);
+    public static Optional<Violation> maxRule(String field, Integer value, int max) {
+        Optional<Violation> isNotNull = notNullRule(field, value);
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
         if (value > max) {
             return Optional.of(Violation.of(
-                    fieldPath,
+                    field,
                     "validation.error.integer.value.greater.than.max",
                     "Value is greater than max.",
                     singletonMap("max", max)
@@ -389,34 +389,60 @@ public class ValidationRule {
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}.
      * If other is null then a violation will be returned.
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @param other     other value
      * @param <T>       compared object type
      * @return violation or success
      */
-    public static <T> ViolationProvider after(String fieldPath,
+    public static <T> ViolationProvider after(String field,
                                               Comparable<T> value,
                                               T other) {
-        return () -> afterRule(fieldPath, value, other);
+        return () -> afterRule(field, value, other);
     }
 
     /**
      * See {@link ValidationRule#after(java.lang.String, java.lang.Comparable, java.lang.Object)}
      */
-    public static <T> Optional<Violation> afterRule(String fieldPath,
+    public static <T> Optional<Violation> afterRule(String field,
                                                     Comparable<T> value,
                                                     T other) {
         return compareComparableRule(
-                fieldPath, value,
+                field, value,
                 other,
                 (tComparable, t) -> value.compareTo(other) <= 0,
                 () -> Violation.of(
-                        fieldPath,
+                        field,
                         "validation.error.value.is.before.or.equal",
                         "The value is before or equal the other value.",
                         singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
                 ));
+    }
+
+    /**
+     * Returns violation in case compare function is true. For the first value
+     * a notNull validation will also be applied.
+     *
+     * @param field         path to field
+     * @param value         first value
+     * @param other         second value
+     * @param compareFunc   function that compares the two values
+     * @param violationFunc the Violation that will be returned
+     * @return violation or success
+     */
+    public static <T> Optional<Violation> compareComparableRule(
+            String field, Comparable<T> value,
+            T other,
+            BiPredicate<Comparable<T>, T> compareFunc,
+            Supplier<Violation> violationFunc) {
+        Optional<Violation> valueIsNotNull = notNullRule(field, value);
+        if (valueIsNotNull.isPresent()) {
+            return valueIsNotNull;
+        }
+        if (other == null || compareFunc.test(value, other)) {
+            return Optional.of(violationFunc.get());
+        }
+        return Optional.empty();
     }
 
     /**
@@ -425,30 +451,30 @@ public class ValidationRule {
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}.
      * If other is null then a violation will be returned.
      *
-     * @param fieldPath path to field
-     * @param value     value to be checked
-     * @param other     other value
-     * @param <T>       compared object type
+     * @param field path to field
+     * @param value value to be checked
+     * @param other other value
+     * @param <T>   compared object type
      * @return violation or success
      */
-    public static <T> ViolationProvider afterOrEqualsTo(String fieldPath,
+    public static <T> ViolationProvider afterOrEqualsTo(String field,
                                                         Comparable<T> value,
                                                         T other) {
-        return () -> afterOrEqualsToRule(fieldPath, value, other);
+        return () -> afterOrEqualsToRule(field, value, other);
     }
 
     /**
      * See {@link ValidationRule#afterOrEqualsTo(java.lang.String, java.lang.Comparable, java.lang.Object)}
      */
-    public static <T> Optional<Violation> afterOrEqualsToRule(String fieldPath,
+    public static <T> Optional<Violation> afterOrEqualsToRule(String field,
                                                               Comparable<T> value,
                                                               T other) {
         return compareComparableRule(
-                fieldPath, value,
+                field, value,
                 other,
                 (tComparable, t) -> value.compareTo(other) < 0,
                 () -> Violation.of(
-                        fieldPath,
+                        field,
                         "validation.error.value.is.before",
                         "The value is before the other value.",
                         singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
@@ -461,30 +487,30 @@ public class ValidationRule {
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}.
      * If other is null then a violation will be returned.
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @param other     other value
      * @param <T>       compared object type
      * @return violation or success
      */
-    public static <T> ViolationProvider before(String fieldPath,
+    public static <T> ViolationProvider before(String field,
                                                Comparable<T> value,
                                                T other) {
-        return () -> beforeRule(fieldPath, value, other);
+        return () -> beforeRule(field, value, other);
     }
 
     /**
      * See {@link ValidationRule#before(java.lang.String, java.lang.Comparable, java.lang.Object)}
      */
-    public static <T> Optional<Violation> beforeRule(String fieldPath,
+    public static <T> Optional<Violation> beforeRule(String field,
                                                      Comparable<T> value,
                                                      T other) {
         return compareComparableRule(
-                fieldPath, value,
+                field, value,
                 other,
                 (tComparable, t) -> value.compareTo(other) >= 0,
                 () -> Violation.of(
-                        fieldPath,
+                        field,
                         "validation.error.value.is.after.or.equal",
                         "The value is after or equal the other value.",
                         singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
@@ -497,30 +523,30 @@ public class ValidationRule {
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}.
      * If other is null then a violation will be returned.
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @param other     other value
      * @param <T>       compared object type
      * @return violation or success
      */
-    public static <T> ViolationProvider beforeOrEqualsTo(String fieldPath,
+    public static <T> ViolationProvider beforeOrEqualsTo(String field,
                                                          Comparable<T> value,
                                                          T other) {
-        return () -> beforeOrEqualsToRule(fieldPath, value, other);
+        return () -> beforeOrEqualsToRule(field, value, other);
     }
 
     /**
      * See {@link ValidationRule#beforeOrEqualsTo(java.lang.String, java.lang.Comparable, java.lang.Object)}
      */
-    public static <T> Optional<Violation> beforeOrEqualsToRule(String fieldPath,
+    public static <T> Optional<Violation> beforeOrEqualsToRule(String field,
                                                                Comparable<T> value,
                                                                T other) {
         return compareComparableRule(
-                fieldPath, value,
+                field, value,
                 other,
                 (tComparable, t) -> value.compareTo(other) > 0,
                 () -> Violation.of(
-                        fieldPath,
+                        field,
                         "validation.error.value.is.after",
                         "The value is after the other value.",
                         singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
@@ -533,30 +559,30 @@ public class ValidationRule {
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}.
      * If other is null then a violation will be returned.
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @param other     other value
      * @param <T>       compared object type
      * @return violation or success
      */
-    public static <T> ViolationProvider equalsTo(String fieldPath,
+    public static <T> ViolationProvider equalsTo(String field,
                                                  Comparable<T> value,
                                                  T other) {
-        return () -> equalsToRule(fieldPath, value, other);
+        return () -> equalsToRule(field, value, other);
     }
 
     /**
      * See {@link ValidationRule#equalsTo(java.lang.String, java.lang.Comparable, java.lang.Object)}
      */
-    public static <T> Optional<Violation> equalsToRule(String fieldPath,
+    public static <T> Optional<Violation> equalsToRule(String field,
                                                        Comparable<T> value,
                                                        T other) {
         return compareComparableRule(
-                fieldPath, value,
+                field, value,
                 other,
                 (tComparable, t) -> value.compareTo(other) != 0,
                 () -> Violation.of(
-                        fieldPath,
+                        field,
                         "validation.error.value.is.not.equal",
                         "The value is not equal to the other value.",
                         singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
@@ -569,25 +595,25 @@ public class ValidationRule {
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}.
      * If other is null then a violation will be returned.
      *
-     * @param fieldPath path to field
+     * @param field path to field
      * @param value     value to be checked
      * @param other     other value
      * @return violation or success
      */
-    public static ViolationProvider equalsTo(String fieldPath, String value, String other) {
-        return () -> equalsToRule(fieldPath, value, other);
+    public static ViolationProvider equalsTo(String field, String value, String other) {
+        return () -> equalsToRule(field, value, other);
     }
 
     /**
      * See {@link ValidationRule#equalsTo(java.lang.String, java.lang.String, java.lang.String)}
      */
-    public static Optional<Violation> equalsToRule(String fieldPath, String value, String other) {
+    public static Optional<Violation> equalsToRule(String field, String value, String other) {
         return compareStringsRule(
-                fieldPath, value,
+                field, value,
                 other,
                 (s, s2) -> !value.equals(other),
                 () -> Violation.of(
-                        fieldPath,
+                        field,
                         "validation.error.string.is.not.equal",
                         "The value is not equal to the other value.",
                         singletonMap(PARAM_NAME_OTHER, other)
@@ -595,61 +621,10 @@ public class ValidationRule {
     }
 
     /**
-     * Checks if the compared value is not equal to the other.
-     * The value will be also checked against
-     * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}.
-     * If other is null then a violation will be returned.
-     *
-     * @param fieldPath path to field
-     * @param value     value to be checked
-     * @param other     other value
-     * @return violation or success
-     */
-    public static ViolationProvider notEqualsTo(String fieldPath, String value, String other) {
-        return () -> notEqualsToRule(fieldPath, value, other);
-    }
-
-    /**
-     * See {@link ValidationRule#notEqualsTo(java.lang.String, java.lang.String, java.lang.String)}
-     */
-    public static Optional<Violation> notEqualsToRule(String fieldPath, String value, String other) {
-        return compareStringsRule(
-                fieldPath, value,
-                other,
-                (s, s2) -> value.equals(other),
-                () -> Violation.of(
-                        fieldPath,
-                        "validation.error.string.is.equal",
-                        "The value is equal to the other value."
-                ));
-    }
-
-    /**
-     * Compares the two string against a provided rule. If the validation rule
-     * is evaluated to true then the provided violation will be returned.
-     *
-     * @param fieldPath     path to field
-     * @param value         value to be checked
-     * @param other         other value
-     * @param compareFunc   comparison function
-     * @param violationFunc violation to be retrieved when compareFunc evaluates
-     *                      to true
-     * @return violation or success
-     */
-    public static ViolationProvider compareStrings(
-            String fieldPath,
-            String value,
-            String other,
-            BiPredicate<String, String> compareFunc,
-            Supplier<Violation> violationFunc) {
-        return () -> compareStringsRule(fieldPath, value, other, compareFunc, violationFunc);
-    }
-
-    /**
      * Returns violation in case compare function is true. For the first value
      * a notNull validation will also be applied.
      *
-     * @param fieldPath     path to field
+     * @param field         path to field
      * @param value         first value
      * @param other         second value
      * @param compareFunc   function that compares the two values
@@ -657,11 +632,11 @@ public class ValidationRule {
      * @return violation or success
      */
     public static Optional<Violation> compareStringsRule(
-            String fieldPath, String value,
+            String field, String value,
             String other,
             BiPredicate<String, String> compareFunc,
             Supplier<Violation> violationFunc) {
-        Optional<Violation> isNotNull = notNullRule(fieldPath, value);
+        Optional<Violation> isNotNull = notNullRule(field, value);
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
@@ -671,38 +646,63 @@ public class ValidationRule {
         return Optional.empty();
     }
 
-    public static <T> ViolationProvider compareComparable(
-            String fieldPath, Comparable<T> value,
-            T other,
-            BiPredicate<Comparable<T>, T> compareFunc,
-            Supplier<Violation> violationFunc) {
-        return () -> compareComparableRule(fieldPath, value, other, compareFunc, violationFunc);
+    /**
+     * Checks if the compared value is not equal to the other.
+     * The value will be also checked against
+     * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}.
+     * If other is null then a violation will be returned.
+     *
+     * @param field path to field
+     * @param value value to be checked
+     * @param other other value
+     * @return violation or success
+     */
+    public static ViolationProvider notEqualsTo(String field, String value, String other) {
+        return () -> notEqualsToRule(field, value, other);
     }
 
     /**
-     * Returns violation in case compare function is true. For the first value
-     * a notNull validation will also be applied.
+     * See {@link ValidationRule#notEqualsTo(java.lang.String, java.lang.String, java.lang.String)}
+     */
+    public static Optional<Violation> notEqualsToRule(String field, String value, String other) {
+        return compareStringsRule(
+                field, value,
+                other,
+                (s, s2) -> value.equals(other),
+                () -> Violation.of(
+                        field,
+                        "validation.error.string.is.equal",
+                        "The value is equal to the other value."
+                ));
+    }
+
+    /**
+     * Compares the two string against a provided rule. If the validation rule
+     * is evaluated to true then the provided violation will be returned.
      *
-     * @param fieldPath     path to field
-     * @param value         first value
-     * @param other         second value
-     * @param compareFunc   function that compares the two values
-     * @param violationFunc the Violation that will be returned
+     * @param field     path to field
+     * @param value         value to be checked
+     * @param other         other value
+     * @param compareFunc   comparison function
+     * @param violationFunc violation to be retrieved when compareFunc evaluates
+     *                      to true
      * @return violation or success
      */
-    public static <T> Optional<Violation> compareComparableRule(
-            String fieldPath, Comparable<T> value,
+    public static ViolationProvider compareStrings(
+            String field,
+            String value,
+            String other,
+            BiPredicate<String, String> compareFunc,
+            Supplier<Violation> violationFunc) {
+        return () -> compareStringsRule(field, value, other, compareFunc, violationFunc);
+    }
+
+    public static <T> ViolationProvider compareComparable(
+            String field, Comparable<T> value,
             T other,
             BiPredicate<Comparable<T>, T> compareFunc,
             Supplier<Violation> violationFunc) {
-        Optional<Violation> valueIsNotNull = notNullRule(fieldPath, value);
-        if (valueIsNotNull.isPresent()) {
-            return valueIsNotNull;
-        }
-        if (other == null || compareFunc.test(value, other)) {
-            return Optional.of(violationFunc.get());
-        }
-        return Optional.empty();
+        return () -> compareComparableRule(field, value, other, compareFunc, violationFunc);
     }
 
     private static boolean isBlank(CharSequence cs) {

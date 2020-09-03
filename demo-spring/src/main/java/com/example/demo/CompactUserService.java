@@ -35,7 +35,7 @@ public class CompactUserService {
                 ));
 
         // we would like to stop the processing if the following error occurs
-        validateFindFirstAndStopIfViolation(firstNameAndLastNameUniqueness(input));
+        validateFindFirstAndStopIfViolation(userFullNameIsUnique(input));
 
         user.setFirstName(input.getFirstName());
         user.setLastName(input.getLastName());
@@ -44,7 +44,7 @@ public class CompactUserService {
         return userRepository.save(user);
     }
 
-    private ViolationProvider firstNameAndLastNameUniqueness(User user) {
+    private ViolationProvider userFullNameIsUnique(User user) {
         return isFalse(
                 () -> userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName()).isPresent(),
                 Violation.of(

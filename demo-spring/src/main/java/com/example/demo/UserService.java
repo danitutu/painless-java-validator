@@ -54,7 +54,7 @@ public class UserService {
                 ));
 
         // custom complex validation (contains lots of code) - hide implementation by using a function
-        validateFindFirstAndStopIfViolation(firstNameAndLastNameUniqueness(input));
+        validateFindFirstAndStopIfViolation(userFullNameIsUnique(input));
 
         user.setFirstName(input.getFirstName());
         user.setLastName(input.getLastName());
@@ -63,7 +63,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private ViolationProvider firstNameAndLastNameUniqueness(User user) {
+    private ViolationProvider userFullNameIsUnique(User user) {
         return () -> userRepository.findByFirstNameAndLastName(user.getFirstName(), user.getLastName())
                 .map(u -> Violation.of(
                         "general",

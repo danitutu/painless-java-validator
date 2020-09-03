@@ -15,7 +15,7 @@ class LengthBetweenValidationRuleTest {
         Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", null, 3, 10);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.required", violation.get().getMessage());
         assertEquals("The value is required.", violation.get().getDetails());
     }
@@ -34,7 +34,7 @@ class LengthBetweenValidationRuleTest {
         Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "", 1, 10);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.string.value.not.between", violation.get().getMessage());
         assertEquals("Value is not in range.", violation.get().getDetails());
         assertEquals(2, violation.get().getAttributes().size());
@@ -72,7 +72,7 @@ class LengthBetweenValidationRuleTest {
         Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "test", 5, 7);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.string.value.not.between", violation.get().getMessage());
         assertEquals("Value is not in range.", violation.get().getDetails());
         assertEquals(2, violation.get().getAttributes().size());
@@ -86,7 +86,7 @@ class LengthBetweenValidationRuleTest {
         Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "test", 1, 3);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.string.value.not.between", violation.get().getMessage());
         assertEquals("Value is not in range.", violation.get().getDetails());
         assertEquals(2, violation.get().getAttributes().size());
@@ -109,7 +109,7 @@ class LengthBetweenValidationRuleTest {
         Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "test", 3, 3);
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.string.value.not.between", violation.get().getMessage());
         assertEquals("Value is not in range.", violation.get().getDetails());
         assertEquals(2, violation.get().getAttributes().size());

@@ -8,7 +8,7 @@ public class Violation {
      * Path to field. Each level is separated by a colon.
      * Example: <code>user.account.email</code>
      */
-    private final String fieldPath;
+    private final String field;
     /**
      * A message describing the validation result. A good message handling approach is to let the clients
      * decide how they should handle a message. For that it would be best to return something
@@ -34,23 +34,23 @@ public class Violation {
      */
     private final Map<String, Object> attributes;
 
-    private Violation(String fieldPath, String message, String details, Map<String, Object> attributes) {
-        this.fieldPath = fieldPath;
+    private Violation(String field, String message, String details, Map<String, Object> attributes) {
+        this.field = field;
         this.message = message;
         this.details = details;
         this.attributes = attributes;
     }
 
-    public static Violation of(String fieldPath, String message, String details, Map<String, Object> attributes) {
-        return new Violation(fieldPath, message, details, attributes);
+    public static Violation of(String field, String message, String details) {
+        return of(field, message, details, null);
     }
 
-    public static Violation of(String fieldPath, String message, String details) {
-        return of(fieldPath, message, details, null);
+    public static Violation of(String field, String message, String details, Map<String, Object> attributes) {
+        return new Violation(field, message, details, attributes);
     }
 
-    public String getFieldPath() {
-        return fieldPath;
+    public String getField() {
+        return field;
     }
 
     public String getMessage() {
@@ -66,18 +66,18 @@ public class Violation {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(field, message, details, attributes);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Violation violation = (Violation) o;
-        return Objects.equals(fieldPath, violation.fieldPath) &&
+        return Objects.equals(field, violation.field) &&
                 Objects.equals(message, violation.message) &&
                 Objects.equals(details, violation.details) &&
                 Objects.equals(attributes, violation.attributes);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(fieldPath, message, details, attributes);
     }
 }

@@ -23,7 +23,7 @@ class IsNullValidationRuleTest {
         Optional<Violation> violation = ValidationRule.isNullRule("field.path", new Object());
 
         assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getFieldPath());
+        assertEquals("field.path", violation.get().getField());
         assertEquals("validation.error.value.is.not.null", violation.get().getMessage());
         assertEquals("The value is not null.", violation.get().getDetails());
         assertNull(violation.get().getAttributes());
