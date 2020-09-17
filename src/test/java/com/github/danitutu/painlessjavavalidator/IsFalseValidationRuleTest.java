@@ -13,7 +13,7 @@ class IsFalseValidationRuleTest {
     @DisplayName("WHEN condition is null THEN expect exception")
     void isFalseRule1() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> ValidationRule.isFalseRule(null, null));
+                () -> ValidationRule.isFalseRule(null, Violation.of(null, null, null, null)));
 
         assertEquals("Condition cannot be null", exception.getMessage());
     }
@@ -22,7 +22,7 @@ class IsFalseValidationRuleTest {
     @DisplayName("WHEN violation is null THEN expect exception")
     void isFalseRule2() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> ValidationRule.isFalseRule(() -> true, null));
+                () -> ValidationRule.isFalseRule(() -> true, (Violation) null));
 
         assertEquals("Violation provider cannot be null", exception.getMessage());
     }

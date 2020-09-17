@@ -33,46 +33,8 @@ public class ValidationRule {
      * See {@link ValidationRule#isNull(java.lang.String, java.lang.Object)}
      */
     public static Optional<Violation> isNullRule(String field, Object value) {
-        if (value != null) {
-            return Optional.of(Violation.of(field, "validation.error.value.is.not.null", "The value is not null."));
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Checks if the value is not null.
-     *
-     * @param field path to field
-     * @param value     value to be checked
-     * @return violation or success
-     */
-    public static ViolationProvider notNull(String field, Object value) {
-        return () -> notNullRule(field, value);
-    }
-
-    /**
-     * See {@link ValidationRule#notNull(java.lang.String, java.lang.Object)}
-     */
-    public static Optional<Violation> notNullRule(String field, Object value) {
-        if (value == null) {
-            return Optional.of(Violation.of(field,
-                    VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
-                    VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Checks if the condition is evaluated to true. If not then the violation
-     * will be returned.
-     *
-     * @param condition condition
-     * @param violation violation
-     * @return violation or success
-     * @throws IllegalArgumentException in case condition or violation is null
-     */
-    public static ViolationProvider isTrue(BooleanSupplier condition, Violation violation) {
-        return () -> isTrueRule(condition, violation);
+        return isTrueRule(() -> value == null,
+                Violation.of(field, "validation.error.value.is.not.null", "The value is not null."));
     }
 
     /**
@@ -89,6 +51,51 @@ public class ValidationRule {
     }
 
     /**
+     * Checks if the value is not null.
+     *
+     * @param field path to field
+     * @param value value to be checked
+     * @return violation or success
+     */
+    public static ViolationProvider notNull(String field, Object value) {
+        return () -> notNullRule(field, value);
+    }
+
+    /**
+     * See {@link ValidationRule#notNull(java.lang.String, java.lang.Object)}
+     */
+    public static Optional<Violation> notNullRule(String field, Object value) {
+        return isTrueRule(() -> value != null, Violation.of(
+                field,
+                VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
+                VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
+    }
+
+    /**
+     * Checks if the value is empty.
+     *
+     * @param field path to field
+     * @param value value to be checked
+     * @return violation or success
+     */
+    public static ViolationProvider empty(String field, CharSequence value) {
+        return () -> emptyRule(field, value);
+    }
+
+    /**
+     * Checks if the condition is evaluated to true. If not then the violation
+     * will be returned.
+     *
+     * @param condition condition
+     * @param violation violation
+     * @return violation or success
+     * @throws IllegalArgumentException in case condition or violation is null
+     */
+    public static ViolationProvider isTrue(BooleanSupplier condition, Violation violation) {
+        return () -> isTrueRule(condition, violation);
+    }
+
+    /**
      * Checks if the condition is evaluated to false. If not then the violation
      * will be returned.
      *
@@ -102,46 +109,23 @@ public class ValidationRule {
     }
 
     /**
-     * See {@link ValidationRule#isFalse(java.util.function.BooleanSupplier, com.github.danitutu.painlessjavavalidator.Violation)}
-     */
-    public static Optional<Violation> isFalseRule(BooleanSupplier condition, Violation violation) {
-        if (condition == null) {
-            throw new IllegalArgumentException("Condition cannot be null");
-        }
-        if (violation == null) {
-            throw new IllegalArgumentException("Violation provider cannot be null");
-        }
-        return !condition.getAsBoolean() ? Optional.empty() : Optional.of(violation);
-    }
-
-    /**
-     * Checks if the value is empty.
-     *
-     * @param field path to field
-     * @param value     value to be checked
-     * @return violation or success
-     */
-    public static ViolationProvider empty(String field, CharSequence value) {
-        return () -> emptyRule(field, value);
-    }
-
-    /**
      * See {@link ValidationRule#empty(java.lang.String, java.lang.CharSequence)}
      */
     public static Optional<Violation> emptyRule(String field, CharSequence value) {
-        if (!empty(value)) {
-            return Optional.of(Violation.of(field,
-                    VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
-                    VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
-        }
-        return Optional.empty();
+        return isTrueRule(() -> empty(value), Violation.of(field,
+                VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
+                VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
+    }
+
+    private static boolean empty(final CharSequence cs) {
+        return cs == null || cs.length() == 0;
     }
 
     /**
      * Checks if the value is not empty.
      *
      * @param field path to field
-     * @param value     value to be checked
+     * @param value value to be checked
      * @return violation or success
      */
     public static ViolationProvider notEmpty(String field, CharSequence value) {
@@ -152,18 +136,25 @@ public class ValidationRule {
      * See {@link ValidationRule#notEmpty(java.lang.String, java.lang.CharSequence)}
      */
     public static Optional<Violation> notEmptyRule(String field, CharSequence value) {
-        if (empty(value)) {
-            return Optional
-                    .of(Violation.of(field, "validation.error.value.is.not.empty", "The value is not empty."));
+        return isFalseRule(() -> empty(value),
+                Violation.of(field, "validation.error.value.is.not.empty", "The value is not empty."));
+    }
+
+    /**
+     * See {@link ValidationRule#isFalse(java.util.function.BooleanSupplier, com.github.danitutu.painlessjavavalidator.Violation)}
+     */
+    public static Optional<Violation> isFalseRule(BooleanSupplier condition, Violation violation) {
+        if (condition == null) {
+            throw new IllegalArgumentException("Condition cannot be null");
         }
-        return Optional.empty();
+        return isTrueRule(() -> !condition.getAsBoolean(), violation);
     }
 
     /**
      * Checks if the value is blank.
      *
      * @param field path to field
-     * @param value     value to be checked
+     * @param value value to be checked
      * @return violation or success
      */
     public static ViolationProvider blank(String field, CharSequence value) {
@@ -174,17 +165,27 @@ public class ValidationRule {
      * See {@link ValidationRule#blank(java.lang.String, java.lang.CharSequence)}
      */
     public static Optional<Violation> blankRule(String field, CharSequence value) {
-        if (!isBlank(value)) {
-            return Optional.of(Violation.of(field, "validation.error.value.is.not.blank", "The value is empty."));
+        return isTrueRule(() -> isBlank(value),
+                Violation.of(field, "validation.error.value.is.not.blank", "The value is empty."));
+    }
+
+    private static boolean isBlank(CharSequence cs) {
+        int strLen;
+        if (cs != null && (strLen = cs.length()) != 0) {
+            for (int i = 0; i < strLen; ++i) {
+                if (!Character.isWhitespace(cs.charAt(i))) {
+                    return false;
+                }
+            }
         }
-        return Optional.empty();
+        return true;
     }
 
     /**
      * Checks if the value is not blank.
      *
      * @param field path to field
-     * @param value     value to be checked
+     * @param value value to be checked
      * @return violation or success
      */
     public static ViolationProvider notBlank(String field, CharSequence value) {
@@ -195,12 +196,9 @@ public class ValidationRule {
      * See {@link ValidationRule#notBlank(java.lang.String, java.lang.CharSequence)}
      */
     public static Optional<Violation> notBlankRule(String field, CharSequence value) {
-        if (isBlank(value)) {
-            return Optional.of(Violation.of(field,
-                    VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
-                    VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
-        }
-        return Optional.empty();
+        return isFalseRule(() -> isBlank(value), Violation.of(field,
+                VALIDATION_ERROR_VALUE_IS_REQUIRED_MESSAGE,
+                VALIDATION_ERROR_VALUE_IS_REQUIRED_DETAILS));
     }
 
     /**
@@ -209,9 +207,9 @@ public class ValidationRule {
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
      *
      * @param field path to field
-     * @param value     value to be checked
-     * @param min       inferior limit
-     * @param max       superior limit
+     * @param value value to be checked
+     * @param min   inferior limit
+     * @param max   superior limit
      * @return violation or success
      * @throws IllegalArgumentException if min is greater than max.
      */
@@ -230,18 +228,26 @@ public class ValidationRule {
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
-        if (value.length() < min || value.length() > max) {
+        return isTrueRule(() -> value.length() >= min && value.length() <= max, () -> {
             Map<String, Object> map = new HashMap<>();
             map.put("min", min);
             map.put("max", max);
-            return Optional.of(Violation.of(
+            return Violation.of(
                     field,
                     "validation.error.string.value.not.between",
                     "Value is not in range.",
                     map
-            ));
-        }
-        return Optional.empty();
+            );
+        });
+    }
+
+    /**
+     * See {@link #isTrue(BooleanSupplier, Violation)}
+     *
+     * @param violation violation provider
+     */
+    public static Optional<Violation> isTrueRule(BooleanSupplier condition, Supplier<Violation> violation) {
+        return isTrueRule(condition, violation.get());
     }
 
     /**
@@ -249,8 +255,8 @@ public class ValidationRule {
      * against {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
      *
      * @param field path to field
-     * @param value     value to be checked
-     * @param regex     a valid regex pattern
+     * @param value value to be checked
+     * @param regex a valid regex pattern
      * @return violation or success
      */
     public static ViolationProvider matchRegex(String field, String value, String regex) {
@@ -265,15 +271,12 @@ public class ValidationRule {
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
-        if (!value.matches(regex)) {
-            return Optional.of(Violation.of(
-                    field,
-                    "validation.error.string.value.regex.no.match",
-                    "Value does not match the expected regex.",
-                    singletonMap("regexPattern", regex)
-            ));
-        }
-        return Optional.empty();
+        return isTrueRule(() -> value.matches(regex), Violation.of(
+                field,
+                "validation.error.string.value.regex.no.match",
+                "Value does not match the expected regex.",
+                singletonMap("regexPattern", regex)
+        ));
     }
 
     /**
@@ -282,9 +285,9 @@ public class ValidationRule {
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
      *
      * @param field path to field
-     * @param value     value to be checked
-     * @param min       inferior limit
-     * @param max       superior limit
+     * @param value value to be checked
+     * @param min   inferior limit
+     * @param max   superior limit
      * @return violation or success
      * @throws IllegalArgumentException if min is greater than max.
      */
@@ -303,18 +306,17 @@ public class ValidationRule {
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
-        if (value < min || value > max) {
+        return isTrueRule(() -> value >= min && value <= max, () -> {
             Map<String, Object> map = new HashMap<>();
             map.put("min", min);
             map.put("max", max);
-            return Optional.of(Violation.of(
+            return Violation.of(
                     field,
                     "validation.error.integer.value.not.in.range",
                     "Value is not in range.",
                     map
-            ));
-        }
-        return Optional.empty();
+            );
+        });
     }
 
     /**
@@ -323,8 +325,8 @@ public class ValidationRule {
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
      *
      * @param field path to field
-     * @param value     value to be checked
-     * @param min       inferior limit
+     * @param value value to be checked
+     * @param min   inferior limit
      * @return violation or success
      */
     public static ViolationProvider min(String field, Integer value, int min) {
@@ -339,15 +341,12 @@ public class ValidationRule {
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
-        if (value < min) {
-            return Optional.of(Violation.of(
-                    field,
-                    "validation.error.integer.value.smaller.than.min",
-                    "Value is smaller than min.",
-                    singletonMap("min", min)
-            ));
-        }
-        return Optional.empty();
+        return isTrueRule(() -> value >= min, Violation.of(
+                field,
+                "validation.error.integer.value.smaller.than.min",
+                "Value is smaller than min.",
+                singletonMap("min", min)
+        ));
     }
 
     /**
@@ -356,8 +355,8 @@ public class ValidationRule {
      * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
      *
      * @param field path to field
-     * @param value     value to be checked
-     * @param max       superior limit
+     * @param value value to be checked
+     * @param max   superior limit
      * @return violation or success
      */
     public static ViolationProvider max(String field, Integer value, int max) {
@@ -372,15 +371,12 @@ public class ValidationRule {
         if (isNotNull.isPresent()) {
             return isNotNull;
         }
-        if (value > max) {
-            return Optional.of(Violation.of(
-                    field,
-                    "validation.error.integer.value.greater.than.max",
-                    "Value is greater than max.",
-                    singletonMap("max", max)
-            ));
-        }
-        return Optional.empty();
+        return isTrueRule(() -> value <= max, Violation.of(
+                field,
+                "validation.error.integer.value.greater.than.max",
+                "Value is greater than max.",
+                singletonMap("max", max)
+        ));
     }
 
     /**
@@ -390,33 +386,15 @@ public class ValidationRule {
      * If other is null then a violation will be returned.
      *
      * @param field path to field
-     * @param value     value to be checked
-     * @param other     other value
-     * @param <T>       compared object type
+     * @param value value to be checked
+     * @param other other value
+     * @param <T>   compared object type
      * @return violation or success
      */
     public static <T> ViolationProvider after(String field,
                                               Comparable<T> value,
                                               T other) {
         return () -> afterRule(field, value, other);
-    }
-
-    /**
-     * See {@link ValidationRule#after(java.lang.String, java.lang.Comparable, java.lang.Object)}
-     */
-    public static <T> Optional<Violation> afterRule(String field,
-                                                    Comparable<T> value,
-                                                    T other) {
-        return compareComparableRule(
-                field, value,
-                other,
-                (tComparable, t) -> value.compareTo(other) <= 0,
-                () -> Violation.of(
-                        field,
-                        "validation.error.value.is.before.or.equal",
-                        "The value is before or equal the other value.",
-                        singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
-                ));
     }
 
     /**
@@ -439,10 +417,34 @@ public class ValidationRule {
         if (valueIsNotNull.isPresent()) {
             return valueIsNotNull;
         }
-        if (other == null || compareFunc.test(value, other)) {
-            return Optional.of(violationFunc.get());
-        }
-        return Optional.empty();
+        return isFalseRule(() -> other == null || compareFunc.test(value, other), violationFunc);
+    }
+
+    /**
+     * See {@link ValidationRule#after(java.lang.String, java.lang.Comparable, java.lang.Object)}
+     */
+    public static <T> Optional<Violation> afterRule(String field,
+                                                    Comparable<T> value,
+                                                    T other) {
+        return compareComparableRule(
+                field, value,
+                other,
+                (tComparable, t) -> value.compareTo(other) <= 0,
+                () -> Violation.of(
+                        field,
+                        "validation.error.value.is.before.or.equal",
+                        "The value is before or equal the other value.",
+                        singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())
+                ));
+    }
+
+    /**
+     * See {@link ValidationRule#isFalse(java.util.function.BooleanSupplier, com.github.danitutu.painlessjavavalidator.Violation)}
+     *
+     * @param violation violation provider
+     */
+    public static Optional<Violation> isFalseRule(BooleanSupplier condition, Supplier<Violation> violation) {
+        return isTrueRule(() -> !condition.getAsBoolean(), violation);
     }
 
     /**
@@ -488,9 +490,9 @@ public class ValidationRule {
      * If other is null then a violation will be returned.
      *
      * @param field path to field
-     * @param value     value to be checked
-     * @param other     other value
-     * @param <T>       compared object type
+     * @param value value to be checked
+     * @param other other value
+     * @param <T>   compared object type
      * @return violation or success
      */
     public static <T> ViolationProvider before(String field,
@@ -524,9 +526,9 @@ public class ValidationRule {
      * If other is null then a violation will be returned.
      *
      * @param field path to field
-     * @param value     value to be checked
-     * @param other     other value
-     * @param <T>       compared object type
+     * @param value value to be checked
+     * @param other other value
+     * @param <T>   compared object type
      * @return violation or success
      */
     public static <T> ViolationProvider beforeOrEqualsTo(String field,
@@ -560,9 +562,9 @@ public class ValidationRule {
      * If other is null then a violation will be returned.
      *
      * @param field path to field
-     * @param value     value to be checked
-     * @param other     other value
-     * @param <T>       compared object type
+     * @param value value to be checked
+     * @param other other value
+     * @param <T>   compared object type
      * @return violation or success
      */
     public static <T> ViolationProvider equalsTo(String field,
@@ -596,8 +598,8 @@ public class ValidationRule {
      * If other is null then a violation will be returned.
      *
      * @param field path to field
-     * @param value     value to be checked
-     * @param other     other value
+     * @param value value to be checked
+     * @param other other value
      * @return violation or success
      */
     public static ViolationProvider equalsTo(String field, String value, String other) {
@@ -621,29 +623,24 @@ public class ValidationRule {
     }
 
     /**
-     * Returns violation in case compare function is true. For the first value
-     * a notNull validation will also be applied.
+     * Compares the two string against a provided rule. If the validation rule
+     * is evaluated to true then the provided violation will be returned.
      *
      * @param field         path to field
-     * @param value         first value
-     * @param other         second value
-     * @param compareFunc   function that compares the two values
-     * @param violationFunc the Violation that will be returned
+     * @param value         value to be checked
+     * @param other         other value
+     * @param compareFunc   comparison function
+     * @param violationFunc violation to be retrieved when compareFunc evaluates
+     *                      to true
      * @return violation or success
      */
-    public static Optional<Violation> compareStringsRule(
-            String field, String value,
+    public static ViolationProvider compareStrings(
+            String field,
+            String value,
             String other,
             BiPredicate<String, String> compareFunc,
             Supplier<Violation> violationFunc) {
-        Optional<Violation> isNotNull = notNullRule(field, value);
-        if (isNotNull.isPresent()) {
-            return isNotNull;
-        }
-        if (compareFunc.test(value, other)) {
-            return Optional.of(violationFunc.get());
-        }
-        return Optional.empty();
+        return () -> compareStringsRule(field, value, other, compareFunc, violationFunc);
     }
 
     /**
@@ -677,24 +674,26 @@ public class ValidationRule {
     }
 
     /**
-     * Compares the two string against a provided rule. If the validation rule
-     * is evaluated to true then the provided violation will be returned.
+     * Returns violation in case compare function is true. For the first value
+     * a notNull validation will also be applied.
      *
-     * @param field     path to field
-     * @param value         value to be checked
-     * @param other         other value
-     * @param compareFunc   comparison function
-     * @param violationFunc violation to be retrieved when compareFunc evaluates
-     *                      to true
+     * @param field         path to field
+     * @param value         first value
+     * @param other         second value
+     * @param compareFunc   function that compares the two values
+     * @param violationFunc the Violation that will be returned
      * @return violation or success
      */
-    public static ViolationProvider compareStrings(
-            String field,
-            String value,
+    public static Optional<Violation> compareStringsRule(
+            String field, String value,
             String other,
             BiPredicate<String, String> compareFunc,
             Supplier<Violation> violationFunc) {
-        return () -> compareStringsRule(field, value, other, compareFunc, violationFunc);
+        Optional<Violation> isNotNull = notNullRule(field, value);
+        if (isNotNull.isPresent()) {
+            return isNotNull;
+        }
+        return isFalseRule(() -> compareFunc.test(value, other), violationFunc);
     }
 
     public static <T> ViolationProvider compareComparable(
@@ -703,21 +702,5 @@ public class ValidationRule {
             BiPredicate<Comparable<T>, T> compareFunc,
             Supplier<Violation> violationFunc) {
         return () -> compareComparableRule(field, value, other, compareFunc, violationFunc);
-    }
-
-    private static boolean isBlank(CharSequence cs) {
-        int strLen;
-        if (cs != null && (strLen = cs.length()) != 0) {
-            for (int i = 0; i < strLen; ++i) {
-                if (!Character.isWhitespace(cs.charAt(i))) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private static boolean empty(final CharSequence cs) {
-        return cs == null || cs.length() == 0;
     }
 }
