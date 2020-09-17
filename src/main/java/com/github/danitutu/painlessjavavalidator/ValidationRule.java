@@ -31,7 +31,7 @@ public class ValidationRule {
   }
 
   /**
-   * See {@link ValidationRule#isNull(java.lang.String, java.lang.Object)}
+   * See {@link #isNull(String, Object)}
    */
   public static Optional<Violation> isNullRule(String field, Object value) {
     return isTrueRule(
@@ -39,10 +39,7 @@ public class ValidationRule {
             Violation.of(field, "validation.error.value.is.not.null", "The value is not null."));
   }
 
-  /**
-   * See {@link ValidationRule#isTrue(java.util.function.BooleanSupplier,
-   * com.github.danitutu.painlessjavavalidator.Violation)}
-   */
+  /** See {@link #isTrue(BooleanSupplier, Violation)} */
   public static Optional<Violation> isTrueRule(BooleanSupplier condition, Violation violation) {
     if (condition == null) {
       throw new IllegalArgumentException("Condition cannot be null");
@@ -64,9 +61,7 @@ public class ValidationRule {
     return () -> notNullRule(field, value);
   }
 
-  /**
-   * See {@link ValidationRule#empty(java.lang.String, java.lang.CharSequence)}
-   */
+  /** See {@link #empty(String, CharSequence)} */
   public static Optional<Violation> emptyRule(String field, CharSequence value) {
     return isTrueRule(
             () -> empty(value),
@@ -87,9 +82,7 @@ public class ValidationRule {
     return () -> emptyRule(field, value);
   }
 
-  /**
-   * See {@link ValidationRule#notEmpty(java.lang.String, java.lang.CharSequence)}
-   */
+  /** See {@link #notEmpty(String, CharSequence)} */
   public static Optional<Violation> notEmptyRule(String field, CharSequence value) {
     return isFalseRule(
             () -> empty(value),
@@ -124,10 +117,7 @@ public class ValidationRule {
     return () -> isFalseRule(condition, violation);
   }
 
-  /**
-   * See {@link ValidationRule#isFalse(java.util.function.BooleanSupplier,
-   * com.github.danitutu.painlessjavavalidator.Violation)}
-   */
+  /** See {@link #isFalse(BooleanSupplier, Violation)} */
   public static Optional<Violation> isFalseRule(BooleanSupplier condition, Violation violation) {
     if (condition == null) {
       throw new IllegalArgumentException("Condition cannot be null");
@@ -146,9 +136,7 @@ public class ValidationRule {
     return () -> notEmptyRule(field, value);
   }
 
-  /**
-   * See {@link ValidationRule#blank(java.lang.String, java.lang.CharSequence)}
-   */
+  /** See {@link #blank(String, CharSequence)} */
   public static Optional<Violation> blankRule(String field, CharSequence value) {
     return isTrueRule(
             () -> isBlank(value),
@@ -166,9 +154,7 @@ public class ValidationRule {
     return () -> blankRule(field, value);
   }
 
-  /**
-   * See {@link ValidationRule#notBlank(java.lang.String, java.lang.CharSequence)}
-   */
+  /** See {@link #notBlank(String, CharSequence)} */
   public static Optional<Violation> notBlankRule(String field, CharSequence value) {
     return isFalseRule(
             () -> isBlank(value),
@@ -203,8 +189,7 @@ public class ValidationRule {
 
   /**
    * Checks if the value has the length between or equals to one of two limits. The limits can be
-   * equal. The value will be checked against {@link ValidationRule#notNullRule(java.lang.String,
-   * java.lang.Object)}
+   * equal. The value will be checked against {@link #notNullRule(String, Object)}
    *
    * @param field path to field
    * @param value value to be checked
@@ -219,7 +204,7 @@ public class ValidationRule {
   }
 
   /**
-   * See {@link ValidationRule#lengthBetween(java.lang.String, java.lang.CharSequence, int, int)}
+   * See {@link #lengthBetween(String, CharSequence, int, int)}
    */
   public static Optional<Violation> lengthBetweenRule(
           String field, CharSequence value, int min, int max) {
@@ -241,9 +226,7 @@ public class ValidationRule {
             });
   }
 
-  /**
-   * See {@link ValidationRule#notNull(java.lang.String, java.lang.Object)}
-   */
+  /** See {@link #notNull(String, Object)} */
   public static Optional<Violation> notNullRule(String field, Object value) {
     return isTrueRule(
             () -> value != null,
@@ -265,7 +248,7 @@ public class ValidationRule {
 
   /**
    * Checks if the value matches the provided regex. The value will be checked against {@link
-   * ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
+   * #notNullRule(String, Object)}
    *
    * @param field path to field
    * @param value value to be checked
@@ -276,7 +259,7 @@ public class ValidationRule {
     return () -> matchRegexRule(field, value, regex);
   }
 
-  /** See {@link ValidationRule#matchRegex(java.lang.String, java.lang.String, java.lang.String)} */
+  /** See {@link #matchRegex(String, String, String)} */
   public static Optional<Violation> matchRegexRule(String field, String value, String regex) {
     Optional<Violation> isNotNull = notNullRule(field, value);
     if (isNotNull.isPresent()) {
@@ -293,8 +276,7 @@ public class ValidationRule {
 
   /**
    * Checks if the value is between or equals to one of the two limits. The limits can be equal. The
-   * value will be also checked against {@link ValidationRule#notNullRule(java.lang.String,
-   * java.lang.Object)}
+   * value will be also checked against {@link #notNullRule(String, Object)}
    *
    * @param field path to field
    * @param value value to be checked
@@ -307,7 +289,7 @@ public class ValidationRule {
     return () -> inRangeRule(field, value, min, max);
   }
 
-  /** See {@link ValidationRule#inRange(java.lang.String, java.lang.Integer, int, int)} */
+  /** See {@link #inRange(String, Integer, int, int)} */
   public static Optional<Violation> inRangeRule(String field, Integer value, int min, int max) {
     if (min > max) {
       throw new IllegalArgumentException("min is greater than max");
@@ -329,7 +311,7 @@ public class ValidationRule {
 
   /**
    * Checks if the value is grater than or equals to the provided inferior limit. The value will be
-   * also checked against {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
+   * also checked against {@link #notNullRule(String, Object)}
    *
    * @param field path to field
    * @param value value to be checked
@@ -340,7 +322,7 @@ public class ValidationRule {
     return () -> minRule(field, value, min);
   }
 
-  /** See {@link ValidationRule#min(java.lang.String, java.lang.Integer, int)} */
+  /** See {@link #min(String, Integer, int)} */
   public static Optional<Violation> minRule(String field, Integer value, int min) {
     Optional<Violation> isNotNull = notNullRule(field, value);
     if (isNotNull.isPresent()) {
@@ -357,7 +339,7 @@ public class ValidationRule {
 
   /**
    * Checks if the value is smaller than or equals to the provided superior limit. The value will be
-   * also checked against {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}
+   * also checked against {@link #notNullRule(String, Object)}
    *
    * @param field path to field
    * @param value value to be checked
@@ -368,7 +350,7 @@ public class ValidationRule {
     return () -> maxRule(field, value, max);
   }
 
-  /** See {@link ValidationRule#max(java.lang.String, java.lang.Integer, int)} */
+  /** See {@link #max(String, Integer, int)} */
   public static Optional<Violation> maxRule(String field, Integer value, int max) {
     Optional<Violation> isNotNull = notNullRule(field, value);
     if (isNotNull.isPresent()) {
@@ -385,8 +367,8 @@ public class ValidationRule {
 
   /**
    * Checks if the compared value is strictly after the other. The value will be also checked
-   * against {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}. If other is
-   * null then a violation will be returned.
+   * against {@link #notNullRule(String, Object)}. If other is null then a violation will be
+   * returned.
    *
    * @param field path to field
    * @param value value to be checked
@@ -398,7 +380,7 @@ public class ValidationRule {
     return () -> afterRule(field, value, other);
   }
 
-  /** See {@link ValidationRule#after(java.lang.String, java.lang.Comparable, java.lang.Object)} */
+  /** See {@link #after(String, Comparable, Object)} */
   public static <T> Optional<Violation> afterRule(String field, Comparable<T> value, T other) {
     return compareComparableRule(
             field,
@@ -438,8 +420,7 @@ public class ValidationRule {
   }
 
   /**
-   * See {@link ValidationRule#isFalse(java.util.function.BooleanSupplier,
-   * com.github.danitutu.painlessjavavalidator.Violation)}
+   * See {@link #isFalse(BooleanSupplier, Violation)}
    *
    * @param violation violation provider
    */
@@ -450,8 +431,8 @@ public class ValidationRule {
 
   /**
    * Checks if the compared value is after or equals to the other. The value will be also checked
-   * against {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}. If other is
-   * null then a violation will be returned.
+   * against {@link #notNullRule(String, Object)}. If other is null then a violation will be
+   * returned.
    *
    * @param field path to field
    * @param value value to be checked
@@ -464,8 +445,7 @@ public class ValidationRule {
   }
 
   /**
-   * See {@link ValidationRule#afterOrEqualsTo(java.lang.String, java.lang.Comparable,
-   * java.lang.Object)}
+   * See {@link #afterOrEqualsTo(String, Comparable, Object)}
    */
   public static <T> Optional<Violation> afterOrEqualsToRule(
           String field, Comparable<T> value, T other) {
@@ -484,8 +464,8 @@ public class ValidationRule {
 
   /**
    * Checks if the compared value is strictly before the other. The value will be also checked
-   * against {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}. If other is
-   * null then a violation will be returned.
+   * against {@link #notNullRule(String, Object)}. If other is null then a violation will be
+   * returned.
    *
    * @param field path to field
    * @param value value to be checked
@@ -497,9 +477,7 @@ public class ValidationRule {
     return () -> beforeRule(field, value, other);
   }
 
-  /**
-   * See {@link ValidationRule#before(java.lang.String, java.lang.Comparable, java.lang.Object)}
-   */
+  /** See {@link #before(String, Comparable, Object)} */
   public static <T> Optional<Violation> beforeRule(String field, Comparable<T> value, T other) {
     return compareComparableRule(
             field,
@@ -516,8 +494,8 @@ public class ValidationRule {
 
   /**
    * Checks if the compared value is before or equals to the other. The value will be also checked
-   * against {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}. If other is
-   * null then a violation will be returned.
+   * against {@link #notNullRule(String, Object)}. If other is null then a violation will be
+   * returned.
    *
    * @param field path to field
    * @param value value to be checked
@@ -530,8 +508,7 @@ public class ValidationRule {
   }
 
   /**
-   * See {@link ValidationRule#beforeOrEqualsTo(java.lang.String, java.lang.Comparable,
-   * java.lang.Object)}
+   * See {@link #beforeOrEqualsTo(String, Comparable, Object)}
    */
   public static <T> Optional<Violation> beforeOrEqualsToRule(
           String field, Comparable<T> value, T other) {
@@ -550,8 +527,7 @@ public class ValidationRule {
 
   /**
    * Checks if the compared value equals the other. The value will be also checked against {@link
-   * ValidationRule#notNullRule(java.lang.String, java.lang.Object)}. If other is null then a
-   * violation will be returned.
+   * #notNullRule(String, Object)}. If other is null then a violation will be returned.
    *
    * @param field path to field
    * @param value value to be checked
@@ -563,9 +539,7 @@ public class ValidationRule {
     return () -> equalsToRule(field, value, other);
   }
 
-  /**
-   * See {@link ValidationRule#equalsTo(java.lang.String, java.lang.Comparable, java.lang.Object)}
-   */
+  /** See {@link #equalsTo(String, Comparable, Object)} */
   public static <T> Optional<Violation> equalsToRule(String field, Comparable<T> value, T other) {
     return compareComparableRule(
             field,
@@ -575,15 +549,14 @@ public class ValidationRule {
             () ->
                     Violation.of(
                             field,
-                "validation.error.value.is.not.equal",
-                "The value is not equal to the other value.",
-                singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())));
+                            "validation.error.value.is.not.equal",
+                            "The value is not equal to the other value.",
+                            singletonMap(PARAM_NAME_OTHER, other == null ? null : other.toString())));
   }
 
   /**
    * Checks if the compared value equals the other. The value will be also checked against {@link
-   * ValidationRule#notNullRule(java.lang.String, java.lang.Object)}. If other is null then a
-   * violation will be returned.
+   * #notNullRule(String, Object)}. If other is null then a violation will be returned.
    *
    * @param field path to field
    * @param value value to be checked
@@ -594,9 +567,7 @@ public class ValidationRule {
     return () -> equalsToRule(field, value, other);
   }
 
-  /**
-   * See {@link ValidationRule#equalsTo(java.lang.String, java.lang.String, java.lang.String)}
-   */
+  /** See {@link #equalsTo(String, String, String)} */
   public static Optional<Violation> equalsToRule(String field, String value, String other) {
     return compareStringsRule(
             field,
@@ -639,10 +610,10 @@ public class ValidationRule {
    * Compares the two string against a provided rule. If the validation rule is evaluated to true
    * then the provided violation will be returned.
    *
-   * @param field         path to field
-   * @param value         value to be checked
-   * @param other         other value
-   * @param compareFunc   comparison function
+   * @param field path to field
+   * @param value value to be checked
+   * @param other other value
+   * @param compareFunc comparison function
    * @param violationFunc violation to be retrieved when compareFunc evaluates to true
    * @return violation or success
    */
@@ -657,8 +628,7 @@ public class ValidationRule {
 
   /**
    * Checks if the compared value is not equal to the other. The value will be also checked against
-   * {@link ValidationRule#notNullRule(java.lang.String, java.lang.Object)}. If other is null then a
-   * violation will be returned.
+   * {@link #notNullRule(String, Object)}. If other is null then a violation will be returned.
    *
    * @param field path to field
    * @param value value to be checked
@@ -670,7 +640,7 @@ public class ValidationRule {
   }
 
   /**
-   * See {@link ValidationRule#notEqualsTo(java.lang.String, java.lang.String, java.lang.String)}
+   * See {@link #notEqualsTo(String, String, String)}
    */
   public static Optional<Violation> notEqualsToRule(String field, String value, String other) {
     return compareStringsRule(
@@ -681,9 +651,9 @@ public class ValidationRule {
             () ->
                     Violation.of(
                             field,
-                            "validation.error.string.is.equal",
-                            "The value is equal to the other value.",
-                            singletonMap(PARAM_NAME_OTHER, other)));
+                "validation.error.string.is.equal",
+                "The value is equal to the other value.",
+                singletonMap(PARAM_NAME_OTHER, other)));
   }
 
   public static <T> ViolationProvider compareComparable(
