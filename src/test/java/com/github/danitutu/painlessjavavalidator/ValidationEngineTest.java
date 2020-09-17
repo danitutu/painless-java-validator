@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.github.danitutu.painlessjavavalidator.ValidationEngine.validateAllAndStopIfViolations;
+import static com.github.danitutu.painlessjavavalidator.ValidationRule.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ValidationEngineTest {
@@ -15,40 +16,40 @@ class ValidationEngineTest {
   @DisplayName("WHEN all return violations THEN expect all violations")
   void validateAll1() {
     ViolationProvider[] validationRules = {
-            ValidationRule.notNull("notNullCheck", null),
-            ValidationRule.notBlank("notBlankCheck1", "   "),
-            ValidationRule.lengthBetween("lengthBetweenCheck", "a string", 10, 20),
-            ValidationRule.matchRegex("regexCheck", "a", "[0-9]+"),
-            ValidationRule.inRange("rangeCheck", 5, 6, 7),
-            ValidationRule.min("minCheck", 5, 6),
-            ValidationRule.max("maxCheck", 6, 5),
-            ValidationRule.after("isAfterCheck", 5, 5),
-            ValidationRule.afterOrEqualsTo("isAfterOrEqualsToCheck", 4, 5),
-            ValidationRule.before("isBeforeCheck", 5, 5),
-            ValidationRule.beforeOrEqualsTo("isBeforeOrEqualsToCheck", 6, 5),
-            ValidationRule.equalsTo("equalsToStringCheck", "s1", "s2"),
-            ValidationRule.equalsTo("equalsToComparableCheck", 5, 6),
-            ValidationRule.notEqualsTo("notEqualsToStringCheck", "s1", "s1"),
-            ValidationRule.compareStrings(
+            notNull("notNullCheck", null),
+            notBlank("notBlankCheck1", "   "),
+            lengthBetween("lengthBetweenCheck", "a string", 10, 20),
+            matchRegex("regexCheck", "a", "[0-9]+"),
+            inRange("rangeCheck", 5, 6, 7),
+            min("minCheck", 5, 6),
+            max("maxCheck", 6, 5),
+            after("isAfterCheck", 5, 5),
+            afterOrEqualsTo("isAfterOrEqualsToCheck", 4, 5),
+            before("isBeforeCheck", 5, 5),
+            beforeOrEqualsTo("isBeforeOrEqualsToCheck", 6, 5),
+            equalsTo("equalsToStringCheck", "s1", "s2"),
+            equalsTo("equalsToComparableCheck", 5, 6),
+            notEqualsTo("notEqualsToStringCheck", "s1", "s1"),
+            compareStrings(
                     "compareStringsCheck",
                     "s1",
                     "s2",
                     (s, s2) -> !s.equals(s2),
                     () -> Violation.of("compareStringsCheck", null, null, null)),
-            ValidationRule.compareComparable(
+            compareComparable(
                     "compareComparablesCheck",
                     1,
                     2,
                     (s, s2) -> !s.equals(s2),
                     () -> Violation.of("compareComparablesCheck", null, null, null)),
-            ValidationRule.isNull("nullCheck", new Object()),
-            ValidationRule.empty("emptyCheck", "s"),
-            ValidationRule.notEmpty("notEmptyCheck", ""),
-            ValidationRule.blank("blankCheck", "s"),
-            ValidationRule.notBlank("notBlankCheck2", ""),
-            ValidationRule.notBlank("notBlankCheck3", null),
-            ValidationRule.isTrue(() -> false, Violation.of("isTrueCheck", null, null)),
-            ValidationRule.isFalse(() -> true, Violation.of("isFalseCheck", null, null)),
+            isNull("nullCheck", new Object()),
+            empty("emptyCheck", "s"),
+            notEmpty("notEmptyCheck", ""),
+            blank("blankCheck", "s"),
+            notBlank("notBlankCheck2", ""),
+            notBlank("notBlankCheck3", null),
+            isTrue(() -> false, Violation.of("isTrueCheck", null, null)),
+            isFalse(() -> true, Violation.of("isFalseCheck", null, null)),
     };
 
     List<Violation> violations = ValidationEngine.validateAll(validationRules);
@@ -83,39 +84,39 @@ class ValidationEngineTest {
   @DisplayName("WHEN all pass THEN expect no violation")
   void validateAll2() {
     ViolationProvider[] validationRules = {
-            ValidationRule.notNull("notNullCheck", new Object()),
-            ValidationRule.notBlank("notBlankCheck", "s"),
-            ValidationRule.lengthBetween("lengthBetweenCheck", "a string", 0, 20),
-            ValidationRule.matchRegex("regexCheck", "a", "[a-z]+"),
-            ValidationRule.inRange("rangeCheck", 6, 6, 7),
-            ValidationRule.min("minCheck", 6, 6),
-            ValidationRule.max("maxCheck", 5, 5),
-            ValidationRule.after("isAfterCheck", 6, 5),
-            ValidationRule.afterOrEqualsTo("isAfterOrEqualsToCheck", 5, 5),
-            ValidationRule.before("isBeforeCheck", 4, 5),
-            ValidationRule.beforeOrEqualsTo("isBeforeOrEqualsToCheck", 5, 5),
-            ValidationRule.equalsTo("equalsToStringCheck", "s1", "s1"),
-            ValidationRule.equalsTo("equalsToComparableCheck", 6, 6),
-            ValidationRule.notEqualsTo("notEqualsToStringCheck", "s1", "s2"),
-            ValidationRule.compareStrings(
+            notNull("notNullCheck", new Object()),
+            notBlank("notBlankCheck", "s"),
+            lengthBetween("lengthBetweenCheck", "a string", 0, 20),
+            matchRegex("regexCheck", "a", "[a-z]+"),
+            inRange("rangeCheck", 6, 6, 7),
+            min("minCheck", 6, 6),
+            max("maxCheck", 5, 5),
+            after("isAfterCheck", 6, 5),
+            afterOrEqualsTo("isAfterOrEqualsToCheck", 5, 5),
+            before("isBeforeCheck", 4, 5),
+            beforeOrEqualsTo("isBeforeOrEqualsToCheck", 5, 5),
+            equalsTo("equalsToStringCheck", "s1", "s1"),
+            equalsTo("equalsToComparableCheck", 6, 6),
+            notEqualsTo("notEqualsToStringCheck", "s1", "s2"),
+            compareStrings(
                     "compareStringsCheck",
                     "s1",
                     "s1",
                     (s, s2) -> !s.equals(s2),
                     () -> Violation.of("compareStringsCheck", null, null, null)),
-            ValidationRule.compareComparable(
+            compareComparable(
                     "compareComparablesCheck",
                     1,
                     1,
                     (s, s2) -> !s.equals(s2),
                     () -> Violation.of("compareComparablesCheck", null, null, null)),
-            ValidationRule.isNull("nullCheck", null),
-            ValidationRule.empty("emptyCheck", ""),
-            ValidationRule.blank("blankCheck1", ""),
-            ValidationRule.blank("blankCheck2", "  "),
-            ValidationRule.blank("blankCheck3", null),
-            ValidationRule.isTrue(() -> true, Violation.of("isTrueCheck", null, null)),
-            ValidationRule.isFalse(() -> false, Violation.of("isFalseCheck", null, null)),
+            isNull("nullCheck", null),
+            empty("emptyCheck", ""),
+            blank("blankCheck1", ""),
+            blank("blankCheck2", "  "),
+            blank("blankCheck3", null),
+            isTrue(() -> true, Violation.of("isTrueCheck", null, null)),
+            isFalse(() -> false, Violation.of("isFalseCheck", null, null)),
     };
 
     List<Violation> violations = ValidationEngine.validateAll(validationRules);
@@ -127,27 +128,27 @@ class ValidationEngineTest {
   @DisplayName("WHEN first rule fails and the last rule fails too THEN expect two violation")
   void validateAll3() {
     ViolationProvider[] validationRules = {
-            ValidationRule.notNull("notNullCheck", null),
-            ValidationRule.notBlank("notBlankCheck", "s"),
-            ValidationRule.lengthBetween("lengthBetweenCheck", "a string", 0, 20),
-            ValidationRule.matchRegex("regexCheck", "a", "[a-z]+"),
-            ValidationRule.inRange("rangeCheck", 6, 6, 7),
-            ValidationRule.min("minCheck", 6, 6),
-            ValidationRule.max("maxCheck", 5, 5),
-            ValidationRule.after("isAfterCheck", 6, 5),
-            ValidationRule.afterOrEqualsTo("isAfterOrEqualsToCheck", 5, 5),
-            ValidationRule.before("isBeforeCheck", 4, 5),
-            ValidationRule.beforeOrEqualsTo("isBeforeOrEqualsToCheck", 5, 5),
-            ValidationRule.equalsTo("equalsToStringCheck", "s1", "s1"),
-            ValidationRule.equalsTo("equalsToComparableCheck", 6, 6),
-            ValidationRule.notEqualsTo("notEqualsToStringCheck", "s1", "s2"),
-            ValidationRule.compareStrings(
+            notNull("notNullCheck", null),
+            notBlank("notBlankCheck", "s"),
+            lengthBetween("lengthBetweenCheck", "a string", 0, 20),
+            matchRegex("regexCheck", "a", "[a-z]+"),
+            inRange("rangeCheck", 6, 6, 7),
+            min("minCheck", 6, 6),
+            max("maxCheck", 5, 5),
+            after("isAfterCheck", 6, 5),
+            afterOrEqualsTo("isAfterOrEqualsToCheck", 5, 5),
+            before("isBeforeCheck", 4, 5),
+            beforeOrEqualsTo("isBeforeOrEqualsToCheck", 5, 5),
+            equalsTo("equalsToStringCheck", "s1", "s1"),
+            equalsTo("equalsToComparableCheck", 6, 6),
+            notEqualsTo("notEqualsToStringCheck", "s1", "s2"),
+            compareStrings(
                     "compareStringsCheck",
                     "s1",
                     "s1",
                     (s, s2) -> !s.equals(s2),
                     () -> Violation.of("compareStringsCheck", null, null, null)),
-            ValidationRule.compareComparable(
+            compareComparable(
                     "compareComparablesCheck",
                     1,
                     2,
@@ -199,7 +200,7 @@ class ValidationEngineTest {
   @DisplayName("WHEN all rules fail THEN expect only the first violation")
   void validateFindFirst1() {
     ViolationProvider[] validationRules = {
-            ValidationRule.notNull("notNullCheck", null), ValidationRule.notBlank("notBlankCheck", ""),
+            notNull("notNullCheck", null), notBlank("notBlankCheck", ""),
     };
 
     List<Violation> violations = ValidationEngine.validateFindFirst(validationRules);
@@ -212,8 +213,8 @@ class ValidationEngineTest {
   @DisplayName("WHEN all rules pass THEN expect no violations")
   void validateFindFirst2() {
     ViolationProvider[] validationRules = {
-            ValidationRule.notNull("notNullCheck", new Object()),
-            ValidationRule.notBlank("notBlankCheck", "s"),
+            notNull("notNullCheck", new Object()),
+            notBlank("notBlankCheck", "s"),
     };
 
     List<Violation> violations = ValidationEngine.validateFindFirst(validationRules);
@@ -226,9 +227,9 @@ class ValidationEngineTest {
           "WHEN first rule pass, second rule fail, third rule fail THEN expect only the second violation")
   void validateFindFirst3() {
     ViolationProvider[] validationRules = {
-            ValidationRule.notNull("notNullCheck", new Object()),
-            ValidationRule.notBlank("notBlankCheck", ""),
-            ValidationRule.notNull("notBlankCheck", null),
+            notNull("notNullCheck", new Object()),
+            notBlank("notBlankCheck", ""),
+            notNull("notBlankCheck", null),
     };
 
     List<Violation> violations = ValidationEngine.validateFindFirst(validationRules);
@@ -249,7 +250,7 @@ class ValidationEngineTest {
   @DisplayName("WHEN first rule fails THEN throw exception with the violation ")
   void validateFindFirstAndStopIfViolation1() {
     ViolationProvider[] validationRules = {
-            ValidationRule.notNull("notNullCheck", null), ValidationRule.notBlank("notBlankCheck", ""),
+            notNull("notNullCheck", null), notBlank("notBlankCheck", ""),
     };
 
     ValidationException exception =
@@ -265,7 +266,7 @@ class ValidationEngineTest {
   @DisplayName("WHEN no validations fail THEN expect no validation ")
   void validateFindFirstAndStopIfViolation2() {
     ViolationProvider[] validationRules = {
-            ValidationRule.notNull("notNullCheck", new Object()),
+            notNull("notNullCheck", new Object()),
     };
 
     ValidationEngine.validateFindFirstAndStopIfViolation(validationRules);

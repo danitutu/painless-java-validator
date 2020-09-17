@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationWithOneAttribute;
 import static java.util.Collections.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,11 +21,7 @@ class ValidationExceptionTest {
               Violation.of("field.path", "message", "details", singletonMap("other", 1)));
     } catch (ValidationException exception) {
       Violation violation = exception.getViolations().get(0);
-      assertEquals("field.path", violation.getField());
-      assertEquals("message", violation.getMessage());
-      assertEquals("details", violation.getDetails());
-      assertEquals(1, violation.getAttributes().size());
-      assertEquals(1, violation.getAttributes().get("other"));
+      assertViolationWithOneAttribute(violation, "field.path", "message", "details", 1, "other");
     }
   }
 
@@ -39,24 +36,16 @@ class ValidationExceptionTest {
                       Violation.of("field.path2", "message2", "details2", singletonMap("other2", 2))));
     } catch (ValidationException exception) {
       Violation violation1 = exception.getViolations().get(0);
-      assertEquals("field.path1", violation1.getField());
-      assertEquals("message1", violation1.getMessage());
-      assertEquals("details1", violation1.getDetails());
-      assertEquals(1, violation1.getAttributes().size());
-      assertEquals(1, violation1.getAttributes().get("other1"));
+      assertViolationWithOneAttribute(violation1, "field.path1", "message1", "details1", 1, "other1");
 
       Violation violation2 = exception.getViolations().get(1);
-      assertEquals("field.path2", violation2.getField());
-      assertEquals("message2", violation2.getMessage());
-      assertEquals("details2", violation2.getDetails());
-      assertEquals(1, violation2.getAttributes().size());
-      assertEquals(2, violation2.getAttributes().get("other2"));
+      assertViolationWithOneAttribute(violation2, "field.path2", "message2", "details2", 2, "other2");
     }
   }
 
   @Test
   @DisplayName("WHEN violations present THEN expect exception")
-  public void stopIfViolations1() {
+  void stopIfViolations1() {
     List<Violation> violations = singletonList(Violation.of(null, null, null, null));
     ValidationException exception =
             assertThrows(
@@ -66,19 +55,19 @@ class ValidationExceptionTest {
 
   @Test
   @DisplayName("WHEN violations is empty THEN expect no exception")
-  public void stopIfViolations2() {
+  void stopIfViolations2() {
     ValidationException.stopIfViolations(emptyList());
   }
 
   @Test
   @DisplayName("WHEN violations is null THEN expect no exception")
-  public void stopIfViolations3() {
+  void stopIfViolations3() {
     ValidationException.stopIfViolations(null);
   }
 
   @Test
   @DisplayName("WHEN violation present THEN expect exception")
-  public void stopIfViolation1() {
+  void stopIfViolation1() {
     Violation violation = Violation.of(null, null, null, null);
     ValidationException exception =
             assertThrows(
@@ -89,7 +78,7 @@ class ValidationExceptionTest {
 
   @Test
   @DisplayName("WHEN violations is null THEN expect no exception")
-  public void stopIfViolation2() {
+  void stopIfViolation2() {
     ValidationException.stopIfViolation(null);
   }
 }

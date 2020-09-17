@@ -13,13 +13,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsNotEqual;
+import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsRequired;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EqualsToComparableValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value is after other THEN expect violation")
-  public void equalsTo1() {
+  void equalsTo1() {
     Map<Object, Object> map = new HashMap<>();
     map.put(7, 6);
     map.put(7.5, 7.4);
@@ -37,12 +40,7 @@ class EqualsToComparableValidationRuleTest {
 
               try {
                 assertTrue(violation.isPresent());
-                assertEquals("field.path", violation.get().getField());
-                assertEquals("validation.error.value.is.not.equal", violation.get().getMessage());
-                assertEquals(
-                        "The value is not equal to the other value.", violation.get().getDetails());
-                assertEquals(1, violation.get().getAttributes().size());
-                assertEquals(value.toString(), violation.get().getAttributes().get("other"));
+                assertViolationIsNotEqual(violation.get(), "field.path", value.toString());
               } catch (Throwable t) {
                 System.out.println("Validation failed for value pair [" + key + "," + value + "]");
                 throw t;
@@ -52,7 +50,7 @@ class EqualsToComparableValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value is before other THEN expect violation")
-  public void equalsTo2() {
+  void equalsTo2() {
     Map<Object, Object> map = new HashMap<>();
     map.put(5, 6);
     map.put(7.3, 7.4);
@@ -70,12 +68,7 @@ class EqualsToComparableValidationRuleTest {
 
               try {
                 assertTrue(violation.isPresent());
-                assertEquals("field.path", violation.get().getField());
-                assertEquals("validation.error.value.is.not.equal", violation.get().getMessage());
-                assertEquals(
-                        "The value is not equal to the other value.", violation.get().getDetails());
-                assertEquals(1, violation.get().getAttributes().size());
-                assertEquals(value.toString(), violation.get().getAttributes().get("other"));
+                assertViolationIsNotEqual(violation.get(), "field.path", value.toString());
               } catch (Throwable t) {
                 System.out.println("Validation failed for value pair [" + key + "," + value + "]");
                 throw t;
@@ -85,7 +78,7 @@ class EqualsToComparableValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value equals other THEN expect no violation")
-  public void equalsTo3() {
+  void equalsTo3() {
     Map<Object, Object> map = new HashMap<>();
     map.put(6, 6);
     map.put(7.4, 7.4);
@@ -111,25 +104,19 @@ class EqualsToComparableValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value is null THEN expect violation")
-  public void equalsTo4() {
+  void equalsTo4() {
     Optional<Violation> violation = ValidationRule.equalsToRule("field.path", null, null);
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.value.is.required", violation.get().getMessage());
-    assertEquals("The value is required.", violation.get().getDetails());
+    assertViolationIsRequired(violation.get(), "field.path");
   }
 
   @Test
   @DisplayName("WHEN other is null THEN expect violation")
-  public void equalsTo5() {
+  void equalsTo5() {
     Optional<Violation> violation = ValidationRule.equalsToRule("field.path", Instant.now(), null);
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.value.is.not.equal", violation.get().getMessage());
-    assertEquals("The value is not equal to the other value.", violation.get().getDetails());
-    assertEquals(1, violation.get().getAttributes().size());
-    assertNull(violation.get().getAttributes().get("other"));
+    assertViolationIsNotEqual(violation.get(), "field.path", null);
   }
 }

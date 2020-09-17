@@ -5,13 +5,15 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class IsNullValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value is null THEN expect no violation")
-  public void isNull1() {
+  void isNull1() {
     Optional<Violation> violation = ValidationRule.isNullRule("field.path", null);
 
     assertFalse(violation.isPresent());
@@ -19,13 +21,10 @@ class IsNullValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value is not null THEN expect violation")
-  public void isNull2() {
+  void isNull2() {
     Optional<Violation> violation = ValidationRule.isNullRule("field.path", new Object());
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.value.is.not.null", violation.get().getMessage());
-    assertEquals("The value is not null.", violation.get().getDetails());
-    assertNull(violation.get().getAttributes());
+    assertViolationIsNotNull(violation.get(), "field.path");
   }
 }

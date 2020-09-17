@@ -5,25 +5,25 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsRequired;
+import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationLengthNotBetween;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LengthBetweenValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value is null THEN expect violation")
-  public void lengthBetween1() {
+  void lengthBetween1() {
     Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", null, 3, 10);
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.value.is.required", violation.get().getMessage());
-    assertEquals("The value is required.", violation.get().getDetails());
+    assertViolationIsRequired(violation.get(), "field.path");
   }
 
   @Test
   @DisplayName(
           "WHEN value is empty string and the limit is equal to inferior limit THEN expect no violations")
-  public void lengthBetween2() {
+  void lengthBetween2() {
     Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "", 0, 10);
 
     assertFalse(violation.isPresent());
@@ -32,21 +32,16 @@ class LengthBetweenValidationRuleTest {
   @Test
   @DisplayName(
           "WHEN value is empty string and the value length is outside interval THEN expect violation")
-  public void lengthBetween12() {
+  void lengthBetween12() {
     Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "", 1, 10);
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.string.value.not.between", violation.get().getMessage());
-    assertEquals("Value is not in range.", violation.get().getDetails());
-    assertEquals(2, violation.get().getAttributes().size());
-    assertEquals(1, violation.get().getAttributes().get("min"));
-    assertEquals(10, violation.get().getAttributes().get("max"));
+    assertViolationLengthNotBetween(violation.get(), "field.path", 1, 10);
   }
 
   @Test
   @DisplayName("WHEN value length is equal to min THEN expect no violation")
-  public void lengthBetween4() {
+  void lengthBetween4() {
     Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "test", 4, 10);
 
     assertFalse(violation.isPresent());
@@ -54,7 +49,7 @@ class LengthBetweenValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value length is equal to max THEN expect no violation")
-  public void lengthBetween5() {
+  void lengthBetween5() {
     Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "test", 2, 4);
 
     assertFalse(violation.isPresent());
@@ -62,7 +57,7 @@ class LengthBetweenValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value length is between min and max THEN expect no violation")
-  public void lengthBetween6() {
+  void lengthBetween6() {
     Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "test", 2, 5);
 
     assertFalse(violation.isPresent());
@@ -70,35 +65,25 @@ class LengthBetweenValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value length is smaller than min THEN expect violation")
-  public void lengthBetween7() {
+  void lengthBetween7() {
     Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "test", 5, 7);
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.string.value.not.between", violation.get().getMessage());
-    assertEquals("Value is not in range.", violation.get().getDetails());
-    assertEquals(2, violation.get().getAttributes().size());
-    assertEquals(5, violation.get().getAttributes().get("min"));
-    assertEquals(7, violation.get().getAttributes().get("max"));
+    assertViolationLengthNotBetween(violation.get(), "field.path", 5, 7);
   }
 
   @Test
   @DisplayName("WHEN value length is greater than max THEN expect violation")
-  public void lengthBetween8() {
+  void lengthBetween8() {
     Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "test", 1, 3);
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.string.value.not.between", violation.get().getMessage());
-    assertEquals("Value is not in range.", violation.get().getDetails());
-    assertEquals(2, violation.get().getAttributes().size());
-    assertEquals(1, violation.get().getAttributes().get("min"));
-    assertEquals(3, violation.get().getAttributes().get("max"));
+    assertViolationLengthNotBetween(violation.get(), "field.path", 1, 3);
   }
 
   @Test
   @DisplayName("WHEN min greater than max THEN exception")
-  public void lengthBetween9() {
+  void lengthBetween9() {
     IllegalArgumentException ex =
             assertThrows(
                     IllegalArgumentException.class,
@@ -109,21 +94,16 @@ class LengthBetweenValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value length different than min and min=max THEN expect violation")
-  public void lengthBetween10() {
+  void lengthBetween10() {
     Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "test", 3, 3);
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.string.value.not.between", violation.get().getMessage());
-    assertEquals("Value is not in range.", violation.get().getDetails());
-    assertEquals(2, violation.get().getAttributes().size());
-    assertEquals(3, violation.get().getAttributes().get("min"));
-    assertEquals(3, violation.get().getAttributes().get("max"));
+    assertViolationLengthNotBetween(violation.get(), "field.path", 3, 3);
   }
 
   @Test
   @DisplayName("WHEN value length=min=max THEN expect no violation")
-  public void lengthBetween11() {
+  void lengthBetween11() {
     Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", "test", 4, 4);
 
     assertFalse(violation.isPresent());

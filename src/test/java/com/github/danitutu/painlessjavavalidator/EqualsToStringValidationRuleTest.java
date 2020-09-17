@@ -5,37 +5,34 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsNotEqual;
+import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsRequired;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EqualsToStringValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value is null THEN expect violation")
-  public void equalsTo1() {
+  void equalsTo1() {
     Optional<Violation> violation = ValidationRule.equalsToRule("field.path", null, null);
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.value.is.required", violation.get().getMessage());
-    assertEquals("The value is required.", violation.get().getDetails());
+    assertViolationIsRequired(violation.get(), "field.path");
   }
 
   @Test
   @DisplayName("WHEN values are not equal THEN expect violation")
-  public void equalsTo2() {
+  void equalsTo2() {
     Optional<Violation> violation = ValidationRule.equalsToRule("field.path", "s1", "s2");
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.string.is.not.equal", violation.get().getMessage());
-    assertEquals("The value is not equal to the other value.", violation.get().getDetails());
-    assertEquals(1, violation.get().getAttributes().size());
-    assertEquals("s2", violation.get().getAttributes().get("other"));
+    assertViolationIsNotEqual(violation.get(), "field.path", "s2");
   }
 
   @Test
   @DisplayName("WHEN values are equal THEN expect no violation")
-  public void equalsTo3() {
+  void equalsTo3() {
     Optional<Violation> violation = ValidationRule.equalsToRule("field.path", "s1", "s1");
 
     assertFalse(violation.isPresent());

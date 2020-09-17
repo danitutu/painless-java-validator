@@ -5,24 +5,25 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsRequired;
+import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationSmallerThanMin;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MinIntegerValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value is null THEN expect violation")
-  public void min1() {
+  void min1() {
     Optional<Violation> violation = ValidationRule.minRule("field.path", null, 3);
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.value.is.required", violation.get().getMessage());
-    assertEquals("The value is required.", violation.get().getDetails());
+    assertViolationIsRequired(violation.get(), "field.path");
   }
 
   @Test
   @DisplayName("WHEN value is equal to min THEN expect no violation")
-  public void min2() {
+  void min2() {
     Optional<Violation> violation = ValidationRule.minRule("field.path", 4, 4);
 
     assertFalse(violation.isPresent());
@@ -30,20 +31,16 @@ class MinIntegerValidationRuleTest {
 
   @Test
   @DisplayName("WHEN value is smaller than min THEN expect violation")
-  public void min3() {
+  void min3() {
     Optional<Violation> violation = ValidationRule.minRule("field.path", 2, 5);
 
     assertTrue(violation.isPresent());
-    assertEquals("field.path", violation.get().getField());
-    assertEquals("validation.error.integer.value.smaller.than.min", violation.get().getMessage());
-    assertEquals("Value is smaller than min.", violation.get().getDetails());
-    assertEquals(1, violation.get().getAttributes().size());
-    assertEquals(5, violation.get().getAttributes().get("min"));
+    assertViolationSmallerThanMin(violation.get(), "field.path", 5);
   }
 
   @Test
   @DisplayName("WHEN value is greater than min THEN expect no violation")
-  public void min4() {
+  void min4() {
     Optional<Violation> violation = ValidationRule.minRule("field.path", 3, 1);
 
     assertFalse(violation.isPresent());
