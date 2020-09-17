@@ -17,112 +17,119 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EqualsToComparableValidationRuleTest {
 
-    @Test
-    @DisplayName("WHEN value is after other THEN expect violation")
-    public void equalsTo1() {
-        Map<Object, Object> map = new HashMap<>();
-        map.put(7, 6);
-        map.put(7.5, 7.4);
-        map.put(BigInteger.valueOf(7), BigInteger.valueOf(6));
-        map.put(BigDecimal.valueOf(7.5), BigDecimal.valueOf(7.4));
-        map.put(Instant.now().plusSeconds(60), Instant.now());
-        map.put(LocalDate.now().plusDays(1), LocalDate.now());
-        map.put(LocalDateTime.now().plusSeconds(60), LocalDateTime.now());
-        map.put(ZonedDateTime.now().plusSeconds(60), ZonedDateTime.now());
+  @Test
+  @DisplayName("WHEN value is after other THEN expect violation")
+  public void equalsTo1() {
+    Map<Object, Object> map = new HashMap<>();
+    map.put(7, 6);
+    map.put(7.5, 7.4);
+    map.put(BigInteger.valueOf(7), BigInteger.valueOf(6));
+    map.put(BigDecimal.valueOf(7.5), BigDecimal.valueOf(7.4));
+    map.put(Instant.now().plusSeconds(60), Instant.now());
+    map.put(LocalDate.now().plusDays(1), LocalDate.now());
+    map.put(LocalDateTime.now().plusSeconds(60), LocalDateTime.now());
+    map.put(ZonedDateTime.now().plusSeconds(60), ZonedDateTime.now());
 
-        map.forEach((key, value) -> {
-            Optional<Violation> violation = ValidationRule.equalsToRule("field.path", (Comparable<Object>) key, value);
+    map.forEach(
+            (key, value) -> {
+              Optional<Violation> violation =
+                      ValidationRule.equalsToRule("field.path", (Comparable<Object>) key, value);
 
-            try {
+              try {
                 assertTrue(violation.isPresent());
                 assertEquals("field.path", violation.get().getField());
                 assertEquals("validation.error.value.is.not.equal", violation.get().getMessage());
-                assertEquals("The value is not equal to the other value.", violation.get().getDetails());
+                assertEquals(
+                        "The value is not equal to the other value.", violation.get().getDetails());
                 assertEquals(1, violation.get().getAttributes().size());
                 assertEquals(value.toString(), violation.get().getAttributes().get("other"));
-            } catch (Throwable t) {
+              } catch (Throwable t) {
                 System.out.println("Validation failed for value pair [" + key + "," + value + "]");
                 throw t;
-            }
-        });
-    }
+              }
+            });
+  }
 
-    @Test
-    @DisplayName("WHEN value is before other THEN expect violation")
-    public void equalsTo2() {
-        Map<Object, Object> map = new HashMap<>();
-        map.put(5, 6);
-        map.put(7.3, 7.4);
-        map.put(BigInteger.valueOf(5), BigInteger.valueOf(6));
-        map.put(BigDecimal.valueOf(7.3), BigDecimal.valueOf(7.4));
-        map.put(Instant.now().minusSeconds(60), Instant.now());
-        map.put(LocalDate.now().minusDays(1), LocalDate.now());
-        map.put(LocalDateTime.now().minusSeconds(60), LocalDateTime.now());
-        map.put(ZonedDateTime.now().minusSeconds(60), ZonedDateTime.now());
+  @Test
+  @DisplayName("WHEN value is before other THEN expect violation")
+  public void equalsTo2() {
+    Map<Object, Object> map = new HashMap<>();
+    map.put(5, 6);
+    map.put(7.3, 7.4);
+    map.put(BigInteger.valueOf(5), BigInteger.valueOf(6));
+    map.put(BigDecimal.valueOf(7.3), BigDecimal.valueOf(7.4));
+    map.put(Instant.now().minusSeconds(60), Instant.now());
+    map.put(LocalDate.now().minusDays(1), LocalDate.now());
+    map.put(LocalDateTime.now().minusSeconds(60), LocalDateTime.now());
+    map.put(ZonedDateTime.now().minusSeconds(60), ZonedDateTime.now());
 
-        map.forEach((key, value) -> {
-            Optional<Violation> violation = ValidationRule.equalsToRule("field.path", (Comparable<Object>) key, value);
+    map.forEach(
+            (key, value) -> {
+              Optional<Violation> violation =
+                      ValidationRule.equalsToRule("field.path", (Comparable<Object>) key, value);
 
-            try {
+              try {
                 assertTrue(violation.isPresent());
                 assertEquals("field.path", violation.get().getField());
                 assertEquals("validation.error.value.is.not.equal", violation.get().getMessage());
-                assertEquals("The value is not equal to the other value.", violation.get().getDetails());
+                assertEquals(
+                        "The value is not equal to the other value.", violation.get().getDetails());
                 assertEquals(1, violation.get().getAttributes().size());
                 assertEquals(value.toString(), violation.get().getAttributes().get("other"));
-            } catch (Throwable t) {
+              } catch (Throwable t) {
                 System.out.println("Validation failed for value pair [" + key + "," + value + "]");
                 throw t;
-            }
-        });
-    }
+              }
+            });
+  }
 
-    @Test
-    @DisplayName("WHEN value equals other THEN expect no violation")
-    public void equalsTo3() {
-        Map<Object, Object> map = new HashMap<>();
-        map.put(6, 6);
-        map.put(7.4, 7.4);
-        map.put(BigInteger.valueOf(6), BigInteger.valueOf(6));
-        map.put(BigDecimal.valueOf(7.4), BigDecimal.valueOf(7.4));
-        Instant nowInstant = Instant.now();
-        map.put(nowInstant, nowInstant);
-        LocalDate nowLocalDate = LocalDate.now();
-        map.put(nowLocalDate, nowLocalDate);
-        LocalDateTime nowLocalDateTime = LocalDateTime.now();
-        map.put(nowLocalDateTime, nowLocalDateTime);
-        ZonedDateTime nowZonedDateTime = ZonedDateTime.now();
-        map.put(nowZonedDateTime, nowZonedDateTime);
+  @Test
+  @DisplayName("WHEN value equals other THEN expect no violation")
+  public void equalsTo3() {
+    Map<Object, Object> map = new HashMap<>();
+    map.put(6, 6);
+    map.put(7.4, 7.4);
+    map.put(BigInteger.valueOf(6), BigInteger.valueOf(6));
+    map.put(BigDecimal.valueOf(7.4), BigDecimal.valueOf(7.4));
+    Instant nowInstant = Instant.now();
+    map.put(nowInstant, nowInstant);
+    LocalDate nowLocalDate = LocalDate.now();
+    map.put(nowLocalDate, nowLocalDate);
+    LocalDateTime nowLocalDateTime = LocalDateTime.now();
+    map.put(nowLocalDateTime, nowLocalDateTime);
+    ZonedDateTime nowZonedDateTime = ZonedDateTime.now();
+    map.put(nowZonedDateTime, nowZonedDateTime);
 
-        map.forEach((key, value) -> {
-            Optional<Violation> violation = ValidationRule.equalsToRule("field.path", (Comparable<Object>) key, value);
+    map.forEach(
+            (key, value) -> {
+              Optional<Violation> violation =
+                      ValidationRule.equalsToRule("field.path", (Comparable<Object>) key, value);
 
-            assertFalse(violation.isPresent());
-        });
-    }
+              assertFalse(violation.isPresent());
+            });
+  }
 
-    @Test
-    @DisplayName("WHEN value is null THEN expect violation")
-    public void equalsTo4() {
-        Optional<Violation> violation = ValidationRule.equalsToRule("field.path", null, null);
+  @Test
+  @DisplayName("WHEN value is null THEN expect violation")
+  public void equalsTo4() {
+    Optional<Violation> violation = ValidationRule.equalsToRule("field.path", null, null);
 
-        assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getField());
-        assertEquals("validation.error.value.is.required", violation.get().getMessage());
-        assertEquals("The value is required.", violation.get().getDetails());
-    }
+    assertTrue(violation.isPresent());
+    assertEquals("field.path", violation.get().getField());
+    assertEquals("validation.error.value.is.required", violation.get().getMessage());
+    assertEquals("The value is required.", violation.get().getDetails());
+  }
 
-    @Test
-    @DisplayName("WHEN other is null THEN expect violation")
-    public void equalsTo5() {
-        Optional<Violation> violation = ValidationRule.equalsToRule("field.path", Instant.now(), null);
+  @Test
+  @DisplayName("WHEN other is null THEN expect violation")
+  public void equalsTo5() {
+    Optional<Violation> violation = ValidationRule.equalsToRule("field.path", Instant.now(), null);
 
-        assertTrue(violation.isPresent());
-        assertEquals("field.path", violation.get().getField());
-        assertEquals("validation.error.value.is.not.equal", violation.get().getMessage());
-        assertEquals("The value is not equal to the other value.", violation.get().getDetails());
-        assertEquals(1, violation.get().getAttributes().size());
-        assertNull(violation.get().getAttributes().get("other"));
-    }
-
+    assertTrue(violation.isPresent());
+    assertEquals("field.path", violation.get().getField());
+    assertEquals("validation.error.value.is.not.equal", violation.get().getMessage());
+    assertEquals("The value is not equal to the other value.", violation.get().getDetails());
+    assertEquals(1, violation.get().getAttributes().size());
+    assertNull(violation.get().getAttributes().get("other"));
+  }
 }
