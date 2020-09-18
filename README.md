@@ -45,7 +45,7 @@ Add the library to your project dependencies:
 <dependency>
     <groupId>com.github.danitutu</groupId>
     <artifactId>painless-java-validator</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 - Gradle: `implementation 'com.github.danitutu:painless-java-validator:1.0.0'`
