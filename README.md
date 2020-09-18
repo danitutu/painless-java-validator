@@ -40,7 +40,6 @@ Java 8+.
 ### Usage
 
 Add the library to your project dependencies:
-- Maven:
 ```xml
 <dependency>
     <groupId>com.github.danitutu</groupId>
@@ -48,7 +47,6 @@ Add the library to your project dependencies:
     <version>1.1.0</version>
 </dependency>
 ```
-- Gradle: `implementation 'com.github.danitutu:painless-java-validator:1.0.0'`
 
 Validate:
 
@@ -68,6 +66,19 @@ class Example {
         // ...
     }
 }
+```
+
+For testing there is a helper class `TestUtils` which contains some useful
+functions. To use it add the following to your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>com.github.danitutu</groupId>
+    <artifactId>painless-java-validator</artifactId>
+    <version>${painless.java.validator.version}</version>
+    <type>test-jar</type>
+    <scope>test</scope>
+</dependency>
 ```
 
 The `validateAllAndStopIfViolations` function is part of the 
