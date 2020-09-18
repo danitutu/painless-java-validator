@@ -1,5 +1,7 @@
 package com.github.danitutu.painlessjavavalidator;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -337,13 +339,257 @@ public class ValidationRule {
                     singletonMap("min", min)));
   }
 
+  public static ViolationProvider positiveOrZero(String field, BigDecimal value) {
+    return () -> positiveOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> positiveOrZeroRule(String field, BigDecimal value) {
+    return positiveOrZeroRule(field, () -> value.compareTo(BigDecimal.ZERO) >= 0, value);
+  }
+
+  private static Optional<Violation> positiveOrZeroRule(String field, BooleanSupplier conditionProvider, Object value) {
+    Optional<Violation> isNotNull = notNullRule(field, value);
+    if (isNotNull.isPresent()) {
+      return isNotNull;
+    }
+    return isTrueRule(
+            conditionProvider,
+            Violation.of(
+                    field,
+                    "validation.error.negative.value",
+                    "The value must be a positive number (zero allowed)."));
+  }
+
+  public static ViolationProvider positiveOrZero(String field, BigInteger value) {
+    return () -> positiveOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> positiveOrZeroRule(String field, BigInteger value) {
+    return positiveOrZeroRule(field, () -> value.compareTo(BigInteger.ZERO) >= 0, value);
+  }
+
+  public static ViolationProvider positiveOrZero(String field, Double value) {
+    return () -> positiveOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> positiveOrZeroRule(String field, Double value) {
+    return positiveOrZeroRule(field, () -> value >= 0, value);
+  }
+
+  public static ViolationProvider positiveOrZero(String field, Float value) {
+    return () -> positiveOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> positiveOrZeroRule(String field, Float value) {
+    return positiveOrZeroRule(field, () -> value >= 0, value);
+  }
+
+  public static ViolationProvider positiveOrZero(String field, Long value) {
+    return () -> positiveOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> positiveOrZeroRule(String field, Long value) {
+    return positiveOrZeroRule(field, () -> value >= 0, value);
+  }
+
+  public static ViolationProvider positiveOrZero(String field, Integer value) {
+    return () -> positiveOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> positiveOrZeroRule(String field, Integer value) {
+    return positiveOrZeroRule(field, () -> value >= 0, value);
+  }
+
+  public static ViolationProvider positive(String field, BigDecimal value) {
+    return () -> positiveRule(field, value);
+  }
+
+  public static Optional<Violation> positiveRule(String field, BigDecimal value) {
+    return positiveRule(field, () -> value.compareTo(BigDecimal.ZERO) > 0, value);
+  }
+
+  private static Optional<Violation> positiveRule(String field, BooleanSupplier conditionProvider, Object value) {
+    Optional<Violation> isNotNull = notNullRule(field, value);
+    if (isNotNull.isPresent()) {
+      return isNotNull;
+    }
+    return isTrueRule(
+            conditionProvider,
+            Violation.of(
+                    field,
+                    "validation.error.negative.or.zero.value",
+                    "The value must be a positive number (zero not allowed)."));
+  }
+
+  public static ViolationProvider positive(String field, BigInteger value) {
+    return () -> positiveRule(field, value);
+  }
+
+  public static Optional<Violation> positiveRule(String field, BigInteger value) {
+    return positiveRule(field, () -> value.compareTo(BigInteger.ZERO) > 0, value);
+  }
+
+  public static ViolationProvider positive(String field, Double value) {
+    return () -> positiveRule(field, value);
+  }
+
+  public static Optional<Violation> positiveRule(String field, Double value) {
+    return positiveRule(field, () -> value > 0, value);
+  }
+
+  public static ViolationProvider positive(String field, Float value) {
+    return () -> positiveRule(field, value);
+  }
+
+  public static Optional<Violation> positiveRule(String field, Float value) {
+    return positiveRule(field, () -> value > 0, value);
+  }
+
+  public static ViolationProvider positive(String field, Long value) {
+    return () -> positiveRule(field, value);
+  }
+
+  public static Optional<Violation> positiveRule(String field, Long value) {
+    return positiveRule(field, () -> value > 0, value);
+  }
+
+  public static ViolationProvider positive(String field, Integer value) {
+    return () -> positiveRule(field, value);
+  }
+
+  public static Optional<Violation> positiveRule(String field, Integer value) {
+    return positiveRule(field, () -> value > 0, value);
+  }
+
+  public static ViolationProvider negativeOrZero(String field, BigDecimal value) {
+    return () -> negativeOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> negativeOrZeroRule(String field, BigDecimal value) {
+    return negativeOrZeroRule(field, () -> value.compareTo(BigDecimal.ZERO) <= 0, value);
+  }
+
+  private static Optional<Violation> negativeOrZeroRule(String field, BooleanSupplier conditionProvider, Object value) {
+    Optional<Violation> isNotNull = notNullRule(field, value);
+    if (isNotNull.isPresent()) {
+      return isNotNull;
+    }
+    return isTrueRule(
+            conditionProvider,
+            Violation.of(
+                    field,
+                    "validation.error.positive.value",
+                    "The value must be a negative number (zero allowed."));
+  }
+
+  public static ViolationProvider negativeOrZero(String field, BigInteger value) {
+    return () -> negativeOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> negativeOrZeroRule(String field, BigInteger value) {
+    return negativeOrZeroRule(field, () -> value.compareTo(BigInteger.ZERO) <= 0, value);
+  }
+
+  public static ViolationProvider negativeOrZero(String field, Double value) {
+    return () -> negativeOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> negativeOrZeroRule(String field, Double value) {
+    return negativeOrZeroRule(field, () -> value <= 0, value);
+  }
+
+  public static ViolationProvider negativeOrZero(String field, Float value) {
+    return () -> negativeOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> negativeOrZeroRule(String field, Float value) {
+    return negativeOrZeroRule(field, () -> value <= 0, value);
+  }
+
+  public static ViolationProvider negativeOrZero(String field, Long value) {
+    return () -> negativeOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> negativeOrZeroRule(String field, Long value) {
+    return negativeOrZeroRule(field, () -> value <= 0, value);
+  }
+
+  public static ViolationProvider negativeOrZero(String field, Integer value) {
+    return () -> negativeOrZeroRule(field, value);
+  }
+
+  public static Optional<Violation> negativeOrZeroRule(String field, Integer value) {
+    return negativeOrZeroRule(field, () -> value <= 0, value);
+  }
+
+  public static ViolationProvider negative(String field, BigDecimal value) {
+    return () -> negativeRule(field, value);
+  }
+
+  public static Optional<Violation> negativeRule(String field, BigDecimal value) {
+    return negativeRule(field, () -> value.compareTo(BigDecimal.ZERO) < 0, value);
+  }
+
+  private static Optional<Violation> negativeRule(String field, BooleanSupplier conditionProvider, Object value) {
+    Optional<Violation> isNotNull = notNullRule(field, value);
+    if (isNotNull.isPresent()) {
+      return isNotNull;
+    }
+    return isTrueRule(
+            conditionProvider,
+            Violation.of(
+                    field,
+                    "validation.error.positive.or.zero.value",
+                    "The value must be a negative number (zero not allowed)."));
+  }
+
+  public static ViolationProvider negative(String field, BigInteger value) {
+    return () -> negativeRule(field, value);
+  }
+
+  public static Optional<Violation> negativeRule(String field, BigInteger value) {
+    return negativeRule(field, () -> value.compareTo(BigInteger.ZERO) < 0, value);
+  }
+
+  public static ViolationProvider negative(String field, Double value) {
+    return () -> negativeRule(field, value);
+  }
+
+  public static Optional<Violation> negativeRule(String field, Double value) {
+    return negativeRule(field, () -> value < 0, value);
+  }
+
+  public static ViolationProvider negative(String field, Float value) {
+    return () -> negativeRule(field, value);
+  }
+
+  public static Optional<Violation> negativeRule(String field, Float value) {
+    return negativeRule(field, () -> value < 0, value);
+  }
+
+  public static ViolationProvider negative(String field, Long value) {
+    return () -> negativeRule(field, value);
+  }
+
+  public static Optional<Violation> negativeRule(String field, Long value) {
+    return negativeRule(field, () -> value < 0, value);
+  }
+
+  public static ViolationProvider negative(String field, Integer value) {
+    return () -> negativeRule(field, value);
+  }
+
+  public static Optional<Violation> negativeRule(String field, Integer value) {
+    return negativeRule(field, () -> value < 0, value);
+  }
+
   /**
    * Checks if the value is smaller than or equals to the provided superior limit. The value will be
    * also checked against {@link #notNullRule(String, Object)}
    *
    * @param field path to field
    * @param value value to be checked
-   * @param max superior limit
+   * @param max   superior limit
    * @return violation or success
    */
   public static ViolationProvider max(String field, Integer value, int max) {

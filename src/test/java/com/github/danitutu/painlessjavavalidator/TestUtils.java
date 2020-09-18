@@ -38,18 +38,39 @@ public class TestUtils {
     assertNull(violation.getAttributes());
   }
 
-  public static void assertViolationStrictPositive(Violation violation, String field) {
+  public static void assertViolationNegativeOrZero(Violation violation, String field) {
     assertViolation(
             violation,
             field,
-            "validation.error.negative.value.or.zero",
-            "The value must be a strict positive number");
+            "validation.error.negative.or.zero.value",
+            "The value must be a positive number (zero not allowed).");
     assertNull(violation.getAttributes());
   }
 
-  public static void assertViolationStrictNegative(Violation violation, String field) {
+  public static void assertViolationNegative(Violation violation, String field) {
     assertViolation(
-            violation, field, "validation.error.negative.value", "The value must be a positive number");
+            violation,
+            field,
+            "validation.error.negative.value",
+            "The value must be a positive number (zero allowed).");
+    assertNull(violation.getAttributes());
+  }
+
+  public static void assertViolationPositive(Violation violation, String field) {
+    assertViolation(
+            violation,
+            field,
+            "validation.error.positive.value",
+            "The value must be a negative number (zero allowed.");
+    assertNull(violation.getAttributes());
+  }
+
+  public static void assertViolationPositiveOrZero(Violation violation, String field) {
+    assertViolation(
+            violation,
+            field,
+            "validation.error.positive.or.zero.value",
+            "The value must be a negative number (zero not allowed).");
     assertNull(violation.getAttributes());
   }
 
