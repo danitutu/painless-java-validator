@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsNotEqual;
-import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsRequired;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -103,12 +102,11 @@ class EqualsToComparableValidationRuleTest {
   }
 
   @Test
-  @DisplayName("WHEN value is null THEN expect violation")
+  @DisplayName("WHEN value is null THEN expect no violation")
   void equalsTo4() {
     Optional<Violation> violation = ValidationRule.equalsToRule("field.path", null, null);
 
-    assertTrue(violation.isPresent());
-    assertViolationIsRequired(violation.get(), "field.path");
+    assertFalse(violation.isPresent());
   }
 
   @Test

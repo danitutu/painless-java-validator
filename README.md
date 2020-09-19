@@ -44,7 +44,7 @@ Add the library to your project dependencies:
 <dependency>
     <groupId>com.github.danitutu</groupId>
     <artifactId>painless-java-validator</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -303,7 +303,8 @@ public class CompactUserService {
     public User updateUser(User input) {
         // we are interested in returning all error at once
         validateAllAndStopIfViolations(
-                // lengthBetween also requires a value to be present and so notNull and notBlank are redundant
+                notBlank("input.firstName", input.getFirstName()),
+                notBlank("input.lastName", input.getLastName()),
                 lengthBetween("input.firstName", input.getFirstName(), 2, 50),
                 lengthBetween("input.lastName", input.getLastName(), 2, 50)
         );

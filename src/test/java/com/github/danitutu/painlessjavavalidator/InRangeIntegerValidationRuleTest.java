@@ -6,18 +6,16 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIntegerNotInRange;
-import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsRequired;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InRangeIntegerValidationRuleTest {
 
   @Test
-  @DisplayName("WHEN value is null THEN expect violation")
+  @DisplayName("WHEN value is null THEN expect no violation")
   void inRange1() {
     Optional<Violation> violation = ValidationRule.inRangeRule("field.path", null, 3, 10);
 
-    assertTrue(violation.isPresent());
-    assertViolationIsRequired(violation.get(), "field.path");
+    assertFalse(violation.isPresent());
   }
 
   @Test

@@ -31,13 +31,11 @@ class ValidationEngineTest {
             equalsTo("equalsToComparableCheck", 5, 6),
             notEqualsTo("notEqualsToStringCheck", "s1", "s1"),
             compareStrings(
-                    "compareStringsCheck",
                     "s1",
                     "s2",
                     (s, s2) -> !s.equals(s2),
                     () -> Violation.of("compareStringsCheck", null, null, null)),
             compareComparable(
-                    "compareComparablesCheck",
                     1,
                     2,
                     (s, s2) -> !s.equals(s2),
@@ -99,13 +97,11 @@ class ValidationEngineTest {
             equalsTo("equalsToComparableCheck", 6, 6),
             notEqualsTo("notEqualsToStringCheck", "s1", "s2"),
             compareStrings(
-                    "compareStringsCheck",
                     "s1",
                     "s1",
                     (s, s2) -> !s.equals(s2),
                     () -> Violation.of("compareStringsCheck", null, null, null)),
             compareComparable(
-                    "compareComparablesCheck",
                     1,
                     1,
                     (s, s2) -> !s.equals(s2),
@@ -143,13 +139,11 @@ class ValidationEngineTest {
             equalsTo("equalsToComparableCheck", 6, 6),
             notEqualsTo("notEqualsToStringCheck", "s1", "s2"),
             compareStrings(
-                    "compareStringsCheck",
                     "s1",
                     "s1",
                     (s, s2) -> !s.equals(s2),
                     () -> Violation.of("compareStringsCheck", null, null, null)),
             compareComparable(
-                    "compareComparablesCheck",
                     1,
                     2,
                     (s, s2) -> !s.equals(s2),

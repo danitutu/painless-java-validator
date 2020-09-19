@@ -5,19 +5,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsRequired;
 import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationLengthNotBetween;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LengthBetweenValidationRuleTest {
 
   @Test
-  @DisplayName("WHEN value is null THEN expect violation")
+  @DisplayName("WHEN value is null THEN expect no violation")
   void lengthBetween1() {
     Optional<Violation> violation = ValidationRule.lengthBetweenRule("field.path", null, 3, 10);
 
-    assertTrue(violation.isPresent());
-    assertViolationIsRequired(violation.get(), "field.path");
+    assertFalse(violation.isPresent());
   }
 
   @Test

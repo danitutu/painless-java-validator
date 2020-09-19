@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 
 import static com.github.danitutu.painlessjavavalidator.ValidationEngine.validateAllAndStopIfViolations;
 import static com.github.danitutu.painlessjavavalidator.ValidationEngine.validateFindFirstAndStopIfViolation;
-import static com.github.danitutu.painlessjavavalidator.ValidationRule.isFalse;
-import static com.github.danitutu.painlessjavavalidator.ValidationRule.lengthBetween;
+import static com.github.danitutu.painlessjavavalidator.ValidationRule.*;
 
 @Service
 public class CompactUserService {
@@ -20,7 +19,8 @@ public class CompactUserService {
     public User updateUser(User input) {
         // we are interested in returning all error at once
         validateAllAndStopIfViolations(
-                // lengthBetween also requires a value to be present and so notNull and notBlank are redundant
+                notBlank("input.firstName", input.getFirstName()),
+                notBlank("input.lastName", input.getLastName()),
                 lengthBetween("input.firstName", input.getFirstName(), 2, 50),
                 lengthBetween("input.lastName", input.getLastName(), 2, 50)
         );

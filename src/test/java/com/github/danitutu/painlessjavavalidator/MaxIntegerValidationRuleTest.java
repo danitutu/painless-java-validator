@@ -6,19 +6,17 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationGreaterThanMax;
-import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsRequired;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MaxIntegerValidationRuleTest {
 
   @Test
-  @DisplayName("WHEN value is null THEN expect violation")
+  @DisplayName("WHEN value is null THEN expect no violation")
   void max1() {
     Optional<Violation> violation = ValidationRule.maxRule("field.path", null, 3);
 
-    assertTrue(violation.isPresent());
-    assertViolationIsRequired(violation.get(), "field.path");
+    assertFalse(violation.isPresent());
   }
 
   @Test

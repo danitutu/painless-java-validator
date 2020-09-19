@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsAfterOrEqual;
-import static com.github.danitutu.painlessjavavalidator.TestUtils.assertViolationIsRequired;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -105,12 +104,11 @@ class BeforeValidationRuleTest {
   }
 
   @Test
-  @DisplayName("WHEN value is null THEN expect violation")
+  @DisplayName("WHEN value is null THEN expect no violation")
   void before4() {
     Optional<Violation> violation = ValidationRule.beforeRule("field.path", null, null);
 
-    assertTrue(violation.isPresent());
-    assertViolationIsRequired(violation.get(), "field.path");
+    assertFalse(violation.isPresent());
   }
 
   @Test

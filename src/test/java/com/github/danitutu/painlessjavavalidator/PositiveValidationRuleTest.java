@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class PositiveValidationRuleTest {
 
     @Test
-    @DisplayName("WHEN is positive THEN expect no violation")
+    @DisplayName("WHEN input is positive THEN expect no violation")
     void positive1() {
         List<Violation> violations = validateAll(
                 positive("f.BigDecimal", BigDecimal.valueOf(0.000000000001)),
@@ -30,7 +30,7 @@ class PositiveValidationRuleTest {
     }
 
     @Test
-    @DisplayName("WHEN is zero THEN expect errors")
+    @DisplayName("WHEN input is zero THEN expect errors")
     void positive2() {
         List<Violation> violations = validateAll(
                 positive("f.BigDecimal", BigDecimal.ZERO),
@@ -44,7 +44,7 @@ class PositiveValidationRuleTest {
     }
 
     @Test
-    @DisplayName("WHEN is negative THEN expect errors")
+    @DisplayName("WHEN input is negative THEN expect errors")
     void positive3() {
         List<Violation> violations = validateAll(
                 positive("f.BigDecimal", BigDecimal.valueOf(-0.000000000001)),
@@ -58,7 +58,7 @@ class PositiveValidationRuleTest {
     }
 
     @Test
-    @DisplayName("WHEN is null THEN expect errors")
+    @DisplayName("WHEN input is null THEN expect errors")
     void positive4() {
         List<Violation> violations = validateAll(
                 positive("f.BigDecimal", (BigDecimal) null),
