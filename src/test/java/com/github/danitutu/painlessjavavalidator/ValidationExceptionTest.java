@@ -16,31 +16,45 @@ class ValidationExceptionTest {
   @DisplayName(
           "WHEN instantiating using a single Violation object THEN return the violation object with its input data")
   void getViolations1() {
-    try {
-      throw new ValidationException(
-              Violation.of("field.path", "message", "details", singletonMap("other", 1)));
-    } catch (ValidationException exception) {
-      Violation violation = exception.getViolations().get(0);
-      assertViolationWithOneAttribute(violation, "field.path", "message", "details", 1, "other");
-    }
+    ValidationException exception =
+            new ValidationException(
+                    Violation.of("field.path", "message", "details", singletonMap("other", 1)));
+    Violation violation = exception.getViolations().get(0);
+    assertViolationWithOneAttribute(violation, "field.path", "message", "details", 1, "other");
   }
 
   @Test
   @DisplayName(
           "WHEN instantiating using a list of violation objects THEN return the violation objects with their input data")
   void getViolations2() {
-    try {
-      throw new ValidationException(
-              Arrays.asList(
-                      Violation.of("field.path1", "message1", "details1", singletonMap("other1", 1)),
-                      Violation.of("field.path2", "message2", "details2", singletonMap("other2", 2))));
-    } catch (ValidationException exception) {
-      Violation violation1 = exception.getViolations().get(0);
-      assertViolationWithOneAttribute(violation1, "field.path1", "message1", "details1", 1, "other1");
+    ValidationException exception =
+            new ValidationException(
+                    Arrays.asList(
+                            Violation.of("field.path1", "message1", "details1", singletonMap("other1", 1)),
+                            Violation.of("field.path2", "message2", "details2", singletonMap("other2", 2))));
+    Violation violation1 = exception.getViolations().get(0);
+    assertViolationWithOneAttribute(violation1, "field.path1", "message1", "details1", 1, "other1");
 
-      Violation violation2 = exception.getViolations().get(1);
-      assertViolationWithOneAttribute(violation2, "field.path2", "message2", "details2", 2, "other2");
-    }
+    Violation violation2 = exception.getViolations().get(1);
+    assertViolationWithOneAttribute(violation2, "field.path2", "message2", "details2", 2, "other2");
+
+    assertEquals(
+            "Violations: "
+                    + "["
+                    + "{field='field.path1', message='message1', details='details1', attributes={other1=1}}, "
+                    + "{field='field.path2', message='message2', details='details2', attributes={other2=2}}"
+                    + "]",
+            exception.getMessage());
+  }
+
+  @Test
+  @DisplayName("WHEN violations is null THEN return only brackets")
+  void getViolations3() {
+    ValidationException exception = new ValidationException((List<Violation>) null);
+
+    assertEquals(
+            "Violations: []",
+            exception.getMessage());
   }
 
   @Test

@@ -1,7 +1,9 @@
 package com.github.danitutu.painlessjavavalidator;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class ValidationException extends RuntimeException {
@@ -13,7 +15,33 @@ public class ValidationException extends RuntimeException {
   }
 
   public ValidationException(List<Violation> violations) {
+    super("Violations: " + printViolations(violations));
     this.violations = violations;
+  }
+
+  public static String printViolations(List<Violation> violations) {
+    if (violations == null) {
+      violations = emptyList();
+    }
+    return "["
+            + violations.stream()
+            .map(
+                    violation ->
+                            "{"
+                                    + "field='"
+                                    + violation.getField()
+                                    + '\''
+                                    + ", message='"
+                                    + violation.getMessage()
+                                    + '\''
+                                    + ", details='"
+                                    + violation.getDetails()
+                                    + '\''
+                                    + ", attributes="
+                                    + violation.getAttributes()
+                                    + '}')
+            .collect(Collectors.joining(", "))
+            + "]";
   }
 
   /**
