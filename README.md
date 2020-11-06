@@ -134,6 +134,31 @@ public class ApiController {
 }
 ```
 
+A sample JSON response will looke like this:
+
+```json
+{
+  "validationResult": [
+    {
+      "field": "name",
+      "message": "validation.error.value.is.required",
+      "details": "The value is required.",
+      "attributes": null
+    },
+    {
+      "field": "name",
+      "message": "validation.error.string.value.not.between",
+      "details": "Value is not in range.",
+      "attributes": {
+        "min": 1,
+        "max": 100
+      }
+    }
+  ],
+  "type": "VALIDATION-EXCEPTION"
+}
+```
+
 ### Components
 
 #### `ValidationEngine`
